@@ -11,7 +11,7 @@ matrix:
        - cd ${TRAVIS_BUILD_DIR}
        - ./tests/launch_tests.sh
       after_script:
-       - sed -i'' 's/tests\/mocked_Jeedom_env\/plugins\/Musiccast\///g' clover.xml
+       - sed -i'' 's/tests\/mocked_Jeedom_env\/plugins\/yamaha-musiccast\///g' clover.xml
        - php vendor/bin/php-coveralls
     - language: python
       python: 2.7

@@ -44,7 +44,7 @@ class YamahaMusiccastAjaxTest extends TestCase
     public function getTestRender()
     {
         ob_start();
-        require_once('core/ajax/YamahaMusiccast.ajax.php');
+        require_once('core/ajax/yamaha-musiccast.ajax.php');
         return ob_get_clean();
     }
 

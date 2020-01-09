@@ -26,7 +26,7 @@ $("#table_cmd").sortable({
 });
 
 /*
- * Fonction pour l'ajout de commande, appellé automatiquement par plugin-Yamaha-musiccast
+ * Fonction pour l'ajout de commande, appellé automatiquement par plugin-YamahaMusiccast
  */
 function addCmdToTable(_cmd) {
 	if (!isset(_cmd)) {

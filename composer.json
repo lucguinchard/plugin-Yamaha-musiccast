@@ -1,0 +1,6 @@
+{
+  "require": {
+    "phpunit/phpunit": "7.0.3",
+    "php-coveralls/php-coveralls": "2.0"
+  }
+}

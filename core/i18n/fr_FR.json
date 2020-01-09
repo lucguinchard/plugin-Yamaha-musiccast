@@ -1,0 +1,32 @@
+{
+	"plugins\/Musiccast\/desktop\/php\/Musiccast.php": {
+		"Action": "Action",
+		"Activer": "Activer",
+		"Ajouter": "Ajouter",
+		"Ajouter un Musiccast": "Ajouter un Musiccast",
+		"Aucun": "Aucun",
+		"Catégorie": "Catégorie",
+		"Commandes": "Commandes",
+		"Configuration": "Configuration",
+		"Configuration avancée": "Configuration avancée",
+		"Equipement": "Equipement",
+		"Gestion": "Gestion",
+		"Mes Musiccasts": "Mes Musiccasts",
+		"Nom": "Nom",
+		"Nom de l'équipement Musiccast": "Nom de l'équipement Musiccast",
+		"Objet parent": "Objet parent",
+		"Rechercher": "Rechercher",
+		"Sauvegarder": "Sauvegarder",
+		"Supprimer": "Supprimer",
+		"Type": "Type",
+		"Visible": "Visible"
+	},
+	"plugins\/Musiccast\/plugin_info\/configuration.php": {
+		"Global param 1": "Premier paramètre global",
+		"Global param 2": "Deuxième paramètre global",
+		"Global param 3": "Troisième paramètre global",
+		"Default value": "Valeur par défaut",
+		"First value": "Première valeur",
+		"Second value": "Deuxième valeur"
+	}
+}

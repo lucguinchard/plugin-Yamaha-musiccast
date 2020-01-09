@@ -1,0 +1,9 @@
+nbproject/
+\.project
+\.DS_Store
+Thumbs.db
+*.php~
+composer.lock
+vendor
+\.idea
+tests/mocked_Jeedom_env/plugins/*

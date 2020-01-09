@@ -1,0 +1,1 @@
+Plugin Jeedom permettant la gestion des appareils Yamaha compatible Musiccast.

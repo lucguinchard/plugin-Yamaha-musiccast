@@ -33,7 +33,7 @@ if (!isConnect()) {
 		<div class="form-group">
 			<label class="col-lg-4 control-label">{{socket.port}}</label>
 			<div class="col-lg-2">
-				<input type="number" class="configKey form-control" data-l1key="param1" value="{{socket.port.default}}"/>
+				<input type="number" class="configKey form-control" data-l1key="socket.port" value="{{socket.port.default}}"/>
 			</div>
 		</div>
 	</fieldset>

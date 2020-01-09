@@ -2,7 +2,7 @@
 
 * **Version Jeedom** :
 * **Plateforme** :
-* **Version du Plugin plugin-Yamaha-musiccast** :
+* **Version du Plugin plugin-YamahaMusiccast** :
 
 ## Description
 

@@ -192,5 +192,5 @@ $eqLogics = eqLogic::byType($plugin->getId());
 </div>
 
 <?php
-include_file('desktop', 'YamahaMusiccast', 'js', 'yamaha-musiccast');
+include_file('desktop', 'YamahaMusiccast', 'js', 'YamahaMusiccast');
 include_file('core', 'plugin.template', 'js');

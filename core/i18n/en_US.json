@@ -1,5 +1,5 @@
 {
-	"plugins\/yamaha-musiccast\/desktop\/php\/YamahaMusiccast.php": {
+	"plugins\/YamahaMusiccast\/desktop\/php\/YamahaMusiccast.php": {
 		"Action": "Action",
 		"Activer": "Activate",
 		"Ajouter": "Add",
@@ -21,7 +21,7 @@
 		"Type": "Type",
 		"Visible": "Visible"
 	},
-	"plugins\/yamaha-musiccast\/plugin_info\/configuration.php": {
+	"plugins\/YamahaMusiccast\/plugin_info\/configuration.php": {
 		"Global param 1": "First global parameter",
 		"Global param 2": "Second global parameter",
 		"Global param 3": "Third global parameter",

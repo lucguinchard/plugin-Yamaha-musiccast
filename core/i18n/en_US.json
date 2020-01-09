@@ -1,5 +1,5 @@
 {
-	"plugins\/yamaha-musiccast\/desktop\/php\/yamaha-musiccast.php": {
+	"plugins\/yamaha-musiccast\/desktop\/php\/YamahaMusiccast.php": {
 		"Action": "Action",
 		"Activer": "Activate",
 		"Ajouter": "Add",

@@ -27,25 +27,13 @@ if (!isConnect()) {
 ?>
 <form class="form-horizontal">
 	<fieldset>
-		<div class="form-group">
-			<label class="col-lg-4 control-label">{{Global param 1}}</label>
-			<div class="col-lg-2">
-				<input type="text" class="configKey form-control" data-l1key="param1" value="{{Default value}}"/>
-			</div>
+		<div class="container">
+ 			<span>{{comment.socket}}</span>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-4 control-label">{{Global param 2}}</label>
+			<label class="col-lg-4 control-label">{{socket.port}}</label>
 			<div class="col-lg-2">
-				<input type="checkbox" class="configKey form-control" data-l1key="param2" checked="checked"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-4 control-label">{{Global param 3}}</label>
-			<div class="col-lg-2">
-				<select class="configKey form-control" data-l1key="param3">
-					<option value="value1">{{First value}}</option>
-					<option value="value2">{{Second value}}</option>
-				</select>
+				<input type="number" class="configKey form-control" data-l1key="param1" value="{{socket.port.default}}"/>
 			</div>
 		</div>
 	</fieldset>

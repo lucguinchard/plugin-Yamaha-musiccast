@@ -22,11 +22,8 @@
 		"Visible": "Visible"
 	},
 	"plugins\/YamahaMusiccast\/plugin_info\/configuration.php": {
-		"Global param 1": "Premier paramètre global",
-		"Global param 2": "Deuxième paramètre global",
-		"Global param 3": "Troisième paramètre global",
-		"Default value": "Valeur par défaut",
-		"First value": "Première valeur",
-		"Second value": "Deuxième valeur"
+		"comment.socket": "Le démon ouvre un socket qui permet au appareil Yahama Musiccast de communiquer avec lui",
+		"socket.port": "Port du socket",
+		"socket.port.default": "9999"
 	}
 }

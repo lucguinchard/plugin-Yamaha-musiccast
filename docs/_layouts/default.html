@@ -68,47 +68,47 @@
 						</div>
 					</div>
 					<div id="div_summary2"></div>
+					<h1>Testing GitHub Metadata in Jekyll</h1>
+
+					<p><strong>Fork this repo and test it!!! See instructions / examples: <a href="https://help.github.com/articles/repository-metadata-on-github-pages/">https://help.github.com/articles/repository-metadata-on-github-pages/</a></strong></p>
+
+					<p><strong>owner_name:</strong> {{ site.github.owner_name }}</p>
+					<p><strong>owner_url:</strong> {{ site.github.owner_url }}</p>
+					<p><strong>owner_gravatar_ url:</strong> {{ site.github.owner_gravatar_url }}</p>
+
+					<p><strong>project_title:</strong> {{ site.github.project_title }}</p>
+					<p><strong>project_tagline:</strong> {{ site.github.project_tagline }}</p>
+
+					<p><strong>repository_name:</strong> {{ site.github.repository_name }}</p>
+					<p><strong>repository_url:</strong> {{ site.github.repository_url }}</p>
+
+					<img src="{{ site.github.owner_gravatar_url }}" width="200">
+
+					<h2>List of repos in this organization:</h2>
+					{% for repository in site.github.public_repositories %}  
+					<p><strong>name:</strong> {{ repository.name }}</p>
+					<p><strong>html_url:</strong> {{ repository.html_url }}</p>
+					{% endfor %}
+
+					<h2>List of members in this organization:</h2>
+					{% for member in site.github.organization_members %}
+					<p><strong>name:</strong> {{ member.name }}</p>
+					<p><strong>login:</strong> {{ member.login }}</p>
+					<p><strong>avatar_url:</strong> {{ member.avatar_url }}</p>
+					<img src="{{ member.avatar_url }}" width="200">
+					{% endfor %}
+
+					<h2>List of contributors to this repo:</h2>
+					{% for member in site.github.contributors %}
+					<p><strong>name:</strong> {{ member.name }}</p>
+					<p><strong>login:</strong> {{ member.login }}</p>
+					<p><strong>avatar_url:</strong> {{ member.avatar_url }}</p>
+					<img src="{{ member.avatar_url }}" width="200">
+					{% endfor %}
 				</div>
 				<div id="div_content">
 					{{content}}
 				</div>
-				<h1>Testing GitHub Metadata in Jekyll</h1>
-
-				<p><strong>Fork this repo and test it!!! See instructions / examples: <a href="https://help.github.com/articles/repository-metadata-on-github-pages/">https://help.github.com/articles/repository-metadata-on-github-pages/</a></strong></p>
-
-				<p><strong>owner_name:</strong> {{ site.github.owner_name }}</p>
-				<p><strong>owner_url:</strong> {{ site.github.owner_url }}</p>
-				<p><strong>owner_gravatar_ url:</strong> {{ site.github.owner_gravatar_url }}</p>
-
-				<p><strong>project_title:</strong> {{ site.github.project_title }}</p>
-				<p><strong>project_tagline:</strong> {{ site.github.project_tagline }}</p>
-
-				<p><strong>repository_name:</strong> {{ site.github.repository_name }}</p>
-				<p><strong>repository_url:</strong> {{ site.github.repository_url }}</p>
-
-				<img src="{{ site.github.owner_gravatar_url }}" width="200">
-
-				<h2>List of repos in this organization:</h2>
-				{% for repository in site.github.public_repositories %}  
-				<p><strong>name:</strong> {{ repository.name }}</p>
-				<p><strong>html_url:</strong> {{ repository.html_url }}</p>
-				{% endfor %}
-
-				<h2>List of members in this organization:</h2>
-				{% for member in site.github.organization_members %}
-				<p><strong>name:</strong> {{ member.name }}</p>
-				<p><strong>login:</strong> {{ member.login }}</p>
-				<p><strong>avatar_url:</strong> {{ member.avatar_url }}</p>
-				<img src="{{ member.avatar_url }}" width="200">
-				{% endfor %}
-
-				<h2>List of contributors to this repo:</h2>
-				{% for member in site.github.contributors %}
-				<p><strong>name:</strong> {{ member.name }}</p>
-				<p><strong>login:</strong> {{ member.login }}</p>
-				<p><strong>avatar_url:</strong> {{ member.avatar_url }}</p>
-				<img src="{{ member.avatar_url }}" width="200">
-				{% endfor %}
 			</div>
 		</div>
 		<footer class="page-footer">

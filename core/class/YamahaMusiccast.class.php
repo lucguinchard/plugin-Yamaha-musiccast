@@ -115,17 +115,25 @@ class YamahaMusiccast extends eqLogic {
 	 *         [launchable_message] Cause de non démarrage
 	 *         [auto]   0 Démarrage automatique désactivé
 	 *                  1 Démarrage automatique activé
-	  public static function deamon_info()
-	  {
-	  }
 	 */
+	public static function deamon_info() {
+		$return = array();
+		$return['log'] = '';
+		$return['state'] = 'ok';
+		$return['launchable'] = 'ok';
+		$return['auto'] = '1';
+		//$return['launchable_message'] = 'ok';
+		return $return;
+	}
+
 	/**
 	 * Démarre le daemon
 	 *
 	 * @param Debug (par défault désactivé)
-	  public static function deamon_start($_debug = false)
-	  {
-	  }
 	 */
+	public static function deamon_start($_debug = false) {
+		log::add('YamahaMusiccast', 'debug', 'start démon');
+	}
+
 	/*	 * **********************Getteur Setteur*************************** */
 }

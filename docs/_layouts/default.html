@@ -20,7 +20,7 @@
 					</ul>
 					<a href="https://NextDom.github.io/" data-activates="nav-mobile" class="button-collapse btn-floating btn-large waves-effect waves-light jeedomcolorbg"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
-						<li><a href="https://NextDom.github.io/">Site</a></li>
+						<li><a href="https://NextDom.github.io/">Github</a></li>
 					</ul>
 					<ul class="side-nav" id="nav-mobile">
 						<li><a href="https://NextDom.github.io/">Site</a></li>
@@ -72,13 +72,50 @@
 				<div id="div_content">
 					{{content}}
 				</div>
+				<h1>Testing GitHub Metadata in Jekyll</h1>
+
+				<p><strong>Fork this repo and test it!!! See instructions / examples: <a href="https://help.github.com/articles/repository-metadata-on-github-pages/">https://help.github.com/articles/repository-metadata-on-github-pages/</a></strong></p>
+
+				<p><strong>owner_name:</strong> {{ site.github.owner_name }}</p>
+				<p><strong>owner_url:</strong> {{ site.github.owner_url }}</p>
+				<p><strong>owner_gravatar_ url:</strong> {{ site.github.owner_gravatar_url }}</p>
+
+				<p><strong>project_title:</strong> {{ site.github.project_title }}</p>
+				<p><strong>project_tagline:</strong> {{ site.github.project_tagline }}</p>
+
+				<p><strong>repository_name:</strong> {{ site.github.repository_name }}</p>
+				<p><strong>repository_url:</strong> {{ site.github.repository_url }}</p>
+
+				<img src="{{ site.github.owner_gravatar_url }}" width="200">
+
+				<h2>List of repos in this organization:</h2>
+				{% for repository in site.github.public_repositories %}  
+				<p><strong>name:</strong> {{ repository.name }}</p>
+				<p><strong>html_url:</strong> {{ repository.html_url }}</p>
+				{% endfor %}
+
+				<h2>List of members in this organization:</h2>
+				{% for member in site.github.organization_members %}
+				<p><strong>name:</strong> {{ member.name }}</p>
+				<p><strong>login:</strong> {{ member.login }}</p>
+				<p><strong>avatar_url:</strong> {{ member.avatar_url }}</p>
+				<img src="{{ member.avatar_url }}" width="200">
+				{% endfor %}
+
+				<h2>List of contributors to this repo:</h2>
+				{% for member in site.github.contributors %}
+				<p><strong>name:</strong> {{ member.name }}</p>
+				<p><strong>login:</strong> {{ member.login }}</p>
+				<p><strong>avatar_url:</strong> {{ member.avatar_url }}</p>
+				<img src="{{ member.avatar_url }}" width="200">
+				{% endfor %}
 			</div>
 		</div>
 		<footer class="page-footer">
 			<div class="container">
 				<div class="row">
 					<a class="col s3" style="text-align:center" href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://creativecommons.org/images/deed/cc_blue_x2.png" height="24px" width="24px"><img src="https://creativecommons.org/images/deed/attribution_icon_blue_x2.png" height="24px" width="24px"><img src="https://creativecommons.org/images/deed/sa_blue_x2.png" height="24px" width="24px"></a>
-					<a class="col s3 grey-text" style="text-align:center" href="https://github.com/NextDom/{{site.github.project_title}}">Github</a>
+					<a class="col s3 grey-text" style="text-align:center" href="https://github.com/lucguinchard/{{site.github.project_title}}">Github</a>
 				</div>
 			</div>
 		</footer>
@@ -87,79 +124,79 @@
 		<script type="text/javascript" src="https://NextDom.github.io/NextDom/plugins/assets/js/jquery.inview.min.js"></script>
 		<script type="text/javascript" src="https://NextDom.github.io/NextDom/plugins/assets/js/jquery.toc.js"></script>
 		<script type="text/javascript">
-		$(document).ready(function () {
-			var title = '{{site.github.project_title}}';
-			title = title.replace('plugin-', '');
-			$('#doc_title').append(title[0].toUpperCase() + title.substring(1))
-			document.title = 'Documentation NextDom | ' + title[0].toUpperCase() + title.substring(1)
-			$(".button-collapse").sideNav();
-			$('meta[name=description]').remove();
-			$('head').append('<meta name="description" content="Ceci est la documentation du plugin "' + title[0].toUpperCase() + title.substring(1) + '", lier à la solution domotique Jeedom.">');
-			$('img').addClass('responsive-img');
-			$('#div_content table').addClass('striped');
-			init();
-			var regex = /\/([a-z]{2}_[A-Z]{2})\//g;
-			var corresp = regex.exec(window.location.href)
-			if (corresp !== null && corresp[1]) {
-				$('.sel_lang').val(corresp[1])
-			}
-			$('select').material_select();
-			$('.sel_lang').on('change', function () {
-				var regex = /\/([a-z]{2}_[A-Z]{2})\//g;
-				var corresp = regex.exec(window.location.href);
-				var url = window.location.href.replace(corresp[1], $(this).find('option:selected').attr('value'));
-				if (url.endsWith('/')) {
-					url += 'index';
-				}
-				window.location.href = url;
-			})
-			$('#bt_up').on('click', function () {
-				window.scrollTo(0, 0);
-			})
-			$(window).on("orientationchange", function (event) {
-				init();
+$(document).ready(function () {
+	var title = '{{site.github.project_title}}';
+	title = title.replace('plugin-', '');
+	$('#doc_title').append(title[0].toUpperCase() + title.substring(1))
+	document.title = 'Documentation NextDom | ' + title[0].toUpperCase() + title.substring(1)
+	$(".button-collapse").sideNav();
+	$('meta[name=description]').remove();
+	$('head').append('<meta name="description" content="Ceci est la documentation du plugin "' + title[0].toUpperCase() + title.substring(1) + '", lier à la solution domotique Jeedom.">');
+	$('img').addClass('responsive-img');
+	$('#div_content table').addClass('striped');
+	init();
+	var regex = /\/([a-z]{2}_[A-Z]{2})\//g;
+	var corresp = regex.exec(window.location.href)
+	if (corresp !== null && corresp[1]) {
+		$('.sel_lang').val(corresp[1])
+	}
+	$('select').material_select();
+	$('.sel_lang').on('change', function () {
+		var regex = /\/([a-z]{2}_[A-Z]{2})\//g;
+		var corresp = regex.exec(window.location.href);
+		var url = window.location.href.replace(corresp[1], $(this).find('option:selected').attr('value'));
+		if (url.endsWith('/')) {
+			url += 'index';
+		}
+		window.location.href = url;
+	})
+	$('#bt_up').on('click', function () {
+		window.scrollTo(0, 0);
+	})
+	$(window).on("orientationchange", function (event) {
+		init();
+	});
+	$(window).on("resize", function (event) {
+		init();
+	});
+	function init() {
+		$('#div_summary2,#div_summary').empty();
+		var titlePlugin = title.charAt(0).toUpperCase() + title.substring(1).toLowerCase()
+		if (window.innerWidth < 992) {
+			$('#div_main').addClass('container');
+			$('#div_content').toc({
+				renderIn: "#div_summary2",
+				selectors: 'h1,h2'
 			});
-			$(window).on("resize", function (event) {
-				init();
+		} else {
+			$('#div_main').removeClass('container');
+			$('#div_content').toc({
+				renderIn: "#div_summary",
+				selectors: 'h1,h2'
 			});
-			function init() {
-				$('#div_summary2,#div_summary').empty();
-				var titlePlugin = title.charAt(0).toUpperCase() + title.substring(1).toLowerCase()
-				if (window.innerWidth < 992) {
-					$('#div_main').addClass('container');
-					$('#div_content').toc({
-						renderIn: "#div_summary2",
-						selectors: 'h1,h2'
-					});
-				} else {
-					$('#div_main').removeClass('container');
-					$('#div_content').toc({
-						renderIn: "#div_summary",
-						selectors: 'h1,h2'
-					});
-				}
-				$('#toctitle').html('<h2 style="padding-left:5px !important;">' + titlePlugin + '</h2>');
-				$('.toclevel-2').parent().css('color', 'blue');
-			}
+		}
+		$('#toctitle').html('<h2 style="padding-left:5px !important;">' + titlePlugin + '</h2>');
+		$('.toclevel-2').parent().css('color', 'blue');
+	}
 
-		});
+});
 
-		var idChapitre = null, nbrChapitre = 0, idAncre = null;
-		$('#div_content h1, #div_content h2').on('inview', function (event, isInView) {
-			nbrChapitre = $('a.active').length;
-			idAncre = $(this).attr('id');
-			if (isInView) {
-				$('a[href="#' + idAncre + '"]').addClass('active');
-				if (idChapitre != null) {
-					$('a[href="#' + idChapitre + '"]').removeClass('active');
-					idChapitre = null;
-				}
-			} else if (nbrChapitre > 1) {
-				$('a[href="#' + idAncre + '"]').removeClass('active');
-			} else {
-				idChapitre = idAncre;
-			}
-		});
+var idChapitre = null, nbrChapitre = 0, idAncre = null;
+$('#div_content h1, #div_content h2').on('inview', function (event, isInView) {
+	nbrChapitre = $('a.active').length;
+	idAncre = $(this).attr('id');
+	if (isInView) {
+		$('a[href="#' + idAncre + '"]').addClass('active');
+		if (idChapitre != null) {
+			$('a[href="#' + idChapitre + '"]').removeClass('active');
+			idChapitre = null;
+		}
+	} else if (nbrChapitre > 1) {
+		$('a[href="#' + idAncre + '"]').removeClass('active');
+	} else {
+		idChapitre = idAncre;
+	}
+});
 		</script>
 	</body>
 </html>

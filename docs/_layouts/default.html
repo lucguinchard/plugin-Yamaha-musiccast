@@ -22,7 +22,7 @@
 					<ul class="right hide-on-med-and-down">
 						<li><a href="{{ site.github.repository_url }}">Github</a></li>
 						<li><a href="https://community.jeedom.com/">Communauté Jeedom</a></li>
-						<li><a href="https://www.nextdom.org/forum/">Forom Nextdom</a></li>
+						<li><a href="https://www.nextdom.org/forum/">Forum Nextdom</a></li>
 					</ul>
 					<ul class="side-nav" id="nav-mobile">
 						<li><a href="{{ site.github.repository_url }}">Github</a></li>
@@ -35,40 +35,40 @@
 		<div class="row" id="div_main">
 			<div id="side-nav" class="side-nav fixed">
 				<div class="container">
+					{% if site.langs.size >= 2 %}
 					<div class="row">
 						<div class="col s2">
 							<i class="material-icons" style="position: relative;top:15px;">language</i>
 						</div>
 						<div class="col s10">
 							<select class="sel_lang">
-								{% if site.langs.size >= 2 %}
 								{% for lang in site.langs %}
 								<option data-href="index{% if lang != "fr_FR" %}-{{ lang }}{% endif %}.html" value="{{ lang }}">{% if lang == "fr_FR" %}Français{% endif %}{% if lang == "en_US" %}English{% endif %}{% if lang == "ru_RU" %}Russe{% endif %}{% if lang == "de_DE" %}Deutsch{% endif %}{% if lang == "es_ES" %}Spanish{% endif %}{% if lang == "it_IT" %}Italien{% endif %}{% if lang == "id_ID" %}Indien{% endif %}</option>
 								{% endfor %}
-								{% endif %}
 							</select>
 						</div>
 					</div>
+					{% endif %}
 				</div>
 				<div id="div_summary"></div>
 			</div>
 			<div>
 				<i class="material-icons" id="bt_up" style="position:fixed;bottom:10px;right:10px;cursor: pointer;font-size:3em;">keyboard_arrow_up</i>
 				<div class="hide-on-large-only" id='div_menuMobile'>
+					{% if site.langs.size >= 2 %}
 					<div class="row">
 						<div class="col s2">
 							<i class="material-icons" style="position: relative;top:15px;left:20px;">language</i>
 						</div>
 						<div class="col s10">
 							<select class="sel_lang">
-								{% if site.langs.size >= 2 %}
 								{% for lang in site.langs %}
 								<option value="{{ lang }}">{% if lang == "fr_FR" %}Français{% endif %}{% if lang == "en_US" %}English{% endif %}{% if lang == "ru_RU" %}Russe{% endif %}{% if lang == "de_DE" %}Deutsch{% endif %}{% if lang == "es_ES" %}Spanish{% endif %}{% if lang == "it_IT" %}Italien{% endif %}{% if lang == "id_ID" %}Indien{% endif %}</option>
 								{% endfor %}
-								{% endif %}
 							</select>
 						</div>
 					</div>
+					{% endif %}
 					<div id="div_summary2"></div>
 				</div>
 				<div id="div_content">

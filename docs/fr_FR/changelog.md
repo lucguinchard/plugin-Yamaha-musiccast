@@ -7,8 +7,8 @@
 
 ### Détail des changements
 
-Détail complet des mises à jour sur [Historique Commit](https://github.com/lucguinchard/{{site.github.project_title}}/commits/master)
+Détail complet des mises à jour sur [Historique Commit]({{ site.github.repository_url }}/commits/master)
 
 # Bug et suggestion
 
-En cas de problèmes/demandes avec ce plugin il est possible d’ouvrir un [ticket](https://github.com/lucguinchard/{{site.github.project_title}}/issues).
+En cas de problèmes/demandes avec ce plugin il est possible d’ouvrir un [ticket]({{ site.github.repository_url }}/issues).

@@ -1,35 +1,14 @@
-# Idées pour de futures releases
-
-~~chapitre à garder seulement pour les idées sur lesquelles aucun développement n'est prévu actuellement~~
-
-# Prochaine release
-
-~~chapitre à garder seulement si une version développement est en cours~~
-
 # Changelog
 
-### Version 1.2.0:  (**_date_** - Version en cours sur le market)
+### Version 0.1: (**_date_** 11 janvier 2020)
 
-* Modification 1
-
-### Version 1.1.1:  (**_date_** ~~ex: 31 Mai 2017~~)
-
-* Modification 1
-* Modification 2
-
-### Version 1.1.0:  (**_date_**)
-
-* Modification 1
-* Modification 2
-* Modification 3
+* Création d’un démon permettant de lancer un socket pour le dialogue entre les apparails Yamaha-Musiccast.
+* Utilisation du cron5 pour déclancher le dialogue entre les apparails Yamaha-Musiccast et le pluging Jeedom.
 
 ### Détail des changements
 
-Détail complet des mises à jour sur [Historique Commit](https://github.com/lucguinchard/plugin-Yamaha-musiccast/commits/master)
+Détail complet des mises à jour sur [Historique Commit](https://github.com/lucguinchard/{{site.github.project_title}}/commits/master)
 
-# Bug
+# Bug et suggestion
 
-En cas de problèmes avec ce plugin il est possible d'ouvrir un ticket pour demander une correction :
-
-[https://github.com/lucguinchard/plugin-musiccast/issues](https://github.com/lucguinchard/plugin-Yamaha-musiccast/issues)
-~~Remplacer le lien vers le bugtracker du plugin~~
+En cas de problèmes/demandes avec ce plugin il est possible d’ouvrir un [ticket](https://github.com/lucguinchard/{{site.github.project_title}}/issues).

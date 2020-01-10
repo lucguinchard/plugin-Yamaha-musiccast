@@ -1,5 +1,5 @@
 ---
-langs: [fr_FR,en_US,es_ES]
+langs: [fr_FR]
 baseurl: "/"
 sass:
   sass_dir: assets/css
@@ -17,11 +17,11 @@ exclude:
 - vendor
 plugins:
 - jekyll-seo-tag
-title: "Documentation NextDom"
-description: "Ceci est la documentation du plugin de la team NextDom"
-author: "NextDom"
-image: https://avatars1.githubusercontent.com/u/36200380?s=200&v=4
+title: "Documentation du plugin YamahaMusiccast"
+description: "Le plugin YamahaMusiccast permet de dialoguer avec les appareils Yamaha compatibles musiccast."
+author: "Luc Guinchard"
+image: https://avatars3.githubusercontent.com/u/17431299?s=400&v=4
 social:
-  name: NextDom
+  name: Luc Guinchard
   links:
-    - https://github.com/NextDom
+    - https://github.com/lucguinchard

@@ -1,5 +1,5 @@
 <?php
-class YamahaMusiccastSocket extends Thread {
+class YamahaMusiccastSocket extends pht\Thread {
 
 	var $address = null;
 	var $port = null;
@@ -11,7 +11,7 @@ class YamahaMusiccastSocket extends Thread {
 	}
 
 	function run() {
-		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_UDP);
+		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		socket_bind($this->socket, $this->adress,$this->port) or $this->Logging(($this->close()));
 		socket_listen($this->socket);
 		while (true) {
@@ -28,7 +28,9 @@ class YamahaMusiccastSocket extends Thread {
 			$this->close();
 		}
 		//On tente d'obtenir l'IP du client.
-		socket_getpeername($socketMessage, &$adress, &$port);
+		$adress = null;
+		$port = null;
+		socket_getpeername($socketMessage, $adress, $port);
 		$this->Logging('Nouvelle connexion client : ' . $adress . ':' . $port);
 		$this->Logging('Message : ' . $message);
 		socket_close($socketMessage);

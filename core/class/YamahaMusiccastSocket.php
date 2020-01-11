@@ -1,5 +1,5 @@
 <?php
-class YahamaMusiccastSocket extends pht\Thread {
+class YamahaMusiccastSocket extends pht\Thread {
 
 	var $address = null;
 	var $port = null;

@@ -136,7 +136,7 @@ class YamahaMusiccast extends eqLogic {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
 		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port '. $port);
 		//$socket = new YamahaMusiccastSocket("0.0.0.0", $port);
-		$socket->run();
+		//$socket->run();
 	}
 
 	/**
@@ -147,12 +147,12 @@ class YamahaMusiccast extends eqLogic {
 	public static function deamon_stop() {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
 
-		$sock = socket_create(AF_INET, SOCK_STREAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création de socket refusée');
-		//Connexion au serveur
-		socket_connect($sock,"127.0.0.1",$port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible');
-		socket_write($sock,"stop");
-		//Fermeture de la connexion
-		socket_close($sock);
+//		$sock = socket_create(AF_INET, SOCK_STREAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création de socket refusée');
+//		//Connexion au serveur
+//		socket_connect($sock,"127.0.0.1",$port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible');
+//		socket_write($sock,"stop");
+//		//Fermeture de la connexion
+//		socket_close($sock);
 	}
 
 	/*	 * **********************Getteur Setteur*************************** */

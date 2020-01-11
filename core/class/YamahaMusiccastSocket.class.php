@@ -15,25 +15,22 @@ class YamahaMusiccastSocket extends pht\Thread {
 		socket_bind($this->socket, $this->adress,$this->port) or $this->Logging(($this->close()));
 		socket_listen($this->socket);
 		while (true) {
-			$this->socketMessage(socket_accept($this->socket));
+			if(($newc = socket_accept($this->socket)) !== false) {
+				$message = socket_read($socketMessage, 1024);
+				//On tente d'obtenir l'IP du client.
+				$adress = null;
+				$port = null;
+				socket_getpeername($socketMessage, $adress, $port);
+				socket_close($socketMessage);
+				$this->Logging('Nouvelle connexion client : ' . $adress . ':' . $port);
+				if ($message === 'stop') {
+					$this->Logging('Close');
+					$this->close();
+				} else {
+					$this->Logging('NouveauTRAITEMETNT : ' . $message);
+				}
+			}
 		}
-	}
-
-	/**
-	 * Méthode qui traite le message.
-	 */
-	private function socketMessage($socketMessage) {
-		$message = socket_read($socketMessage, 1024);
-		if ($message == 'stop') {
-			$this->close();
-		}
-		//On tente d'obtenir l'IP du client.
-		$adress = null;
-		$port = null;
-		socket_getpeername($socketMessage, $adress, $port);
-		$this->Logging('Nouvelle connexion client : ' . $adress . ':' . $port);
-		$this->Logging('Message : ' . $message);
-		socket_close($socketMessage);
 	}
 
 	/**

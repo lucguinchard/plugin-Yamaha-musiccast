@@ -1,5 +1,5 @@
 <?php
-class YamahaMusiccastSocket extends pht\Thread {
+class YamahaMusiccastSocket extends Thread {
 
 	var $address = null;
 	var $port = null;
@@ -12,7 +12,7 @@ class YamahaMusiccastSocket extends pht\Thread {
 
 	function run() {
 		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_UDP);
-		socket_bind($this->socket, $address, $port) or $this->Logging(($this->close()));
+		socket_bind($this->socket, $this->adress,$this->port) or $this->Logging(($this->close()));
 		socket_listen($this->socket);
 		while (true) {
 			$this->socketMessage(socket_accept($this->socket));
@@ -48,7 +48,7 @@ class YamahaMusiccastSocket extends pht\Thread {
 	 * Permet de fermer le socket ouver
 	 * @param type $err
 	 */
-	function close($err) {
+	function close($err = null) {
 		if ($err != null) {
 			$this->Logging($err);
 		} else {

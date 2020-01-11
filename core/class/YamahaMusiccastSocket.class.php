@@ -54,11 +54,6 @@ class YamahaMusiccastSocket extends pht\Thread {
 		} else {
 			$this->Logging(socket_strerror(socket_last_error()));
 		}
-		reset($this->clients);
-		while ($sock_cli = current($this->clients)) {
-			@socket_close($sock_cli);
-			next($this->clients);
-		}
 
 		if (is_resource($fp)) {
 			fclose($fp);

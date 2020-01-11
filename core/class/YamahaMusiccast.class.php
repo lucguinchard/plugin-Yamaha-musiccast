@@ -20,7 +20,7 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once 'YamahaMusiccastCmd.class.php';
-require_once 'YamahaMusiccastSocket.php';
+require_once 'YamahaMusiccastSocket.class.php';
 
 class YamahaMusiccast extends eqLogic {
 	/*	 * *************************Attributs****************************** */
@@ -136,7 +136,7 @@ class YamahaMusiccast extends eqLogic {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
 		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port '. $port);
 		$socket = new YamahaMusiccastSocket("0.0.0.0", $port);
-		$socket->run();
+		$socket->start();
 	}
 
 	/**

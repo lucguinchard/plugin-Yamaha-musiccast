@@ -135,8 +135,8 @@ class YamahaMusiccast extends eqLogic {
 	public static function deamon_start($_debug = false) {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
 		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port '. $port);
-		$socket = new YamahaMusiccastSocket();
-		$socket->start("0.0.0.0", $port);
+		$socket = new YamahaMusiccastSocket("0.0.0.0", $port);
+		$socket->run();
 	}
 
 	/**

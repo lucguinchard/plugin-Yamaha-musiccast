@@ -1,6 +1,5 @@
 <?php
-
-class YahamaMusiccastSocket extends Thread {
+class YahamaMusiccastSocket extends pht\Thread {
 
 	var $address = null;
 	var $port = null;

@@ -12,7 +12,7 @@ class YamahaMusiccastSocket extends pht\Thread {
 
 	function run() {
 		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_UDP);
-		socket_bind($this->socket, $address, $port) or die($this->close());
+		socket_bind($this->socket, $address, $port) or $this->Logging(($this->close()));
 		socket_listen($this->socket);
 		while (true) {
 			$this->socketMessage(socket_accept($this->socket));
@@ -59,7 +59,6 @@ class YamahaMusiccastSocket extends pht\Thread {
 			fclose($fp);
 		}
 		@socket_close($this->socket);
-		die();
 	}
 
 }

@@ -20,6 +20,7 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once 'YamahaMusiccastCmd.class.php';
+require_once 'YamahaMusiccastSocket.php';
 
 class YamahaMusiccast extends eqLogic {
 	/*	 * *************************Attributs****************************** */
@@ -119,7 +120,7 @@ class YamahaMusiccast extends eqLogic {
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = '';
-		$return['state'] = 'ok';
+		$return['state'] = 'nok';
 		$return['launchable'] = 'ok';
 		$return['auto'] = '1';
 		//$return['launchable_message'] = 'ok';
@@ -132,7 +133,26 @@ class YamahaMusiccast extends eqLogic {
 	 * @param Debug (par défault désactivé)
 	 */
 	public static function deamon_start($_debug = false) {
-		log::add('YamahaMusiccast', 'debug', 'start démon');
+		$port = config::byKey('socket.port', 'YamahaMusiccast');
+		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port '. $port);
+		$socket = new YamahaMusiccastSocket();
+		$socket->start("0.0.0.0", $port);
+	}
+
+	/**
+	 * Démarre le daemon
+	 *
+	 * @param Debug (par défault désactivé)
+	 */
+	public static function deamon_stop() {
+		$port = config::byKey('socket.port', 'YamahaMusiccast');
+
+		$sock = socket_create(AF_INET, SOCK_STREAM, SOL_UDP) or die('Création de socket refusée');
+		//Connexion au serveur
+		socket_connect($sock,"127.0.0.1",$port) or die('Connexion impossible');
+		socket_write($sock,"stop");
+		//Fermeture de la connexion
+		socket_close($sock);
 	}
 
 	/*	 * **********************Getteur Setteur*************************** */

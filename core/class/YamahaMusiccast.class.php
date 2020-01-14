@@ -121,9 +121,11 @@ class YamahaMusiccast extends eqLogic {
 		$return = array();
 		$return['log'] = '';
 		$return['state'] = 'nok';
+		$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
+		if (is_object($cron) && $cron->running()) {
+			$return['state'] = 'ok';
+		}
 		$return['launchable'] = 'ok';
-		$return['auto'] = '1';
-		//$return['launchable_message'] = 'ok';
 		return $return;
 	}
 
@@ -133,10 +135,16 @@ class YamahaMusiccast extends eqLogic {
 	 * @param Debug (par défault désactivé)
 	 */
 	public static function deamon_start($_debug = false) {
-		$port = config::byKey('socket.port', 'YamahaMusiccast');
-		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port '. $port);
-		$socket = new YamahaMusiccastSocket("0.0.0.0", $port);
-		$socket->start();
+		self::deamon_stop();
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['launchable'] != 'ok') {
+			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
+		}
+		$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
+		if (!is_object($cron)) {
+			throw new Exception(__('Tache cron introuvable', __FILE__));
+		}
+		$cron->run();
 	}
 
 	/**
@@ -145,8 +153,23 @@ class YamahaMusiccast extends eqLogic {
 	 * @param Debug (par défault désactivé)
 	 */
 	public static function deamon_stop() {
-		$port = config::byKey('socket.port', 'YamahaMusiccast');
+		$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
+		if (!is_object($cron)) {
+			throw new Exception(__('Tache cron introuvable', __FILE__));
+		}
+		YamahaMusiccast::socket_stop();
+		$cron->halt();
+	}
 
+	public static function socket_start() {
+		$port = config::byKey('socket.port', 'YamahaMusiccast');
+		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port '. $port);
+		$socket = new YamahaMusiccastSocket("0.0.0.0", $port);
+		$socket->start();
+	}
+
+	public static function socket_stop() {
+		$port = config::byKey('socket.port', 'YamahaMusiccast');
 		$sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or log::add('YamahaMusiccast', 'error', 'Création de socket refusée');
 		//Connexion au serveur
 		socket_connect($sock,"127.0.0.1",$port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible');

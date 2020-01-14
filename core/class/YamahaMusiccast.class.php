@@ -163,7 +163,7 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function socket_start() {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
-		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port '. $port);
+		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port ' . $port);
 		$socket = new YamahaMusiccastSocket("0.0.0.0", $port);
 		$socket->run();
 	}
@@ -172,10 +172,63 @@ class YamahaMusiccast extends eqLogic {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
 		$sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or log::add('YamahaMusiccast', 'error', 'Création de socket refusée');
 		//Connexion au serveur
-		socket_connect($sock,"127.0.0.1",$port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible');
-		socket_write($sock,"stop");
+		socket_connect($sock, "127.0.0.1", $port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible');
+		socket_write($sock, "stop");
 		//Fermeture de la connexion
 		socket_close($sock);
+	}
+
+	public static function cron5() {
+		log::add('YamahaMusiccast', 'debug', 'call cron5');
+		self::$_eqLogics = self::byType('YamahaMusiccast');
+		foreach (self::$_eqLogics as $eqLogic) {
+			if ($eqLogic->getIsEnable() == 0) {
+				continue;
+			}
+			log::add('YamahaMusiccast', 'debug', '$eqLogic->getLogicalId()' . $eqLogic->getLogicalId());
+			$result = YamahaMusiccast::CallAPI("http://192.168.222.230/YamahaExtendedControl/v1/system/getNameText", "GET");
+			log::add('YamahaMusiccast', 'debug', '$result' . $result);
+			
+			if ($eqLogic->getLogicalId() == '') {
+				continue;
+			}
+		}
+	}
+
+	static function CallAPI($method, $url, $data = false) {
+		$port = config::byKey('socket.port', 'YamahaMusiccast');
+		$curl = curl_init();
+
+		switch ($method) {
+			case "POST":
+				curl_setopt($curl, CURLOPT_POST, 1);
+
+				if ($data) {
+					curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+				}
+				break;
+			case "PUT":
+				curl_setopt($curl, CURLOPT_PUT, 1);
+				break;
+			default:
+				if ($data) {
+					$url = sprintf("%s?%s", $url, http_build_query($data));
+				}
+		}
+		// Optional Authentication:
+		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, "Content-Type: application/json");
+		curl_setopt($curl, CURLOPT_HTTPHEADER, "X-AppName: Musiccast/Jeedom");
+		curl_setopt($curl, CURLOPT_HTTPHEADER, "X-AppPort: $port");
+
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+		$result = curl_exec($curl);
+
+		curl_close($curl);
+
+		return $result;
 	}
 
 	/*	 * **********************Getteur Setteur*************************** */

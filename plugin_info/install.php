@@ -23,8 +23,8 @@ function YamahaMusiccast_install()
 	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
 	if (!is_object($cron)) {
 		$cron = new cron();
-		$cron->setClass('musiccast');
-		$cron->setFunction('pull');
+		$cron->setClass('YamahaMusiccast');
+		$cron->setFunction('socket_start');
 		$cron->setEnable(1);
 		$cron->setDeamon(1);
 		$cron->setDeamonSleepTime(3);
@@ -39,8 +39,8 @@ function YamahaMusiccast_update()
 	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
 	if (!is_object($cron)) {
 		$cron = new cron();
-		$cron->setClass('musiccast');
-		$cron->setFunction('pull');
+		$cron->setClass('YamahaMusiccast');
+		$cron->setFunction('socket_start');
 		$cron->setEnable(1);
 		$cron->setDeamon(1);
 		$cron->setDeamonSleepTime(3);

@@ -18,18 +18,40 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-function ExtraTemplate_install()
+function YamahaMusiccast_install()
 {
-
+	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
+	if (!is_object($cron)) {
+		$cron = new cron();
+		$cron->setClass('musiccast');
+		$cron->setFunction('pull');
+		$cron->setEnable(1);
+		$cron->setDeamon(1);
+		$cron->setDeamonSleepTime(3);
+		$cron->setSchedule('* * * * *');
+		$cron->setTimeout(1440);
+		$cron->save();
+	}
 }
 
-function ExtraTemplate_update()
+function YamahaMusiccast_update()
 {
-
+	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
+	if (!is_object($cron)) {
+		$cron = new cron();
+		$cron->setClass('musiccast');
+		$cron->setFunction('pull');
+		$cron->setEnable(1);
+		$cron->setDeamon(1);
+		$cron->setDeamonSleepTime(3);
+		$cron->setSchedule('* * * * *');
+		$cron->setTimeout(1440);
+		$cron->save();
+	}
 }
 
 
-function ExtraTemplate_remove()
+function YamahaMusiccast_remove()
 {
 
 }

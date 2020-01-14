@@ -217,9 +217,10 @@ class YamahaMusiccast extends eqLogic {
 		}
 		// Optional Authentication:
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, "Content-Type: application/json");
-		curl_setopt($curl, CURLOPT_HTTPHEADER, "X-AppName: Musiccast/Jeedom");
-		curl_setopt($curl, CURLOPT_HTTPHEADER, "X-AppPort: $port");
+		$header[0] = "Content-Type: application/json";
+		$header[1] = "X-AppName: Musiccast/Jeedom";
+		$header[2] = "X-AppPort: $port";
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

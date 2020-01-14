@@ -15,7 +15,7 @@ class YamahaMusiccastSocket {
 		socket_bind($this->socket, $this->adress,$this->port) or $this->Logging(($this->close()));
 		socket_listen($this->socket);
 		while (true) {
-			if(($newc = socket_accept($this->socket)) !== false) {
+			if(($socketMessage = socket_accept($this->socket)) !== false) {
 				$message = socket_read($socketMessage, 1024);
 				//On tente d'obtenir l'IP du client.
 				$adress = null;

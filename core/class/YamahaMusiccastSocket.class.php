@@ -1,4 +1,5 @@
 <?php
+
 class YamahaMusiccastSocket {
 
 	var $address = null;
@@ -11,17 +12,16 @@ class YamahaMusiccastSocket {
 	}
 
 	function run() {
-		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-		socket_bind($this->socket, $this->adress,$this->port) or $this->Logging(($this->close()));
+		$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+		socket_bind($this->socket, $this->adress, $this->port) or $this->Logging(($this->close()));
 		socket_listen($this->socket);
 		while (true) {
-			if(($socketMessage = socket_accept($this->socket)) !== false) {
-				$message = socket_read($socketMessage, 1024);
+			if ((socket_set_block($this->socket)) !== false) {
 				//On tente d'obtenir l'IP du client.
+				$message = null;
 				$adress = null;
 				$port = null;
-				socket_getpeername($socketMessage, $adress, $port);
-				socket_close($socketMessage);
+				$bytes_received = socket_recvfrom($this->socket, $message, 65536, 0, $adress, $port);
 				$this->Logging('Nouvelle connexion client : ' . $adress . ':' . $port);
 				if ($message === 'stop') {
 					$this->Logging('Close');

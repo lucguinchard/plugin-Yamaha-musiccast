@@ -170,7 +170,7 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function socket_stop() {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
-		$sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or log::add('YamahaMusiccast', 'error', 'Création de socket refusée');
+		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création de socket refusée');
 		//Connexion au serveur
 		socket_connect($sock, "127.0.0.1", $port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible');
 		socket_write($sock, "stop");
@@ -180,13 +180,13 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function cron5() {
 		log::add('YamahaMusiccast', 'debug', 'call cron5');
-		self::$_eqLogics = self::byType('YamahaMusiccast');
-		foreach (self::$_eqLogics as $eqLogic) {
+		$devices = self::byType('YamahaMusiccast');
+		foreach ($devices as $eqLogic) {
 			if ($eqLogic->getIsEnable() == 0) {
 				continue;
 			}
 			log::add('YamahaMusiccast', 'debug', '$eqLogic->getLogicalId()' . $eqLogic->getLogicalId());
-			$result = YamahaMusiccast::CallAPI("http://192.168.222.230/YamahaExtendedControl/v1/system/getNameText", "GET");
+			$result = YamahaMusiccast::CallAPI("GET", "http://192.168.222.230/YamahaExtendedControl/v1/system/getNameText");
 			log::add('YamahaMusiccast', 'debug', '$result' . $result);
 			
 			if ($eqLogic->getLogicalId() == '') {

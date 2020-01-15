@@ -62,7 +62,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function preSave() {
-		
+		$this->setCategory('multimedia', 1);
 	}
 
 	public function postSave() {

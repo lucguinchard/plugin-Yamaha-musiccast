@@ -15,7 +15,7 @@ class YamahaMusiccastSocket {
 
 	function run() {
 		$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-		socket_bind($this->socket, $this->adress, $this->port) or $this->Logging(($this->close()));
+		socket_bind($this->socket, $this->adress, $this->port) or ($this->close());
 		socket_listen($this->socket);
 		while (true) {
 			if ((socket_set_block($this->socket)) !== false) {
@@ -24,13 +24,14 @@ class YamahaMusiccastSocket {
 				$host = null;
 				$port = null;
 				$bytes_received = socket_recvfrom($this->socket, $message, 65536, 0, $host, $port);
-				if ($message === 'stop')
+				if ($message === 'stop') {
 					log::add('YamahaMusiccast', 'debug', 'Arrêt du socket');
 				$this->close();
-			} if ($message === 'test') {
-				log::add('YamahaMusiccast', 'debug', 'Test du Socket');
-			} else {
-				YamahaMusiccast::traitement_message($host, $port, $message);
+				} else if ($message === 'test') {
+					log::add('YamahaMusiccast', 'debug', 'Test du Socket');
+				} else {
+					YamahaMusiccast::traitement_message($host, $port, $message);
+				}
 			}
 		}
 	}
@@ -41,9 +42,9 @@ class YamahaMusiccastSocket {
 	 */
 	function close($err = null) {
 		if ($err != null) {
-			$this->Logging($err);
+			log::add('YamahaMusiccast', 'error', $err);
 		} else {
-			$this->Logging(socket_strerror(socket_last_error()));
+			log::add('YamahaMusiccast', 'error', socket_strerror(socket_last_error()));
 		}
 
 		if (is_resource($fp)) {

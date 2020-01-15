@@ -188,7 +188,7 @@ class YamahaMusiccast extends eqLogic {
 		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création du socket_stop refusée');
 		socket_connect($sock, "127.0.0.1", $port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible pour socket_stop');
 		socket_write($sock, "stop");
-		socket_close($sock);
+		//socket_close($sock);
 	}
 
 	public static function cron5() {

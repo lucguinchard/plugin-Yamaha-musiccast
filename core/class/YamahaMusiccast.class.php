@@ -140,6 +140,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		socket_close($sock);
 		$return['launchable'] = 'ok';
+		$return['auto'] = 1;
 		return $return;
 	}
 
@@ -204,10 +205,11 @@ class YamahaMusiccast extends eqLogic {
 			}
 		}
 	}
-	public static function traitement_message($host, $port, $body) {
-		log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $body);
-		$json = json_decode($body);
-		log::add('YamahaMusiccast', 'debug', print_r($json, true));
+	public static function traitement_message($host, $port, $json) {
+		log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $json);
+		$result = json_decode($json);
+		$device_id = $result['device_id'];
+		log::add('YamahaMusiccast', 'debug', '$device_id' . $device_id . '       ' . print_r($result, true));
 	}
 
 	static function CallAPI($method, $url, $data = false) {

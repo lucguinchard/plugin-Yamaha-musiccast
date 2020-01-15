@@ -323,7 +323,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$netusb = $result->netusb;
 		if (!empty($netusb)) {
-			$play_error = $tuner->play_error;
+			$play_error = $netusb->play_error;
 			if (!empty($play_error)) {
 				/**
 				 * Error codes happened during playback for displaying appropriate messages to the external application user interface.
@@ -349,7 +349,7 @@ class YamahaMusiccast extends eqLogic {
 				 */
 				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du $play_error ' . print_r($play_error, true));
 			}
-			$multiple_play_errors = $tuner->multiple_play_errors;
+			$multiple_play_errors = $netusb->multiple_play_errors;
 			if (!empty($multiple_play_errors)) {
 				/**
 				 * Bit field flags of multiple playback errors.
@@ -364,43 +364,43 @@ class YamahaMusiccast extends eqLogic {
 				 */
 				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du $multiple_play_errors ' . print_r($multiple_play_errors, true));
 			}
-			$play_message = $tuner->play_message;
+			$play_message = $netusb->play_message;
 			if (!empty($play_message)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO: Playback related message ' . print_r($play_message, true));
 			}
-			$account_updated = $tuner->account_updated;
+			$account_updated = $netusb->account_updated;
 			if (!empty($account_updated)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO: Whether or not account info has changed. Note: If so, pull renewed info using /netusb/getAccountStatus. ' . print_r($account_updated, true));
 			}
-			$play_time = $tuner->play_time;
+			$play_time = $netusb->play_time;
 			if (!empty($play_time)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO: Current playback time (unit in second). ' . print_r($play_time, true));
 			}
-			$preset_info_updated = $tuner->preset_info_updated;
+			$preset_info_updated = $netusb->preset_info_updated;
 			if (!empty($preset_info_updated)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO: Whether or not preset info has changed. - Note: If so, pull renewed info using netusb/getPresetInfo ' . print_r($preset_info_updated, true));
 			}
-			$recent_info_updated = $tuner->recent_info_updated;
+			$recent_info_updated = $netusb->recent_info_updated;
 			if (!empty($recent_info_updated)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO:  Whether or not playback history info has changed. - Note: If so, pull renewed info using netusb/getRecentInfo ' . print_r($recent_info_updated, true));
 			}
-			$preset_control = $tuner->preset_control;
+			$preset_control = $netusb->preset_control;
 			if (!empty($preset_control)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO:  Results of Preset operations. ' . print_r($preset_control, true));
 			}
-			$trial_status = $tuner->trial_status;
+			$trial_status = $netusb->trial_status;
 			if (!empty($trial_status)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO:  Trial status of a Device. ' . print_r($trial_status, true));
 			}
-			$trial_time_left = $tuner->trial_time_left;
+			$trial_time_left = $netusb->trial_time_left;
 			if (!empty($trial_time_left)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO:  Remaining time of a trial. ' . print_r($trial_time_left, true));
 			}
-			$play_info_updated = $tuner->play_info_updated;
+			$play_info_updated = $netusb->play_info_updated;
 			if (!empty($play_info_updated)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO:  Returns whether or not playback info has changed. Note: If so, pull renewed info using /netusb/getPlayInfo.. ' . print_r($play_info_updated, true));
 			}
-			$list_info_updated = $tuner->list_info_updated;
+			$list_info_updated = $netusb->list_info_updated;
 			if (!empty($list_info_updated)) {
 				log::add('YamahaMusiccast', 'debug', 'TODO: Returns whether or not list info has changed. Note: If so, pull renewed info using /netusb/getListInfo. ' . print_r($list_info_updated, true));
 			}

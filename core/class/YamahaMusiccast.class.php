@@ -217,12 +217,9 @@ class YamahaMusiccast extends eqLogic {
 			if ($eqLogic->getIsEnable() == 0) {
 				continue;
 			}
-			$result = YamahaMusiccast::CallAPI("GET", "http://192.168.222.230/YamahaExtendedControl/v1/system/getDeviceInfo");
+			$host = $eqLogic->getLogicalId();
+			$result = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getDeviceInfo");
 			log::add('YamahaMusiccast', 'debug', 'Appel du Cron5 ' . $result);
-
-			if ($eqLogic->getLogicalId() == '') {
-				continue;
-			}
 		}
 	}
 

@@ -63,6 +63,22 @@ class YamahaMusiccast extends eqLogic {
 
 	public function preSave() {
 		$this->setCategory('multimedia', 1);
+		$host = $this->getName();
+		$this->setLogicalId($host);
+		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getNetworkStatus");
+		if($jsonGetNetworkStatus === false) {
+			$this->setIsVisible(0);
+			$this->setIsEnable(0);
+		} else {
+			$this->setIsVisible(1);
+			$this->setIsEnable(1);
+			$getNetworkStatus = json_decode($jsonGetNetworkStatus);
+			$this->setName($getNetworkStatus->network_name);
+
+			$jsonGetDeviceInfo = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getDeviceInfo");
+			$getDeviceInfo = json_decode($jsonGetDeviceInfo);
+			$this->setConfiguration('model_name', $getDeviceInfo->model_name);
+		}
 	}
 
 	public function postSave() {
@@ -197,7 +213,7 @@ class YamahaMusiccast extends eqLogic {
 			if ($eqLogic->getIsEnable() == 0) {
 				continue;
 			}
-			$result = YamahaMusiccast::CallAPI("GET", "http://192.168.222.230/YamahaExtendedControl/v1/system/getNameText");
+			$result = YamahaMusiccast::CallAPI("GET", "http://192.168.222.230/YamahaExtendedControl/v1/system/getDeviceInfo");
 			log::add('YamahaMusiccast', 'debug', 'Appel du Cron5 ' . $result);
 
 			if ($eqLogic->getLogicalId() == '') {

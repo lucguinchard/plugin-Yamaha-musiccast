@@ -204,6 +204,11 @@ class YamahaMusiccast extends eqLogic {
 			}
 		}
 	}
+	public static function traitement_message($host, $port, $body) {
+		log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $body);
+		$json = json_decode($body);
+		log::add('YamahaMusiccast', 'debug', print_r($json, true));
+	}
 
 	static function CallAPI($method, $url, $data = false) {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');

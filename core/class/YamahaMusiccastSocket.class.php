@@ -1,5 +1,7 @@
 <?php
 
+require_once 'YamahaMusiccast.class.php';
+
 class YamahaMusiccastSocket {
 
 	var $address = null;
@@ -19,29 +21,18 @@ class YamahaMusiccastSocket {
 			if ((socket_set_block($this->socket)) !== false) {
 				//On tente d'obtenir l'IP du client.
 				$message = null;
-				$adress = null;
+				$host = null;
 				$port = null;
-				$bytes_received = socket_recvfrom($this->socket, $message, 65536, 0, $adress, $port);
-				if ($message === 'stop') {
-					$this->Logging('Arrêt du socket');
-					$this->close();
-				} if ($message === 'test') {
-					$this->Logging('Test du Socket');
-				}else {
-					$this->Logging('Traitement  : ' . $adress . ':' . $port . ' → ' . $message);
-				}
+				$bytes_received = socket_recvfrom($this->socket, $message, 65536, 0, $host, $port);
+				if ($message === 'stop')
+					log::add('YamahaMusiccast', 'debug', 'Arrêt du socket');
+				$this->close();
+			} if ($message === 'test') {
+				log::add('YamahaMusiccast', 'debug', 'Test du Socket');
+			} else {
+				YamahaMusiccast::traitement_message($host, $port, $message);
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @param type $msg
-	 * @return type
-	 */
-	function Logging($msg) {
-		log::add('YamahaMusiccast', 'debug', 'Message ' . $msg);
-		return;
 	}
 
 	/**

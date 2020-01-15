@@ -123,12 +123,12 @@ class YamahaMusiccast extends eqLogic {
 		$return['state'] = 'nok';
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
 		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création du deamon_info refusée');
-		if(!socket_connect($sock, "127.0.0.1", $port)) { 
+		if (!socket_connect($sock, "127.0.0.1", $port)) {
 			log::add('YamahaMusiccast', 'error', 'Connexion impossible pour deamon_info');
 			$return['state'] = 'ko';
 			$return['log'] = "Connexion impossible pour deamon_info";
 		}
-		if(!socket_write($sock, "test")) {
+		if (!socket_write($sock, "test")) {
 			log::add('YamahaMusiccast', 'error', 'Envoie du test en echec deamon_info');
 			$return['state'] = 'ko';
 			$return['log'] = 'Envoie du test en echec deamon_info';
@@ -199,17 +199,203 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$result = YamahaMusiccast::CallAPI("GET", "http://192.168.222.230/YamahaExtendedControl/v1/system/getNameText");
 			log::add('YamahaMusiccast', 'debug', 'Appel du Cron5 ' . $result);
-			
+
 			if ($eqLogic->getLogicalId() == '') {
 				continue;
 			}
 		}
 	}
+
 	public static function traitement_message($host, $port, $json) {
-		log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $json);
+		//log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $json);
 		$result = json_decode($json);
-		$device_id = $result['device_id'];
-		log::add('YamahaMusiccast', 'debug', '$device_id' . $device_id . '       ' . print_r($result, true));
+		$device = $host;
+		$device_id = $result->device_id;
+		$system = $result->system;
+		if (!empty($system)) {
+			$bluetooth_info_updated = $system->bluetooth_info_updated;
+			if (!empty($bluetooth_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: $bluetooth_info_updated - pull renewed info using /system/getBluetoothInfo ' . print_r($bluetooth_info_updated, true));
+			}
+			$func_status_updated = $system->func_status_updated;
+			if (!empty($func_status_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: $func_status_updated - pull renewed info using /system/getFuncStatus ' . print_r($func_status_updated, true));
+			}
+			$location_info_updated = $system->location_info_updated;
+			if (!empty($location_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: $location_info_updated - pull renewed info using /system/getLocationInfo ' . print_r($location_info_updated, true));
+			}
+			$name_text_updated = $system->name_text_updated;
+			if (!empty($name_text_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: $name_text_updated - pull renewed info using /system/getNameText ' . print_r($name_text_updated, true));
+			}
+			$speaker_settings_updated = $system->speaker_settings_updated;
+			if (!empty($speaker_settings_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: $speaker_settings_updated - Reserved ' . print_r($speaker_settings_updated, true));
+			}
+			$stereo_pair_info_updated = $system->stereo_pair_info_updated;
+			if (!empty($stereo_pair_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: $stereo_pair_info_updated - Reserved ' . print_r($stereo_pair_info_updated, true));
+			}
+			$tag_updated = $system->tag_updated;
+			if (!empty($tag_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: $tag_updated - Reserved ' . print_r($tag_updated, true));
+			}
+		}
+		$main = $result->main;
+		if (!empty($main)) {
+			YamahaMusiccast::callZone($device, 'main', $main);
+		}
+		$zone2 = $result->zone2;
+		if (!empty($zone2)) {
+			YamahaMusiccast::callZone($device, 'zone2', $main);
+		}
+		$zone3 = $result->zone3;
+		if (!empty($zone3)) {
+			YamahaMusiccast::callZone($device, 'zone3', $main);
+		}
+		$zone4 = $result->zone4;
+		if (!empty($zone4)) {
+			YamahaMusiccast::callZone($device, 'zone4', $main);
+		}
+		$tuner = $result->tuner;
+		if (!empty($tuner)) {
+			$play_info_updated = $tuner->play_info_updated;
+			if (!empty($play_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du isPlayInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPlayInf' . print_r($play_info_updated, true));
+			}
+			$preset_info_updated = $tuner->preset_info_updated;
+			if (!empty($preset_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du isPresetInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPresetInfo' . print_r($preset_info_updated, true));
+			}
+		}
+		$netusb = $result->netusb;
+		if (!empty($netusb)) {
+			$play_error = $tuner->play_error;
+			if (!empty($play_error)) {
+				/**
+				 * Error codes happened during playback for displaying appropriate messages to the external application user interface.
+				 * <p>If multiple errors happen at the same time, refer to the value of {@link NetUsb#multiplePlayErrors} sent together for proper messaging </p>
+				 * <p>Values :
+				 * <ul>
+				 * 	<li>0: No Error</li>
+				 * 	<li>1: Access Error (common for all Net/USB sources)</li>
+				 * 	<li>2: Playback Unavailable (common for all Net/USB sources)</li>
+				 * 	<li>3: Skip Limit Reached (Rhapsody / Napster / Pandora)</li>
+				 * 	<li>4: Invalid Session (Rhapsody / Napster / SiriusXM)</li>
+				 * 	<li>5: High-Resolution File Not Playable at MusicCast Leaf (Server)</li>
+				 * 	<li>6: User Uncredentialed (Qobuz)</li>
+				 * 	<li>7: Track Restricted by Right Holders (Qobuz)</li>
+				 * 	<li>8: Sample Restricted by Right Holders (Qobuz)</li>
+				 * 	<li>9: Genre Restricted by Streaming Credentials (Qobuz)</li>
+				 * 	<li>10: Application Restricted by Streaming Credentials (Qobuz)</li>
+				 * 	<li>11: Intent Restricted by Streaming Credentials (Qobuz)</li>
+				 * 	<li>100: Multiple Errors (common for all Net/USB sources)</li>
+				 * </ul>
+				 * </p>
+				 * <p>Note: Rhapsody service name will be changed to Napster.</p>
+				 */
+				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du $play_error ' . print_r($play_error, true));
+			}
+			$multiple_play_errors = $tuner->multiple_play_errors;
+			if (!empty($multiple_play_errors)) {
+				/**
+				 * Bit field flags of multiple playback errors.
+				 * <p>Flags are expressed as OR of bit field.</p>
+				 * <p>{@link NetUsb#playError} code x is stored as a flag in b[x] shown below. x=0 is reserved for it is for No Error, and x=100 is ignored here</p>
+				 * <ul>
+				 * 	<li>b[0] reserved (for it’s No Error)</li>
+				 * 	<li>b[1] Access Error (common for all Net/USB sources)</li>
+				 * 	<li>...</li>
+				 * 	<li>b[11] Intent Restricted by Streaming Credentials (Qobuz)</li>
+				 * </ul>
+				 */
+				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du $multiple_play_errors ' . print_r($multiple_play_errors, true));
+			}
+			$play_message = $tuner->play_message;
+			if (!empty($play_message)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: Playback related message ' . print_r($play_message, true));
+			}
+			$account_updated = $tuner->account_updated;
+			if (!empty($account_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: Whether or not account info has changed. Note: If so, pull renewed info using /netusb/getAccountStatus. ' . print_r($account_updated, true));
+			}
+			$play_time = $tuner->play_time;
+			if (!empty($play_time)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: Current playback time (unit in second). ' . print_r($play_time, true));
+			}
+			$preset_info_updated = $tuner->preset_info_updated;
+			if (!empty($preset_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: Whether or not preset info has changed. - Note: If so, pull renewed info using netusb/getPresetInfo ' . print_r($preset_info_updated, true));
+			}
+			$recent_info_updated = $tuner->recent_info_updated;
+			if (!empty($recent_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO:  Whether or not playback history info has changed. - Note: If so, pull renewed info using netusb/getRecentInfo ' . print_r($recent_info_updated, true));
+			}
+			$preset_control = $tuner->preset_control;
+			if (!empty($preset_control)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO:  Results of Preset operations. ' . print_r($preset_control, true));
+			}
+			$trial_status = $tuner->trial_status;
+			if (!empty($trial_status)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO:  Trial status of a Device. ' . print_r($trial_status, true));
+			}
+			$trial_time_left = $tuner->trial_time_left;
+			if (!empty($trial_time_left)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO:  Remaining time of a trial. ' . print_r($trial_time_left, true));
+			}
+			$play_info_updated = $tuner->play_info_updated;
+			if (!empty($play_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO:  Returns whether or not playback info has changed. Note: If so, pull renewed info using /netusb/getPlayInfo.. ' . print_r($play_info_updated, true));
+			}
+			$list_info_updated = $tuner->list_info_updated;
+			if (!empty($list_info_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: Returns whether or not list info has changed. Note: If so, pull renewed info using /netusb/getListInfo. ' . print_r($list_info_updated, true));
+			}
+		}
+		$cd = $result->cd;
+		if (!empty($cd)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: CD. ' . print_r($cd, true));
+		}
+		$dist = $result->dist;
+		if (!empty($dist)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: $dist. ' . print_r($dist, true));
+		}
+		$clock = $result->clock;
+		if (!empty($clock)) {
+			$settings_updated = $clock->settings_updated;
+			if (!empty($settings_updated)) {
+				log::add('YamahaMusiccast', 'debug', 'TODO: isSettingsUpdated ' . print_r($settings_updated, true));
+			}
+		}
+		//log::add('YamahaMusiccast', 'debug', '$device_id' . $device_id . '       ' . print_r($result, true));
+	}
+
+	static function callZone($device, $zoneName, $zone) {
+		$power = $zone->power;
+		if (!empty($power)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du getPower (on/standby)' . print_r($power, true));
+		}
+		$input = $zone->input;
+		if (!empty($input)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du $input  - Values: Input IDs gotten via /system/getFeature.   ' . print_r($input, true));
+		}
+		$volume = $zone->volume;
+		if (!empty($volume)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du $volume  - Values: Value range calculated by minimum/maximum/step values gotten via /system/getFeatures.  ' . print_r($volume, true));
+		}
+		$mute = $zone->mute;
+		if (!empty($mute)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du $mute ' . print_r($mute, true));
+		}
+		$status_updated = $zone->status_updated;
+		if (!empty($status_updated)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du $status_updated  - If so, pull renewed info using /'.$zoneName.'/getStatus.' . print_r($status_updated, true));
+		}
+		$signal_info_updated = $zone->signal_info_updated;
+		if (!empty($signal_info_updated)) {
+			log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du signal_info_updated - If so, pull renewed info using /'.$zoneName.'/getSignalInfo  ' . print_r($signal_info_updated, true));
+		}
 	}
 
 	static function CallAPI($method, $url, $data = false) {

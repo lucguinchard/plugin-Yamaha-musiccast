@@ -121,10 +121,24 @@ class YamahaMusiccast extends eqLogic {
 		$return = array();
 		$return['log'] = '';
 		$return['state'] = 'nok';
-		$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
-		if (is_object($cron) && $cron->running()) {
-			$return['state'] = 'ok';
+		$port = config::byKey('socket.port', 'YamahaMusiccast');
+		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création du deamon_info refusée');
+		if(!socket_connect($sock, "127.0.0.1", $port)) { 
+			log::add('YamahaMusiccast', 'error', 'Connexion impossible pour deamon_info');
+			$return['state'] = 'ko';
+			$return['log'] = "Connexion impossible pour deamon_info";
 		}
+		if(!socket_write($sock, "test")) {
+			log::add('YamahaMusiccast', 'error', 'Envoie du test en echec deamon_info');
+			$return['state'] = 'ko';
+			$return['log'] = 'Envoie du test en echec deamon_info';
+		} else {
+			$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
+			if (is_object($cron) && $cron->running()) {
+				$return['state'] = 'ok';
+			}
+		}
+		socket_close($sock);
 		$return['launchable'] = 'ok';
 		return $return;
 	}
@@ -170,24 +184,20 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function socket_stop() {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
-		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création de socket refusée');
-		//Connexion au serveur
-		socket_connect($sock, "127.0.0.1", $port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible');
+		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add('YamahaMusiccast', 'error', 'Création du socket_stop refusée');
+		socket_connect($sock, "127.0.0.1", $port) or log::add('YamahaMusiccast', 'error', 'Connexion impossible pour socket_stop');
 		socket_write($sock, "stop");
-		//Fermeture de la connexion
 		socket_close($sock);
 	}
 
 	public static function cron5() {
-		log::add('YamahaMusiccast', 'debug', 'call cron5');
 		$devices = self::byType('YamahaMusiccast');
 		foreach ($devices as $eqLogic) {
 			if ($eqLogic->getIsEnable() == 0) {
 				continue;
 			}
-			log::add('YamahaMusiccast', 'debug', '$eqLogic->getLogicalId()' . $eqLogic->getLogicalId());
 			$result = YamahaMusiccast::CallAPI("GET", "http://192.168.222.230/YamahaExtendedControl/v1/system/getNameText");
-			log::add('YamahaMusiccast', 'debug', '$result' . $result);
+			log::add('YamahaMusiccast', 'debug', 'Appel du Cron5 ' . $result);
 			
 			if ($eqLogic->getLogicalId() == '') {
 				continue;

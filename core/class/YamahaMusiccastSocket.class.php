@@ -22,12 +22,13 @@ class YamahaMusiccastSocket {
 				$adress = null;
 				$port = null;
 				$bytes_received = socket_recvfrom($this->socket, $message, 65536, 0, $adress, $port);
-				$this->Logging('Nouvelle connexion client : ' . $adress . ':' . $port);
 				if ($message === 'stop') {
-					$this->Logging('Close');
+					$this->Logging('Arrêt du socket');
 					$this->close();
-				} else {
-					$this->Logging('NouveauTRAITEMETNT : ' . $message);
+				} if ($message === 'test') {
+					$this->Logging('Test du Socket');
+				}else {
+					$this->Logging('Traitement  : ' . $adress . ':' . $port . ' → ' . $message);
 				}
 			}
 		}

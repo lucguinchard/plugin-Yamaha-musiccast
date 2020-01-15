@@ -63,8 +63,12 @@ class YamahaMusiccast extends eqLogic {
 
 	public function preSave() {
 		$this->setCategory('multimedia', 1);
-		$host = $this->getName();
-		$this->setLogicalId($host);
+		if(empty($this->getLogicalId())) {
+			$host = $this->getName();
+			$this->setLogicalId($host);
+		} else {
+			$host = $this->getLogicalId();
+		}
 		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getNetworkStatus");
 		if($jsonGetNetworkStatus === false) {
 			$this->setIsVisible(0);

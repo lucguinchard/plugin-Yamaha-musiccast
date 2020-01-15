@@ -82,10 +82,45 @@ class YamahaMusiccast extends eqLogic {
 			$jsonGetDeviceInfo = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getDeviceInfo");
 			$getDeviceInfo = json_decode($jsonGetDeviceInfo);
 			$this->setConfiguration('model_name', $getDeviceInfo->model_name);
+
+			$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getFeatures");
+			$getFeatures = json_decode($jsonGetFeatures);
+			foreach ($getFeatures->zone as $zone) {
+				$zoneName = $zone->id;
+				foreach ($zone->func_list as $func) {
+					$cmd = $this->getCmd(null, $zoneName. '_' .$func . '_state');
+					if (!is_object($cmd)) {
+						$cmd = new YamahaMusiccastCmd();
+						$cmd->setLogicalId($zoneName. '_' .$func . '_state');
+						$cmd->setName(__($zoneName. '_' .$func . '_state', __FILE__));
+					}
+					$cmd->setType('info');
+					$cmd->setSubType('string');
+					$cmd->setConfiguration('repeatEventManagement', 'never');
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->save();
+				}
+			}
 		}
 	}
 
 	public function postSave() {
+		$host = $this->getLogicalId();
+		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getFeatures");
+		$getFeatures = json_decode($jsonGetFeatures);
+		foreach ($getFeatures->zone as $zone) {
+			$zoneName = $zone->id;
+			$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getStatus");
+			$getStatusZone = json_decode($jsonGetStatusZone);
+			$this->checkAndUpdateCmd($zoneName. '_power_state', $getStatusZone->power);
+			$this->checkAndUpdateCmd($zoneName. '_volume_state', $getStatusZone->volume);
+			$this->checkAndUpdateCmd($zoneName. '_mute_state', $getStatusZone->mute);
+			$this->checkAndUpdateCmd($zoneName. '_input_change_state', $getStatusZone->input);
+			$this->checkAndUpdateCmd($zoneName. '_sound_program_state', $getStatusZone->sound_program);
+			$this->checkAndUpdateCmd($zoneName. '_link_audio_quality_state', $getStatusZone->link_audio_quality);
+			$this->checkAndUpdateCmd($zoneName. '_link_audio_delay_state', $getStatusZone->link_audio_delay);
+			$this->checkAndUpdateCmd($zoneName. '_link_control_state', $getStatusZone->link_control);
+		}
 		
 	}
 
@@ -226,7 +261,18 @@ class YamahaMusiccast extends eqLogic {
 	public static function traitement_message($host, $port, $json) {
 		//log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $json);
 		$result = json_decode($json);
-		$device = $host;
+		$device = null;
+		$devices = self::byType('YamahaMusiccast');
+		foreach ($devices as $eqLogic) {
+			if ($eqLogic->getLogicalId() === $host) {
+				$device = $eqLogic;
+				break;
+			}
+		}
+		if(empty($device)){
+			log::add('YamahaMusiccast', 'error', 'Erreur lors de traitement_message : device is null');
+			return;
+		}
 		$device_id = $result->device_id;
 		$system = $result->system;
 		if (!empty($system)) {
@@ -385,25 +431,26 @@ class YamahaMusiccast extends eqLogic {
 				log::add('YamahaMusiccast', 'debug', 'TODO: isSettingsUpdated ' . print_r($settings_updated, true));
 			}
 		}
+		$device->refreshWidget();
 		//log::add('YamahaMusiccast', 'debug', '$device_id' . $device_id . '       ' . print_r($result, true));
 	}
 
 	static function callZone($device, $zoneName, $zone) {
 		$power = $zone->power;
 		if (!empty($power)) {
-			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du getPower (on/standby)' . print_r($power, true));
+			$device->checkAndUpdateCmd($zoneName. '_power_state', $power);
 		}
 		$input = $zone->input;
 		if (!empty($input)) {
-			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du $input  - Values: Input IDs gotten via /system/getFeature.   ' . print_r($input, true));
+			$device->checkAndUpdateCmd($zoneName. '_input_change_state', $input);
 		}
 		$volume = $zone->volume;
 		if (!empty($volume)) {
-			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du $volume  - Values: Value range calculated by minimum/maximum/step values gotten via /system/getFeatures.  ' . print_r($volume, true));
+			$device->checkAndUpdateCmd($zoneName. '_volume_state', $volume);
 		}
 		$mute = $zone->mute;
 		if (!empty($mute)) {
-			log::add('YamahaMusiccast', 'debug', 'TODO: '.$zoneName.' : Mise à jour du $mute ' . print_r($mute, true));
+			$device->checkAndUpdateCmd($zoneName. '_mute_state', $mute);
 		}
 		$status_updated = $zone->status_updated;
 		if (!empty($status_updated)) {

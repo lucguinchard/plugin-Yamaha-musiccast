@@ -443,7 +443,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$status_updated = $zone->status_updated;
 		if (!empty($status_updated)) {
-			callZoneGetStatus($device, $zoneName);
+			YamahaMusiccast::callZoneGetStatus($device, $zoneName);
 		}
 		$signal_info_updated = $zone->signal_info_updated;
 		if (!empty($signal_info_updated)) {

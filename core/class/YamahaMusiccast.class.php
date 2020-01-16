@@ -469,14 +469,14 @@ class YamahaMusiccast extends eqLogic {
 		$host = $device->getLogicalId();
 		$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getStatus");
 		$getStatusZone = json_decode($jsonGetStatusZone);
-		$this->checkAndUpdateCmd($zoneName. '_power_state', $getStatusZone->power);
-		$this->checkAndUpdateCmd($zoneName. '_volume_state', $getStatusZone->volume);
-		$this->checkAndUpdateCmd($zoneName. '_mute_state', $getStatusZone->mute);
-		$this->checkAndUpdateCmd($zoneName. '_input_change_state', $getStatusZone->input);
-		$this->checkAndUpdateCmd($zoneName. '_sound_program_state', $getStatusZone->sound_program);
-		$this->checkAndUpdateCmd($zoneName. '_link_audio_quality_state', $getStatusZone->link_audio_quality);
-		$this->checkAndUpdateCmd($zoneName. '_link_audio_delay_state', $getStatusZone->link_audio_delay);
-		$this->checkAndUpdateCmd($zoneName. '_link_control_state', $getStatusZone->link_control);
+		$device->checkAndUpdateCmd($zoneName. '_power_state', $getStatusZone->power);
+		$device->checkAndUpdateCmd($zoneName. '_volume_state', $getStatusZone->volume);
+		$device->checkAndUpdateCmd($zoneName. '_mute_state', $getStatusZone->mute);
+		$device->checkAndUpdateCmd($zoneName. '_input_change_state', $getStatusZone->input);
+		$device->checkAndUpdateCmd($zoneName. '_sound_program_state', $getStatusZone->sound_program);
+		$device->checkAndUpdateCmd($zoneName. '_link_audio_quality_state', $getStatusZone->link_audio_quality);
+		$device->checkAndUpdateCmd($zoneName. '_link_audio_delay_state', $getStatusZone->link_audio_delay);
+		$device->checkAndUpdateCmd($zoneName. '_link_control_state', $getStatusZone->link_control);
 	}
 
 	static function CallAPI($method, $url, $data = false) {

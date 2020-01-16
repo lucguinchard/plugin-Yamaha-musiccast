@@ -483,13 +483,13 @@ class YamahaMusiccast extends eqLogic {
 		$audio = $result->audio;
 		if (!empty($audio)) {
 			if (!empty($audio->error)) {
-				$device->checkAndUpdateCmd($zoneName. '_audio_error', $result->error);
+				$device->checkAndUpdateCmd($zoneName. '_audio_error', $audio->error);
 			}
 			if (!empty($audio->format)) {
-				$device->checkAndUpdateCmd($zoneName. '_audio_format', $result->format);
+				$device->checkAndUpdateCmd($zoneName. '_audio_format', $audio->format);
 			}
 			if (!empty($audio->fs)) {
-				$device->checkAndUpdateCmd($zoneName. '_audio_fs', $result->fs);
+				$device->checkAndUpdateCmd($zoneName. '_audio_fs', $audio->fs);
 			}
 		}
 	}

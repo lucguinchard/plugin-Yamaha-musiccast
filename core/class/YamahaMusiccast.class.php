@@ -192,8 +192,7 @@ class YamahaMusiccast extends eqLogic {
 			log::add('YamahaMusiccast', 'error', 'Connexion impossible pour deamon_info');
 			$return['state'] = 'ko';
 			$return['log'] = "Connexion impossible pour deamon_info";
-		}
-		if (!socket_write($sock, "test")) {
+		} else if (!socket_write($sock, "test")) {
 			log::add('YamahaMusiccast', 'error', 'Envoie du test en echec deamon_info');
 			$return['state'] = 'ko';
 			$return['log'] = 'Envoie du test en echec deamon_info';

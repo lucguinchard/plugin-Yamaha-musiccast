@@ -64,12 +64,9 @@ class YamahaMusiccast extends eqLogic {
 	public function preSave() {
 		$this->setCategory('multimedia', 1);
 		if(empty($this->getLogicalId())) {
-			$host = $this->getName();
-			$this->setLogicalId($host);
-		} else {
-			$host = $this->getLogicalId();
+			$this->setLogicalId($this->getName());
 		}
-		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getNetworkStatus");
+		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getNetworkStatus");
 		if($jsonGetNetworkStatus === false) {
 			$this->setIsVisible(0);
 			$this->setIsEnable(0);
@@ -79,11 +76,11 @@ class YamahaMusiccast extends eqLogic {
 			$getNetworkStatus = json_decode($jsonGetNetworkStatus);
 			$this->setName($getNetworkStatus->network_name);
 
-			$jsonGetDeviceInfo = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getDeviceInfo");
+			$jsonGetDeviceInfo = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getDeviceInfo");
 			$getDeviceInfo = json_decode($jsonGetDeviceInfo);
 			$this->setConfiguration('model_name', $getDeviceInfo->model_name);
 
-			$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getFeatures");
+			$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getFeatures");
 			$getFeatures = json_decode($jsonGetFeatures);
 			foreach ($getFeatures->zone as $zone) {
 				$zoneName = $zone->id;
@@ -130,8 +127,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function postSave() {
-		
-		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getFeatures");
+		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getFeatures");
 		$getFeatures = json_decode($jsonGetFeatures);
 		foreach ($getFeatures->zone as $zone) {
 			YamahaMusiccast::callZoneGetStatus($this, $zone->id);
@@ -261,14 +257,19 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function cron5() {
+		log::add('YamahaMusiccast', 'debug', 'Appel du Cron5');
 		$devices = self::byType('YamahaMusiccast');
-		foreach ($devices as $eqLogic) {
-			if ($eqLogic->getIsEnable() == 0) {
+		$date = date("Y-m-d H:i:s");
+		foreach ($devices as $device) {
+			if ($device->getIsEnable() == 0) {
 				continue;
 			}
-			$host = $eqLogic->getLogicalId();
-			$result = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/system/getDeviceInfo");
-			log::add('YamahaMusiccast', 'debug', 'Appel du Cron5 ' . $result);
+			$lastCallAPI = $device->getStatus('lastCallAPI');
+			$deltaSeconds = strtotime($date) - strtotime($lastCallAPI);
+			if($deltaSeconds > (5*60)) {
+				$result = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/getDeviceInfo");
+				log::add('YamahaMusiccast', 'debug', $deltaSeconds + 'Appel du Cron5 ' . $result);
+			}
 		}
 	}
 
@@ -477,8 +478,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	static function callZoneGetSignalInfo($device, $zoneName) {
-		$host = $device->getLogicalId();
-		$json = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
+		$json = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
 		$result = json_decode($json);
 		$audio = $result->audio;
 		if (!empty($audio)) {
@@ -495,8 +495,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	static function callNetusbGetPlayInfo($device) {
-		$host = $device->getLogicalId();
-		$json = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/netusb/getPlayInfo");
+		$json = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/getPlayInfo");
 		$result = json_decode($json);
 
 		if (!empty($result->input)) {
@@ -556,8 +555,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	static function callZoneGetStatus($device, $zoneName) {
-		$host = $device->getLogicalId();
-		$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getStatus");
+		$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zoneName/getStatus");
 		$getStatusZone = json_decode($jsonGetStatusZone);
 		$device->checkAndUpdateCmd($zoneName. '_power_state', $getStatusZone->power);
 		$device->checkAndUpdateCmd($zoneName. '_volume_state', $getStatusZone->volume);
@@ -569,7 +567,7 @@ class YamahaMusiccast extends eqLogic {
 		$device->checkAndUpdateCmd($zoneName. '_link_control_state', $getStatusZone->link_control);
 	}
 
-	static function CallAPI($method, $url, $data = false) {
+	static function CallAPI($method, $device, $path, $data = false) {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
 		$curl = curl_init();
 
@@ -586,7 +584,7 @@ class YamahaMusiccast extends eqLogic {
 				break;
 			default:
 				if ($data) {
-					$url = sprintf("%s?%s", $url, http_build_query($data));
+					$path = sprintf("%s?%s", $path, http_build_query($data));
 				}
 		}
 		// Optional Authentication:
@@ -595,13 +593,15 @@ class YamahaMusiccast extends eqLogic {
 		$header[1] = "X-AppName: Musiccast/Jeedom";
 		$header[2] = "X-AppPort: $port";
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-
+		$url = "http://" . $device->getLogicalId() . $path;
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
 		$result = curl_exec($curl);
 
 		curl_close($curl);
+		
+		$device->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
 
 		return $result;
 	}

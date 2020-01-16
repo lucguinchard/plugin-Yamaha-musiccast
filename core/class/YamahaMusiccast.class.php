@@ -101,6 +101,17 @@ class YamahaMusiccast extends eqLogic {
 					$cmd->save();
 				}
 			}
+			$cmd = $this->getCmd(null, 'netusb_time');
+			if (!is_object($cmd)) {
+				$cmd = new YamahaMusiccastCmd();
+				$cmd->setLogicalId('netusb_time');
+				$cmd->setName(__('netusb_time', __FILE__));
+			}
+			$cmd->setType('info');
+			$cmd->setSubType('string');
+			$cmd->setConfiguration('repeatEventManagement', 'never');
+			$cmd->setEqLogic_id($this->getId());
+			$cmd->save();
 		}
 	}
 
@@ -374,7 +385,7 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$play_time = $netusb->play_time;
 			if (!empty($play_time)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: Current playback time (unit in second). ' . print_r($play_time, true));
+				$device->checkAndUpdateCmd('netusb_time', $play_time);
 			}
 			$preset_info_updated = $netusb->preset_info_updated;
 			if (!empty($preset_info_updated)) {

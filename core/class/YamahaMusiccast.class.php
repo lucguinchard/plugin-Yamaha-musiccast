@@ -88,31 +88,42 @@ class YamahaMusiccast extends eqLogic {
 			foreach ($getFeatures->zone as $zone) {
 				$zoneName = $zone->id;
 				foreach ($zone->func_list as $func) {
-					$cmd = $this->getCmd(null, $zoneName. '_' .$func . '_state');
-					if (!is_object($cmd)) {
-						$cmd = new YamahaMusiccastCmd();
-						$cmd->setLogicalId($zoneName. '_' .$func . '_state');
-						$cmd->setName(__($zoneName. '_' .$func . '_state', __FILE__));
-					}
-					$cmd->setType('info');
-					$cmd->setSubType('string');
-					$cmd->setConfiguration('repeatEventManagement', 'never');
-					$cmd->setEqLogic_id($this->getId());
-					$cmd->save();
+					$this->createCmd($zoneName. '_' .$func . '_state');
 				}
 			}
-			$cmd = $this->getCmd(null, 'netusb_time');
-			if (!is_object($cmd)) {
-				$cmd = new YamahaMusiccastCmd();
-				$cmd->setLogicalId('netusb_time');
-				$cmd->setName(__('netusb_time', __FILE__));
-			}
-			$cmd->setType('info');
-			$cmd->setSubType('string');
-			$cmd->setConfiguration('repeatEventManagement', 'never');
-			$cmd->setEqLogic_id($this->getId());
-			$cmd->save();
+
+			$this->createCmd('netusb_input');
+			$this->createCmd('netusb_play_queue_type');
+			$this->createCmd('netusb_playback');
+			$this->createCmd('netusb_repeat');
+			$this->createCmd('netusb_shuffle');
+			$this->createCmd('netusb_play_time');
+			$this->createCmd('netusb_total_time');
+			$this->createCmd('netusb_artist');
+			$this->createCmd('netusb_album');
+			$this->createCmd('netusb_track');
+			$this->createCmd('netusb_albumart_url');
+			$this->createCmd('netusb_albumart_id');
+			$this->createCmd('netusb_usb_devicetype');
+			$this->createCmd('netusb_usb_auto_stopped');
+			$this->createCmd('netusb_attribute');
+			$this->createCmd('netusb_repeat_available');
+			$this->createCmd('netusb_shuffle_available');
 		}
+	}
+
+	public function createCmd($name, $type = 'info', $subtype = 'string', $repeatEventManagement = 'never') {
+		$cmd = $this->getCmd(null, $name);
+		if (!is_object($cmd)) {
+			$cmd = new YamahaMusiccastCmd();
+			$cmd->setLogicalId($name);
+			$cmd->setName(__($name, __FILE__));
+		}
+		$cmd->setType($type);
+		$cmd->setSubType($subtype);
+		$cmd->setConfiguration('repeatEventManagement', $repeatEventManagement);
+		$cmd->setEqLogic_id($this->getId());
+		$cmd->save();
 	}
 
 	public function postSave() {
@@ -385,7 +396,7 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$play_time = $netusb->play_time;
 			if (!empty($play_time)) {
-				$device->checkAndUpdateCmd('netusb_time', $play_time);
+				$device->checkAndUpdateCmd('netusb_play_time', $play_time);
 			}
 			$preset_info_updated = $netusb->preset_info_updated;
 			if (!empty($preset_info_updated)) {
@@ -473,6 +484,61 @@ class YamahaMusiccast extends eqLogic {
 		$host = $device->getLogicalId();
 		$json = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/netusb/getPlayInfo");
 		$result = json_decode($json);
+
+		if (!empty($result->input)) {
+			$device->checkAndUpdateCmd('netusb_input', $result->input);
+		}
+		if (!empty($result->play_queue_type)) {
+			$device->checkAndUpdateCmd('netusb_play_queue_type', $result->play_queue_type);
+		}
+		if (!empty($result->playback)) {
+			$device->checkAndUpdateCmd('netusb_playback', $result->playback);
+		}
+		if (!empty($result->repeat)) {
+			$device->checkAndUpdateCmd('netusb_repeat', $result->repeat);
+		}
+		if (!empty($result->shuffle)) {
+			$device->checkAndUpdateCmd('netusb_shuffle', $result->shuffle);
+		}
+		if (!empty($result->play_time)) {
+			$device->checkAndUpdateCmd('netusb_play_time', $result->play_time);
+		}
+		if (!empty($result->total_time)) {
+			$device->checkAndUpdateCmd('netusb_total_time', $result->total_time);
+		}
+		if (!empty($result->artist)) {
+			$device->checkAndUpdateCmd('netusb_artist', $result->artist);
+		}
+		if (!empty($result->album)) {
+			$device->checkAndUpdateCmd('netusb_album', $result->album);
+		}
+		if (!empty($result->track)) {
+			$device->checkAndUpdateCmd('netusb_track', $result->track);
+		}
+		if (!empty($result->albumart_url)) {
+			$device->checkAndUpdateCmd('netusb_albumart_url', $result->albumart_url);
+		}
+		if (!empty($result->albumart_id)) {
+			$device->checkAndUpdateCmd('netusb_albumart_id', $result->albumart_id);
+		}
+		if (!empty($result->usb_devicetype)) {
+			$device->checkAndUpdateCmd('netusb_usb_devicetype', $result->usb_devicetype);
+		}
+		if (!empty($result->usb_auto_stopped)) {
+			$device->checkAndUpdateCmd('netusb_usb_auto_stopped', $result->usb_auto_stopped);
+		}
+		if (!empty($result->usb_auto_stopped)) {
+			$device->checkAndUpdateCmd('netusb_usb_auto_stopped', $result->usb_auto_stopped);
+		}
+		if (!empty($result->attribute)) {
+			$device->checkAndUpdateCmd('netusb_attribute', $result->attribute);
+		}
+		if (!empty($result->repeat_available)) {
+			$device->checkAndUpdateCmd('netusb_repeat_available', $result->repeat_available);
+		}
+		if (!empty($result->shuffle_available)) {
+			$device->checkAndUpdateCmd('netusb_shuffle_available', $result->shuffle_available);
+		}
 		log::add('YamahaMusiccast', 'debug', 'TODO: Gestion de getSignalInfo /netusb/getPlayInfo  ' . print_r($result, true));
 	}
 

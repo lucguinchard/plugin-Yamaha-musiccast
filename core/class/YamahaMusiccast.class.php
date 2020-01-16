@@ -90,6 +90,9 @@ class YamahaMusiccast extends eqLogic {
 				foreach ($zone->func_list as $func) {
 					$this->createCmd($zoneName. '_' .$func . '_state');
 				}
+				$this->createCmd($zoneName. '_audio_error');
+				$this->createCmd($zoneName. '_audio_format');
+				$this->createCmd($zoneName. '_audio_fs');
 			}
 
 			$this->createCmd('netusb_input');
@@ -477,7 +480,18 @@ class YamahaMusiccast extends eqLogic {
 		$host = $device->getLogicalId();
 		$json = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
 		$result = json_decode($json);
-		log::add('YamahaMusiccast', 'debug', 'TODO: Gestion de getSignalInfo /'.$zoneName.'/getSignalInfo  ' . print_r($result, true));
+		$audio = $result->audio;
+		if (!empty($audio)) {
+			if (!empty($audio->error)) {
+				$device->checkAndUpdateCmd($zoneName. '_audio_error', $result->error);
+			}
+			if (!empty($audio->format)) {
+				$device->checkAndUpdateCmd($zoneName. '_audio_format', $result->format);
+			}
+			if (!empty($audio->fs)) {
+				$device->checkAndUpdateCmd($zoneName. '_audio_fs', $result->fs);
+			}
+		}
 	}
 
 	static function callNetusbGetPlayInfo($device) {
@@ -539,7 +553,6 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->shuffle_available)) {
 			$device->checkAndUpdateCmd('netusb_shuffle_available', $result->shuffle_available);
 		}
-		log::add('YamahaMusiccast', 'debug', 'TODO: Gestion de getSignalInfo /netusb/getPlayInfo  ' . print_r($result, true));
 	}
 
 	static function callZoneGetStatus($device, $zoneName) {

@@ -1,5 +1,5 @@
 {
-	"plugins\/YamahaMusiccast\/desktop\/php\/YamahaMusiccastphp": {
+	"plugins\/YamahaMusiccast\/desktop\/php\/YamahaMusiccast.php": {
 		"Action": "Action",
 		"Activer": "Activer",
 		"Ajouter": "Ajouter",
@@ -19,11 +19,16 @@
 		"Sauvegarder": "Sauvegarder",
 		"Supprimer": "Supprimer",
 		"Type": "Type",
-		"Visible": "Visible"
+		"Visible": "Visible",
+		"Model": "Model"
 	},
 	"plugins\/YamahaMusiccast\/plugin_info\/configuration.php": {
 		"comment.socket": "Le démon ouvre un socket qui permet au appareil Yahama Musiccast de communiquer avec lui",
 		"socket.port": "Port du socket",
 		"socket.port.default": "9999"
+	},
+	"plugins\/YamahaMusiccast\/desktop\/js\/YamahaMusiccast.js": {
+		"Nom": "Nom",
+		"Tester": "Tester"
 	}
 }

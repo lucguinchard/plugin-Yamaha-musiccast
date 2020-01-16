@@ -447,8 +447,15 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$signal_info_updated = $zone->signal_info_updated;
 		if (!empty($signal_info_updated)) {
-			log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du signal_info_updated - If so, pull renewed info using /'.$zoneName.'/getSignalInfo  ' . print_r($signal_info_updated, true));
+			YamahaMusiccast::callZoneGetSignalInfo($device, $zoneName);
 		}
+	}
+
+	static function callZoneGetSignalInfo($device, $zoneName) {
+		$host = $device->getLogicalId();
+		$jsonGetSignalInfoZone = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
+		$getSignalInfo = json_decode($jsonGetSignalInfoZone);
+		log::add('YamahaMusiccast', 'debug', 'TODO: Gestion de getSignalInfo /'.$zoneName.'/getSignalInfo  ' . print_r($getSignalInfo, true));
 	}
 
 	static function callZoneGetStatus($device, $zoneName) {

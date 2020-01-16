@@ -398,7 +398,7 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$play_info_updated = $netusb->play_info_updated;
 			if (!empty($play_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO:  Returns whether or not playback info has changed. Note: If so, pull renewed info using /netusb/getPlayInfo.. ' . print_r($play_info_updated, true));
+				YamahaMusiccast::callNetusbGetPlayInfo($device);
 			}
 			$list_info_updated = $netusb->list_info_updated;
 			if (!empty($list_info_updated)) {
@@ -453,9 +453,16 @@ class YamahaMusiccast extends eqLogic {
 
 	static function callZoneGetSignalInfo($device, $zoneName) {
 		$host = $device->getLogicalId();
-		$jsonGetSignalInfoZone = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
-		$getSignalInfo = json_decode($jsonGetSignalInfoZone);
-		log::add('YamahaMusiccast', 'debug', 'TODO: Gestion de getSignalInfo /'.$zoneName.'/getSignalInfo  ' . print_r($getSignalInfo, true));
+		$json = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
+		$result = json_decode($json);
+		log::add('YamahaMusiccast', 'debug', 'TODO: Gestion de getSignalInfo /'.$zoneName.'/getSignalInfo  ' . print_r($result, true));
+	}
+
+	static function callNetusbGetPlayInfo($device) {
+		$host = $device->getLogicalId();
+		$json = YamahaMusiccast::CallAPI("GET", "http://$host/YamahaExtendedControl/v1/netusb/getPlayInfo");
+		$result = json_decode($json);
+		log::add('YamahaMusiccast', 'debug', 'TODO: Gestion de getSignalInfo /netusb/getPlayInfo  ' . print_r($result, true));
 	}
 
 	static function callZoneGetStatus($device, $zoneName) {

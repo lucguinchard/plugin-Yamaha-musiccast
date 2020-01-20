@@ -32,6 +32,8 @@ function YamahaMusiccast_update()
 		$cron->setFunction('socket_start');
 		$cron->setEnable(1);
 		$cron->setDeamon(1);
+		$cron->setDeamonSleepTime(0);
+		$cron->setTimeout(0);
 		$cron->setSchedule('* * * * *');
 		$cron->save();
 	}

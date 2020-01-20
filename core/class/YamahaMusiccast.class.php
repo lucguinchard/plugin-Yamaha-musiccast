@@ -63,11 +63,11 @@ class YamahaMusiccast extends eqLogic {
 
 	public function preSave() {
 		$this->setCategory('multimedia', 1);
-		if(empty($this->getLogicalId())) {
+		if (empty($this->getLogicalId())) {
 			$this->setLogicalId($this->getName());
 		}
 		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getNetworkStatus");
-		if($jsonGetNetworkStatus === false) {
+		if ($jsonGetNetworkStatus === false) {
 			$this->setIsVisible(0);
 			$this->setIsEnable(0);
 		} else {
@@ -102,11 +102,11 @@ class YamahaMusiccast extends eqLogic {
 		foreach ($getFeatures->zone as $zone) {
 			$zoneName = $zone->id;
 			foreach ($zone->func_list as $func) {
-				$this->createCmd($zoneName. '_' .$func . '_state');
+				$this->createCmd($zoneName . '_' . $func . '_state');
 			}
-			$this->createCmd($zoneName. '_audio_error');
-			$this->createCmd($zoneName. '_audio_format');
-			$this->createCmd($zoneName. '_audio_fs');
+			$this->createCmd($zoneName . '_audio_error');
+			$this->createCmd($zoneName . '_audio_format');
+			$this->createCmd($zoneName . '_audio_fs');
 		}
 
 		$this->createCmd('netusb_input');
@@ -126,7 +126,7 @@ class YamahaMusiccast extends eqLogic {
 		$this->createCmd('netusb_attribute');
 		$this->createCmd('netusb_repeat_available');
 		$this->createCmd('netusb_shuffle_available');
-		
+
 		foreach ($getFeatures->zone as $zone) {
 			YamahaMusiccast::callZoneGetStatus($this, $zone->id);
 		}
@@ -148,12 +148,32 @@ class YamahaMusiccast extends eqLogic {
 		
 	}
 
-	/*
-	 * Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin
-	  public function toHtml($_version = 'dashboard') {
+	public function toHtml($_version = 'dashboard') {
+		$replace = $this->preToHtml($_version);
+		if (!is_array($replace)) {
+			return $replace;
+		}
+		$version = jeedom::versionAlias($_version);
+		if ($this->getDisplay('hideOn' . $version) == 1) {
+			return '';
+		}
+		/* ------------ Ajouter votre code ici ------------ */
+		foreach ($this->getCmd('info') as $cmd) {
+			$replace['#' . $cmd->getLogicalId() . '_history#'] = '';
+			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			$replace['#' . $cmd->getLogicalId() . '#'] = $cmd->execCmd();
+			$replace['#' . $cmd->getLogicalId() . '_collect#'] = $cmd->getCollectDate();
+			if ($cmd->getLogicalId() == 'encours') {
+				$replace['#thumbnail#'] = $cmd->getDisplay('icon');
+			}
+			if ($cmd->getIsHistorized() == 1) {
+				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
+			}
+		}
+		/* ------------ N'ajouter plus de code apres ici------------ */
 
-	  }
-	 */
+		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'YamahaMusiccast', 'YamahaMusiccast')));
+	}
 
 	/*
 	 * Non obligatoire mais ca permet de déclencher une action après modification de variable de configuration
@@ -263,7 +283,7 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$lastCallAPI = $device->getStatus('lastCallAPI');
 			$deltaSeconds = strtotime($date) - strtotime($lastCallAPI);
-			if($deltaSeconds > (4.5 * 60)) {
+			if ($deltaSeconds > (4.5 * 60)) {
 				$result = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/getDeviceInfo");
 				log::add('YamahaMusiccast', 'debug', 'Mise à jour ' . $device->getName());
 			}
@@ -281,7 +301,7 @@ class YamahaMusiccast extends eqLogic {
 				break;
 			}
 		}
-		if(empty($device)){
+		if (empty($device)) {
 			log::add('YamahaMusiccast', 'error', 'Erreur lors de traitement_message : device is null');
 			return;
 		}
@@ -450,19 +470,19 @@ class YamahaMusiccast extends eqLogic {
 	static function callZone($device, $zoneName, $zone) {
 		$power = $zone->power;
 		if (!empty($power)) {
-			$device->checkAndUpdateCmd($zoneName. '_power_state', $power);
+			$device->checkAndUpdateCmd($zoneName . '_power_state', $power);
 		}
 		$input = $zone->input;
 		if (!empty($input)) {
-			$device->checkAndUpdateCmd($zoneName. '_input_change_state', $input);
+			$device->checkAndUpdateCmd($zoneName . '_input_change_state', $input);
 		}
 		$volume = $zone->volume;
 		if (!empty($volume)) {
-			$device->checkAndUpdateCmd($zoneName. '_volume_state', $volume);
+			$device->checkAndUpdateCmd($zoneName . '_volume_state', $volume);
 		}
 		$mute = $zone->mute;
 		if (!empty($mute)) {
-			$device->checkAndUpdateCmd($zoneName. '_mute_state', $mute);
+			$device->checkAndUpdateCmd($zoneName . '_mute_state', $mute);
 		}
 		$status_updated = $zone->status_updated;
 		if (!empty($status_updated)) {
@@ -480,13 +500,13 @@ class YamahaMusiccast extends eqLogic {
 		$audio = $result->audio;
 		if (!empty($audio)) {
 			if (!empty($audio->error)) {
-				$device->checkAndUpdateCmd($zoneName. '_audio_error', $audio->error);
+				$device->checkAndUpdateCmd($zoneName . '_audio_error', $audio->error);
 			}
 			if (!empty($audio->format)) {
-				$device->checkAndUpdateCmd($zoneName. '_audio_format', $audio->format);
+				$device->checkAndUpdateCmd($zoneName . '_audio_format', $audio->format);
 			}
 			if (!empty($audio->fs)) {
-				$device->checkAndUpdateCmd($zoneName. '_audio_fs', $audio->fs);
+				$device->checkAndUpdateCmd($zoneName . '_audio_fs', $audio->fs);
 			}
 		}
 	}
@@ -554,14 +574,14 @@ class YamahaMusiccast extends eqLogic {
 	static function callZoneGetStatus($device, $zoneName) {
 		$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zoneName/getStatus");
 		$getStatusZone = json_decode($jsonGetStatusZone);
-		$device->checkAndUpdateCmd($zoneName. '_power_state', $getStatusZone->power);
-		$device->checkAndUpdateCmd($zoneName. '_volume_state', $getStatusZone->volume);
-		$device->checkAndUpdateCmd($zoneName. '_mute_state', $getStatusZone->mute);
-		$device->checkAndUpdateCmd($zoneName. '_input_change_state', $getStatusZone->input);
-		$device->checkAndUpdateCmd($zoneName. '_sound_program_state', $getStatusZone->sound_program);
-		$device->checkAndUpdateCmd($zoneName. '_link_audio_quality_state', $getStatusZone->link_audio_quality);
-		$device->checkAndUpdateCmd($zoneName. '_link_audio_delay_state', $getStatusZone->link_audio_delay);
-		$device->checkAndUpdateCmd($zoneName. '_link_control_state', $getStatusZone->link_control);
+		$device->checkAndUpdateCmd($zoneName . '_power_state', $getStatusZone->power);
+		$device->checkAndUpdateCmd($zoneName . '_volume_state', $getStatusZone->volume);
+		$device->checkAndUpdateCmd($zoneName . '_mute_state', $getStatusZone->mute);
+		$device->checkAndUpdateCmd($zoneName . '_input_change_state', $getStatusZone->input);
+		$device->checkAndUpdateCmd($zoneName . '_sound_program_state', $getStatusZone->sound_program);
+		$device->checkAndUpdateCmd($zoneName . '_link_audio_quality_state', $getStatusZone->link_audio_quality);
+		$device->checkAndUpdateCmd($zoneName . '_link_audio_delay_state', $getStatusZone->link_audio_delay);
+		$device->checkAndUpdateCmd($zoneName . '_link_control_state', $getStatusZone->link_control);
 	}
 
 	static function CallAPI($method, $device, $path, $data = false) {
@@ -597,7 +617,7 @@ class YamahaMusiccast extends eqLogic {
 		$result = curl_exec($curl);
 
 		curl_close($curl);
-		
+
 		$device->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
 
 		return $result;

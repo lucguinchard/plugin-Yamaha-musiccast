@@ -20,18 +20,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 function YamahaMusiccast_install()
 {
-	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
-	if (!is_object($cron)) {
-		$cron = new cron();
-		$cron->setClass('YamahaMusiccast');
-		$cron->setFunction('socket_start');
-		$cron->setEnable(1);
-		$cron->setDeamon(1);
-		$cron->setDeamonSleepTime(3);
-		$cron->setSchedule('* * * * *');
-		$cron->setTimeout(1440);
-		$cron->save();
-	}
+	YamahaMusiccast_update();
 }
 
 function YamahaMusiccast_update()
@@ -43,9 +32,7 @@ function YamahaMusiccast_update()
 		$cron->setFunction('socket_start');
 		$cron->setEnable(1);
 		$cron->setDeamon(1);
-		$cron->setDeamonSleepTime(3);
 		$cron->setSchedule('* * * * *');
-		$cron->setTimeout(1440);
 		$cron->save();
 	}
 }
@@ -53,5 +40,8 @@ function YamahaMusiccast_update()
 
 function YamahaMusiccast_remove()
 {
-
+	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
+	if (is_object($cron)) {
+		$cron->remove();
+	}
 }

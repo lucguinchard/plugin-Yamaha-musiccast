@@ -263,9 +263,9 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$lastCallAPI = $device->getStatus('lastCallAPI');
 			$deltaSeconds = strtotime($date) - strtotime($lastCallAPI);
-			if($deltaSeconds > (5*60)) {
+			if($deltaSeconds > (4.5 * 60)) {
 				$result = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/getDeviceInfo");
-				log::add('YamahaMusiccast', 'debug', $deltaSeconds + 'Appel du Cron5 ' . $result);
+				log::add('YamahaMusiccast', 'debug', 'Mise à jour ' . $device->getName());
 			}
 		}
 	}

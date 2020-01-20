@@ -310,31 +310,31 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($system)) {
 			$bluetooth_info_updated = $system->bluetooth_info_updated;
 			if (!empty($bluetooth_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: $bluetooth_info_updated - pull renewed info using /system/getBluetoothInfo ' . print_r($bluetooth_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: $bluetooth_info_updated - pull renewed info using /system/getBluetoothInfo ' . print_r($bluetooth_info_updated, true));
 			}
 			$func_status_updated = $system->func_status_updated;
 			if (!empty($func_status_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: $func_status_updated - pull renewed info using /system/getFuncStatus ' . print_r($func_status_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: $func_status_updated - pull renewed info using /system/getFuncStatus ' . print_r($func_status_updated, true));
 			}
 			$location_info_updated = $system->location_info_updated;
 			if (!empty($location_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: $location_info_updated - pull renewed info using /system/getLocationInfo ' . print_r($location_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: $location_info_updated - pull renewed info using /system/getLocationInfo ' . print_r($location_info_updated, true));
 			}
 			$name_text_updated = $system->name_text_updated;
 			if (!empty($name_text_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: $name_text_updated - pull renewed info using /system/getNameText ' . print_r($name_text_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: $name_text_updated - pull renewed info using /system/getNameText ' . print_r($name_text_updated, true));
 			}
 			$speaker_settings_updated = $system->speaker_settings_updated;
 			if (!empty($speaker_settings_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: $speaker_settings_updated - Reserved ' . print_r($speaker_settings_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: $speaker_settings_updated - Reserved ' . print_r($speaker_settings_updated, true));
 			}
 			$stereo_pair_info_updated = $system->stereo_pair_info_updated;
 			if (!empty($stereo_pair_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: $stereo_pair_info_updated - Reserved ' . print_r($stereo_pair_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: $stereo_pair_info_updated - Reserved ' . print_r($stereo_pair_info_updated, true));
 			}
 			$tag_updated = $system->tag_updated;
 			if (!empty($tag_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: $tag_updated - Reserved ' . print_r($tag_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: $tag_updated - Reserved ' . print_r($tag_updated, true));
 			}
 		}
 		$main = $result->main;
@@ -357,11 +357,11 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($tuner)) {
 			$play_info_updated = $tuner->play_info_updated;
 			if (!empty($play_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du isPlayInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPlayInf' . print_r($play_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Mise à jour du isPlayInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPlayInf' . print_r($play_info_updated, true));
 			}
 			$preset_info_updated = $tuner->preset_info_updated;
 			if (!empty($preset_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du isPresetInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPresetInfo' . print_r($preset_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Mise à jour du isPresetInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPresetInfo' . print_r($preset_info_updated, true));
 			}
 		}
 		$netusb = $result->netusb;
@@ -390,7 +390,7 @@ class YamahaMusiccast extends eqLogic {
 				 * </p>
 				 * <p>Note: Rhapsody service name will be changed to Napster.</p>
 				 */
-				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du $play_error ' . print_r($play_error, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Mise à jour du $play_error ' . print_r($play_error, true));
 			}
 			$multiple_play_errors = $netusb->multiple_play_errors;
 			if (!empty($multiple_play_errors)) {
@@ -405,15 +405,15 @@ class YamahaMusiccast extends eqLogic {
 				 * 	<li>b[11] Intent Restricted by Streaming Credentials (Qobuz)</li>
 				 * </ul>
 				 */
-				log::add('YamahaMusiccast', 'debug', 'TODO: Mise à jour du $multiple_play_errors ' . print_r($multiple_play_errors, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Mise à jour du $multiple_play_errors ' . print_r($multiple_play_errors, true));
 			}
 			$play_message = $netusb->play_message;
 			if (!empty($play_message)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: Playback related message ' . print_r($play_message, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Playback related message ' . print_r($play_message, true));
 			}
 			$account_updated = $netusb->account_updated;
 			if (!empty($account_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: Whether or not account info has changed. Note: If so, pull renewed info using /netusb/getAccountStatus. ' . print_r($account_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Whether or not account info has changed. Note: If so, pull renewed info using /netusb/getAccountStatus. ' . print_r($account_updated, true));
 			}
 			$play_time = $netusb->play_time;
 			if (!empty($play_time)) {
@@ -421,23 +421,23 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$preset_info_updated = $netusb->preset_info_updated;
 			if (!empty($preset_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: Whether or not preset info has changed. - Note: If so, pull renewed info using netusb/getPresetInfo ' . print_r($preset_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Whether or not preset info has changed. - Note: If so, pull renewed info using netusb/getPresetInfo ' . print_r($preset_info_updated, true));
 			}
 			$recent_info_updated = $netusb->recent_info_updated;
 			if (!empty($recent_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO:  Whether or not playback history info has changed. - Note: If so, pull renewed info using netusb/getRecentInfo ' . print_r($recent_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO:  Whether or not playback history info has changed. - Note: If so, pull renewed info using netusb/getRecentInfo ' . print_r($recent_info_updated, true));
 			}
 			$preset_control = $netusb->preset_control;
 			if (!empty($preset_control)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO:  Results of Preset operations. ' . print_r($preset_control, true));
+				log::add('YamahaMusiccast', 'info', 'TODO:  Results of Preset operations. ' . print_r($preset_control, true));
 			}
 			$trial_status = $netusb->trial_status;
 			if (!empty($trial_status)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO:  Trial status of a Device. ' . print_r($trial_status, true));
+				log::add('YamahaMusiccast', 'info', 'TODO:  Trial status of a Device. ' . print_r($trial_status, true));
 			}
 			$trial_time_left = $netusb->trial_time_left;
 			if (!empty($trial_time_left)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO:  Remaining time of a trial. ' . print_r($trial_time_left, true));
+				log::add('YamahaMusiccast', 'info', 'TODO:  Remaining time of a trial. ' . print_r($trial_time_left, true));
 			}
 			$play_info_updated = $netusb->play_info_updated;
 			if (!empty($play_info_updated)) {
@@ -445,22 +445,22 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$list_info_updated = $netusb->list_info_updated;
 			if (!empty($list_info_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: Returns whether or not list info has changed. Note: If so, pull renewed info using /netusb/getListInfo. ' . print_r($list_info_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: Returns whether or not list info has changed. Note: If so, pull renewed info using /netusb/getListInfo. ' . print_r($list_info_updated, true));
 			}
 		}
 		$cd = $result->cd;
 		if (!empty($cd)) {
-			log::add('YamahaMusiccast', 'debug', 'TODO: CD. ' . print_r($cd, true));
+			log::add('YamahaMusiccast', 'info', 'TODO: CD. ' . print_r($cd, true));
 		}
 		$dist = $result->dist;
 		if (!empty($dist)) {
-			log::add('YamahaMusiccast', 'debug', 'TODO: $dist. ' . print_r($dist, true));
+			log::add('YamahaMusiccast', 'info', 'TODO: $dist. ' . print_r($dist, true));
 		}
 		$clock = $result->clock;
 		if (!empty($clock)) {
 			$settings_updated = $clock->settings_updated;
 			if (!empty($settings_updated)) {
-				log::add('YamahaMusiccast', 'debug', 'TODO: isSettingsUpdated ' . print_r($settings_updated, true));
+				log::add('YamahaMusiccast', 'info', 'TODO: isSettingsUpdated ' . print_r($settings_updated, true));
 			}
 		}
 		$device->refreshWidget();

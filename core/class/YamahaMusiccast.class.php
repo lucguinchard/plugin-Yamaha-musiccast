@@ -263,6 +263,7 @@ class YamahaMusiccast extends eqLogic {
 		log::add('YamahaMusiccast', 'debug', 'Lancement d’un socket sur le port ' . $port);
 		$socket = new YamahaMusiccastSocket("0.0.0.0", $port);
 		$socket->run();
+		YamahaMusiccast::callYamahaMusiccast();
 	}
 
 	public static function socket_stop() {
@@ -275,6 +276,23 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function cron5() {
 		log::add('YamahaMusiccast', 'debug', 'Appel du Cron5');
+		YamahaMusiccast::callYamahaMusiccast();
+		$devices = self::byType('YamahaMusiccast');
+		$date = date("Y-m-d H:i:s");
+		foreach ($devices as $device) {
+			if ($device->getIsEnable() == 0) {
+				continue;
+			}
+			$lastCallAPI = $device->getStatus('lastCallAPI');
+			$deltaSeconds = strtotime($date) - strtotime($lastCallAPI);
+			if ($deltaSeconds > (4.5 * 60)) {
+				$result = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/getDeviceInfo");
+				log::add('YamahaMusiccast', 'debug', 'Mise à jour ' . $device->getName());
+			}
+		}
+	}
+
+	public static function callYamahaMusiccast() {
 		$devices = self::byType('YamahaMusiccast');
 		$date = date("Y-m-d H:i:s");
 		foreach ($devices as $device) {

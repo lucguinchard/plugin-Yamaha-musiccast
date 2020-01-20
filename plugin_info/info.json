@@ -4,7 +4,7 @@
   "description": "Plugin permettant la gestion des appareils Yamaha compatible Musiccast",
   "licence": "AGPL",
   "author": "Luc Guinchard",
-  "require": "4.0",
+  "require": "3.0",
   "category": "multimedia",
   "hasDependency": false,
   "hasOwnDeamon": true,

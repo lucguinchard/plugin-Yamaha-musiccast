@@ -82,7 +82,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 	}
 
-	public function createCmd($name, $type = 'info', $subtype = 'string', $repeatEventManagement = 'never') {
+	public function createCmd($name, $type = 'info', $subtype = 'string', $repeatEventManagement = 'never', $generic_type = null) {
 		$cmd = $this->getCmd(null, $name);
 		if (!is_object($cmd)) {
 			$cmd = new YamahaMusiccastCmd();
@@ -92,6 +92,7 @@ class YamahaMusiccast extends eqLogic {
 		$cmd->setType($type);
 		$cmd->setSubType($subtype);
 		$cmd->setConfiguration('repeatEventManagement', $repeatEventManagement);
+		$cmd->setGeneric_type($generic_type);
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->save();
 	}
@@ -104,6 +105,9 @@ class YamahaMusiccast extends eqLogic {
 			foreach ($zone->func_list as $func) {
 				$this->createCmd($zoneName . '_' . $func . '_state');
 			}
+			$this->createCmd($zoneName . '_power_on', 'action', 'other', null, 'ENERGY_ON');
+			$this->createCmd($zoneName . '_power_off', 'action', 'other', null, 'ENERGY_OFF');
+
 			$this->createCmd($zoneName . '_audio_error');
 			$this->createCmd($zoneName . '_audio_format');
 			$this->createCmd($zoneName . '_audio_fs');
@@ -178,6 +182,10 @@ class YamahaMusiccast extends eqLogic {
 		}
 		if (!is_object($this->getCmd(null, 'zone4_power_state'))) {
 			$replace['#zone4_display#'] = 'display:none;';
+		}
+
+		foreach ($this->getCmd('action') as $cmd) {
+			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 		}
 		/* ------------ N'ajouter plus de code apres ici------------ */
 

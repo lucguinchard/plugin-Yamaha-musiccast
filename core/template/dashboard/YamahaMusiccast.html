@@ -5,8 +5,11 @@
 		<a href="#eqLink#" style="#hideEqLogicName#">#name_display#</a>
 	</center>
 	<div>
-		<div class="zone">
-			<a class="cmd power pull-left" data-cmd_id="#main_power_state_id#" onclick="jeedom.cmd.execute({id: #main_power_state_id#});">
+		<div class="zone main">
+			<a class="cmd power pull-left" data-cmd_id="#main_power_on_id#" onclick="jeedom.cmd.execute({id: #main_power_state_id#});">
+				<i class="fa fa-power-off power"></i>
+			</a>
+			<a class="cmd power pull-left" data-cmd_id="#main_power_off_id#" onclick="jeedom.cmd.execute({id: #main_power_state_id#});">
 				<i class="fa fa-power-off power"></i>
 			</a>
 			#main_power_state#<br/>
@@ -21,13 +24,13 @@
 			#main_audio_format#<br/>
 			#main_audio_fs#<br/>
 		</div>
-		<div class="zone" style="#zone2_display#">
+		<div class="zone zone2" style="#zone2_display#">
 			#zone2_power_state#<br/>
 		</div>
-		<div class="zone" style="#zone3_display#">
+		<div class="zone zone3" style="#zone3_display#">
 			#zone3_power_state#<br/>
 		</div>
-		<div class="zone" style="#zone4_display#">
+		<div class="zone zone4" style="#zone4_display#">
 			#zone4_power_state#<br/>
 		</div>
 		#netusb_input#<br/>

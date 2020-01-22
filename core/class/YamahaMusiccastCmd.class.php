@@ -32,7 +32,18 @@ class YamahaMusiccastCmd extends cmd {
 	 */
 
 	public function execute($_options = array()) {
-		
+		if ($this->getType() == 'info') {
+			return;
+		}
+		$device = $this->getEqLogic();
+		switch ($this->getLogicalId()) {
+			case "main_power_on":
+				log::add('YamahaMusiccast', 'info', 'TODO:main_power_on');
+				break;
+			case "main_power_off":
+				log::add('YamahaMusiccast', 'info', 'TODO:main_power_off');
+				break;
+		}
 	}
 
 	/*	 * **********************Getteur Setteur*************************** */

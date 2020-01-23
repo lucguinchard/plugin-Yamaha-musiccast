@@ -175,6 +175,11 @@ class YamahaMusiccast extends eqLogic {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
 			}
 		}
+		if($this->getCmd(null, 'zone2_power_state')->$cmd->execCmd() === 'on') {
+			$replace['#main_power_action_id#'] = $this->getCmd(null, 'main_power_off')->getId();
+		} else {
+			$replace['#main_power_action_id#'] = $this->getCmd(null, 'main_power_on')->getId();
+		}
 		if (!is_object($this->getCmd(null, 'zone2_power_state'))) {
 			$replace['#zone2_display#'] = 'display:none;';
 		}

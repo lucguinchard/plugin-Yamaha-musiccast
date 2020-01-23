@@ -7,15 +7,11 @@
 	</center>
 	<div>
 		<div class="zone main">
-			<span class="name">main</span>
+			<span class="name pull-right">main</span>
 			<div class="display">
-				<a class="cmd power pull-left" data-cmd_id="#main_power_on_id#" onclick="jeedom.cmd.execute({id: #main_power_on_id#});">
+				<a class="cmd power pull-left" data-cmd_id="#main_power_action_id#">
 					<i class="fa fa-power-off power"></i>
 				</a>
-				<a class="cmd power pull-left" data-cmd_id="#main_power_off_id#" onclick="jeedom.cmd.execute({id: #main_power_off_id#});">
-					<i class="fa fa-power-off power"></i>
-				</a>
-				#main_power_state#<br/>
 				#main_volume_state#<br/>
 				#main_mute_state#<br/>
 				#main_input#<br/>
@@ -24,8 +20,7 @@
 				#main_link_audio_delay_state#<br/>
 				#main_link_control_state#<br/>
 				#main_audio_error#<br/>
-				#main_audio_format#<br/>
-				#main_audio_fs#<br/>
+				<span class="audio_format">#main_audio_format# - #main_audio_fs#</span>
 			</div>
 		</div>
 		<div class="zone zone2" style="#zone2_display#">
@@ -58,4 +53,11 @@
 		#netusb_repeat_available#<br/>
 		#netusb_shuffle_available#<br/>
 	</div>
+	<script>
+		//if ('#main_power_state#' == 'on') {
+		//	$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_off_id#})});
+		//} else {
+		//	$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_on_id#});});
+		//}
+	</script>
 </div>

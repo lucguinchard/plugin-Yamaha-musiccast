@@ -54,10 +54,10 @@
 		#netusb_shuffle_available#<br/>
 	</div>
 	<script>
-		//if ('#main_power_state#' == 'on') {
-		//	$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_off_id#})});
-		//} else {
-		//	$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_on_id#});});
-		//}
+		if ('#main_power_state#' == 'on') {
+			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_off_id#})});
+		} else {
+			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_on_id#});});
+		}
 	</script>
 </div>

@@ -2,7 +2,6 @@
 	border: 1px solid black;
 	height: 150px;
 	text-align: center;
-	background-color: gainsboro;
 }
 
 .YamahaMusiccast .zone .display {
@@ -14,4 +13,5 @@
 	writing-mode: vertical-lr;
 	height: 100%;
 	float: right;
+	background-color: gainsboro;
 }

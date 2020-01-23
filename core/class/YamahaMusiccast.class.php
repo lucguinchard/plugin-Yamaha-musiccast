@@ -591,7 +591,6 @@ class YamahaMusiccast extends eqLogic {
 			$device->checkAndUpdateCmd('netusb_track', $result->track);
 		}
 		if (!empty($result->albumart_url)) {
-			http://192.168.222.232/YamahaRemoteControl/AlbumART/AlbumART1837.jpg
 			$url = "http://" . $device->getLogicalId() . $result->albumart_url;
 			file_put_contents(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg', file_get_contents($url));
 			$device->checkAndUpdateCmd('netusb_albumart_url', $result->albumart_url);

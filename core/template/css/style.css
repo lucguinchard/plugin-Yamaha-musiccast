@@ -1,5 +1,10 @@
 .YamahaMusiccast .zone {
 	border: 1px solid black;
+	height: 150px;
+}
+
+.YamahaMusiccast .zone .display {
+	overflow: auto;
 }
 
 .YamahaMusiccast .zone .name {

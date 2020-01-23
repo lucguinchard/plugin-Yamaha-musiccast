@@ -19,6 +19,7 @@
 
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+require_once 'YamahaMusiccast.class.php';
 
 class YamahaMusiccastCmd extends cmd {
 	/*	 * *************************Attributs****************************** */
@@ -43,7 +44,7 @@ class YamahaMusiccastCmd extends cmd {
 				break;
 			case "main_power_off":
 				log::add('YamahaMusiccast', 'info', 'TODO:main_power_off');
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=stanby");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=standby");
 				break;
 			case "main_power_toggle":
 				log::add('YamahaMusiccast', 'info', 'TODO:main_power_Toggle');

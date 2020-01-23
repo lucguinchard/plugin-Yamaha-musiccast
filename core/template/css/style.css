@@ -1,3 +1,9 @@
 .YamahaMusiccast .zone {
 	border: 1px solid black;
 }
+
+.YamahaMusiccast .zone .name {
+	writing-mode: vertical-lr;
+	height: 100%;
+	float: right;
+}

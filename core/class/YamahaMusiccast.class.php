@@ -98,6 +98,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function postSave() {
+		mkdir(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId(), 0700);
 		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getFeatures");
 		$getFeatures = json_decode($jsonGetFeatures);
 		foreach ($getFeatures->zone as $zone) {
@@ -146,7 +147,23 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function preRemove() {
-		
+		rrmdir(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId());
+	}
+	// When the directory is not empty:
+	function rrmdir($dir) {
+		if (is_dir($dir)) {
+			$objects = scandir($dir);
+			foreach ($objects as $object) {
+				if ($object != "." && $object != "..") {
+					if (filetype($dir . "/" . $object) == "dir")
+						rmdir($dir . "/" . $object);
+					else
+						unlink($dir . "/" . $object);
+				}
+			}
+			reset($objects);
+			rmdir($dir);
+		}
 	}
 
 	public function postRemove() {
@@ -574,6 +591,9 @@ class YamahaMusiccast extends eqLogic {
 			$device->checkAndUpdateCmd('netusb_track', $result->track);
 		}
 		if (!empty($result->albumart_url)) {
+			http://192.168.222.232/YamahaRemoteControl/AlbumART/AlbumART1837.jpg
+			$url = "http://" . $device->getLogicalId() . $result->albumart_url;
+			file_put_contents(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg', file_get_contents($url));
 			$device->checkAndUpdateCmd('netusb_albumart_url', $result->albumart_url);
 		}
 		if (!empty($result->albumart_id)) {

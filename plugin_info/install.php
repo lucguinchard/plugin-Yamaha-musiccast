@@ -37,6 +37,7 @@ function YamahaMusiccast_update()
 		$cron->setSchedule('* * * * *');
 		$cron->save();
 	}
+	mkdir(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/', 0700);
 }
 
 

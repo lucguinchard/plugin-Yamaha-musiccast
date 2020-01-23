@@ -210,6 +210,12 @@ class YamahaMusiccast extends eqLogic {
 		foreach ($this->getCmd('action') as $cmd) {
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 		}
+		
+		if (file_exists(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg')) {
+			$replace['#netusb_albumart_url#'] = '/plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg';
+		} else {
+			$replace['#netusb_albumart_url#'] = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+		}
 		/* ------------ N'ajouter plus de code apres ici------------ */
 
 		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'YamahaMusiccast', 'YamahaMusiccast')));

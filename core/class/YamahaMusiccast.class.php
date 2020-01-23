@@ -178,7 +178,7 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#zone2_display#'] = 'display:none;';
 		}
 		if (!is_object($this->getCmd(null, 'zone3_power_state'))) {
-			$replace['#zon3_display#'] = 'display:none;';
+			$replace['#zone3_display#'] = 'display:none;';
 		}
 		if (!is_object($this->getCmd(null, 'zone4_power_state'))) {
 			$replace['#zone4_display#'] = 'display:none;';

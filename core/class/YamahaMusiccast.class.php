@@ -105,6 +105,7 @@ class YamahaMusiccast extends eqLogic {
 			foreach ($zone->func_list as $func) {
 				$this->createCmd($zoneName . '_' . $func . '_state');
 			}
+			$this->createCmd($zoneName . '_input');
 			$this->createCmd($zoneName . '_power_on', 'action', 'other', null, 'ENERGY_ON');
 			$this->createCmd($zoneName . '_power_off', 'action', 'other', null, 'ENERGY_OFF');
 
@@ -496,7 +497,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$input = $zone->input;
 		if (!empty($input)) {
-			$device->checkAndUpdateCmd($zoneName . '_input_change_state', $input);
+			$device->checkAndUpdateCmd($zoneName . '_input', $input);
 		}
 		$volume = $zone->volume;
 		if (!empty($volume)) {
@@ -599,7 +600,7 @@ class YamahaMusiccast extends eqLogic {
 		$device->checkAndUpdateCmd($zoneName . '_power_state', $getStatusZone->power);
 		$device->checkAndUpdateCmd($zoneName . '_volume_state', $getStatusZone->volume);
 		$device->checkAndUpdateCmd($zoneName . '_mute_state', $getStatusZone->mute);
-		$device->checkAndUpdateCmd($zoneName . '_input_change_state', $getStatusZone->input);
+		$device->checkAndUpdateCmd($zoneName . '_input', $getStatusZone->input);
 		$device->checkAndUpdateCmd($zoneName . '_sound_program_state', $getStatusZone->sound_program);
 		$device->checkAndUpdateCmd($zoneName . '_link_audio_quality_state', $getStatusZone->link_audio_quality);
 		$device->checkAndUpdateCmd($zoneName . '_link_audio_delay_state', $getStatusZone->link_audio_delay);

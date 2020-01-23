@@ -1,18 +1,19 @@
 .YamahaMusiccast .zone {
 	border: 1px solid black;
 	height: 150px;
-	text-align: center;
 }
 
 .YamahaMusiccast .zone .display {
 	height: inherit;
 	overflow: auto;
+	text-align: center;
 }
 
 .YamahaMusiccast .zone .name {
 	writing-mode: vertical-lr;
 	height: 100%;
 	float: right;
+	text-align: center;
 	background-color: gainsboro;
 }
 

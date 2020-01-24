@@ -599,9 +599,14 @@ class YamahaMusiccast extends eqLogic {
 			$device->checkAndUpdateCmd('netusb_track', $result->track);
 		}
 		if (!empty($result->albumart_url)) {
-			$url = "http://" . $device->getLogicalId() . $result->albumart_url;
-			file_put_contents(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg', file_get_contents($url));
-			$device->checkAndUpdateCmd('netusb_albumart_url', $result->albumart_url);
+			$fileAlbumART = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg';
+			if($result->albumart_url === "") {
+				unlink($fileAlbumART);
+			} else {
+				$url = "http://" . $device->getLogicalId() . $result->albumart_url;
+				file_put_contents($fileAlbumART, file_get_contents($url));
+				$device->checkAndUpdateCmd('netusb_albumart_url', $result->albumart_url);
+			}
 		}
 		if (!empty($result->albumart_id)) {
 			$device->checkAndUpdateCmd('netusb_albumart_id', $result->albumart_id);

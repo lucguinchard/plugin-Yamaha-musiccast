@@ -16,7 +16,7 @@
 			<div class="display">
 				<img class="pochette" src="#netusb_albumart_url#"/>
 				<span class="audio_format" data-cmd_id="#main_volume_state_id#">#main_volume_state#/#main_max_volume#</span>
-				<input class="volume" type="range" min="0" max="#main_max_volume#" value="#main_volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#main_volume_state_id#', value: {volume: this.value}});"/>
+				<input class="volume" type="range" min="0" max="#main_max_volume#" value="#main_volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#main_volume_change#', value: {volume: this.value}});"/>
 				#main_mute_state#<br/>
 				#main_input#<br/>
 				#main_sound_program_state#<br/>

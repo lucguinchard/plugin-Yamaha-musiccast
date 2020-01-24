@@ -110,6 +110,7 @@ class YamahaMusiccast extends eqLogic {
 			$this->createCmd($zoneName . '_input');
 			$this->createCmd($zoneName . '_power_on', 'action', 'other', null, 'ENERGY_ON');
 			$this->createCmd($zoneName . '_power_off', 'action', 'other', null, 'ENERGY_OFF');
+			$this->createCmd($zoneName . '_volume_change', 'action', 'slider', null, 'SET_VOLUME');
 
 			$this->createCmd($zoneName . '_audio_error');
 			$this->createCmd($zoneName . '_audio_format');

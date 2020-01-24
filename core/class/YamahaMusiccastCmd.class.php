@@ -39,16 +39,18 @@ class YamahaMusiccastCmd extends cmd {
 		$device = $this->getEqLogic();
 		switch ($this->getLogicalId()) {
 			case "main_power_on":
-				log::add('YamahaMusiccast', 'info', 'TODO:main_power_on');
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=on");
 				break;
 			case "main_power_off":
-				log::add('YamahaMusiccast', 'info', 'TODO:main_power_off');
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=standby");
 				break;
 			case "main_power_toggle":
 				log::add('YamahaMusiccast', 'info', 'TODO:main_power_Toggle');
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=toggle");
+				break;
+			case "main_volume_state_id":
+				log::add('YamahaMusiccast', 'info', 'TODO:main_volume_state_id' . "/YamahaExtendedControl/v1/main/setVolume?volume=" . $_options['volume']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setVolume?volume=" . $_options['volume']);
 				break;
 		}
 	}

@@ -14,7 +14,7 @@
 				main
 			</span>
 			<div class="display">
-				<img class="pochette" src="#netusb_albumart_url#"/>
+				<img class="pochette" src="#netusb_albumart_url#?#netusb_albumart_id#"/>
 				<span class="audio_format" data-cmd_id="#main_volume_state_id#">#main_volume_state#/#main_max_volume#</span>
 				<input class="volume" type="range" min="0" max="#main_max_volume#" value="#main_volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#main_volume_change_id#', value: {volume: this.value}});"/>
 				#main_mute_state#<br/>
@@ -24,6 +24,15 @@
 				#main_link_audio_delay_state#<br/>
 				#main_link_control_state#<br/>
 				#main_audio_error#<br/>
+				#netusb_input#<br/>
+				#netusb_play_queue_type#<br/>
+				#netusb_playback#<br/>
+				#netusb_repeat#<br/>
+				#netusb_shuffle#<br/>
+				#netusb_play_time#/#netusb_total_time#<br/>
+				#netusb_artist#<br/>
+				#netusb_album#<br/>
+				#netusb_track#<br/>
 				<span class="audio_format">#main_audio_format# - #main_audio_fs#</span>
 			</div>
 			<div class="displayoff">
@@ -41,18 +50,6 @@
 			<span class="name">zone 4</span>
 			#zone4_power_state#<br/>
 		</div>
-		#netusb_input#<br/>
-		#netusb_play_queue_type#<br/>
-		#netusb_playback#<br/>
-		#netusb_repeat#<br/>
-		#netusb_shuffle#<br/>
-		#netusb_play_time#<br/>
-		#netusb_total_time#<br/>
-		#netusb_artist#<br/>
-		#netusb_album#<br/>
-		#netusb_track#<br/>
-		#netusb_albumart_url#<br/>
-		#netusb_albumart_id#<br/>
 		#netusb_usb_devicetype#<br/>
 		#netusb_usb_auto_stopped#<br/>
 		#netusb_attribute#<br/>

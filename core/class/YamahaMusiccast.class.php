@@ -514,7 +514,7 @@ class YamahaMusiccast extends eqLogic {
 				log::add('YamahaMusiccast', 'info', 'TODO: isSettingsUpdated ' . print_r($settings_updated, true));
 			}
 		}
-		//$device->refreshWidget();
+		$device->refreshWidget();
 		//log::add('YamahaMusiccast', 'debug', '$device_id' . $device_id . '       ' . print_r($result, true));
 	}
 

@@ -65,14 +65,14 @@ class YamahaMusiccast extends eqLogic {
 		$this->setCategory('multimedia', 1);
 		if (empty($this->getLogicalId())) {
 			$this->setLogicalId($this->getName());
+			$this->setIsVisible(1);
+			$this->setIsEnable(1);
 		}
 		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getNetworkStatus");
 		if ($jsonGetNetworkStatus === false) {
 			$this->setIsVisible(0);
 			$this->setIsEnable(0);
 		} else {
-			$this->setIsVisible(1);
-			$this->setIsEnable(1);
 			$getNetworkStatus = json_decode($jsonGetNetworkStatus);
 			$this->setName($getNetworkStatus->network_name);
 
@@ -211,8 +211,8 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 		}
 		
-		if (file_exists(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg')) {
-			$replace['#netusb_albumart_url#'] = '/plugins/YamahaMusiccast/ressources/' . $device->getId() . '/AlbumART.jpg';
+		if (file_exists(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg')) {
+			$replace['#netusb_albumart_url#'] = '/plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg';
 		} else {
 			$replace['#netusb_albumart_url#'] = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
 		}

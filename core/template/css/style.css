@@ -1,10 +1,10 @@
 .YamahaMusiccast .zone {
-	position: relative;
 	border: 1px solid black;
 	height: 150px;
 }
 
 .YamahaMusiccast .zone .display,.YamahaMusiccast .zone .displayoff {
+	position: relative;
 	height: inherit;
 	overflow: auto;
 }
@@ -35,5 +35,10 @@
 }
 
 .YamahaMusiccast .zone .audio_format {
+	position: absolute;
+	top: 75px;
+	left: 10px;
+	border-radius: 5%;
 	background-color: gainsboro;
+	font-size: xx-small;
 }

@@ -6,6 +6,8 @@
 .YamahaMusiccast .zone .display,.YamahaMusiccast .zone .displayoff {
 	height: inherit;
 	overflow: auto;
+}
+.YamahaMusiccast .zone .center {
 	text-align: center;
 }
 
@@ -13,6 +15,11 @@
 	height: 80px;
 	margin: 5px;
 	border-radius: 10%;
+}
+
+.YamahaMusiccast .zone .display .pochette_input {
+	height: 20px;
+	border-radius: 5%;
 }
 
 .YamahaMusiccast .zone .name {

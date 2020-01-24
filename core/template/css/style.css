@@ -37,8 +37,9 @@
 .YamahaMusiccast .zone .audio_format {
 	position: absolute;
 	top: 75px;
-	left: 10px;
-	border-radius: 5%;
+	left: 2px;
+	border-radius: 10%;
+	padding: 0 2px;
 	background-color: gainsboro;
 	font-size: xx-small;
 }

@@ -9,6 +9,12 @@
 	text-align: center;
 }
 
+.YamahaMusiccast .zone .display .pochette {
+	height: 80px;
+	margin: 5px;
+	border-radius: 10%;
+}
+
 .YamahaMusiccast .zone .name {
 	writing-mode: vertical-lr;
 	height: 100%;

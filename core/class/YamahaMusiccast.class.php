@@ -106,6 +106,7 @@ class YamahaMusiccast extends eqLogic {
 			foreach ($zone->func_list as $func) {
 				$this->createCmd($zoneName . '_' . $func . '_state');
 			}
+			$this->createCmd($zoneName . '_max_volume');
 			$this->createCmd($zoneName . '_input');
 			$this->createCmd($zoneName . '_power_on', 'action', 'other', null, 'ENERGY_ON');
 			$this->createCmd($zoneName . '_power_off', 'action', 'other', null, 'ENERGY_OFF');
@@ -628,6 +629,7 @@ class YamahaMusiccast extends eqLogic {
 		$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zoneName/getStatus");
 		$getStatusZone = json_decode($jsonGetStatusZone);
 		$device->checkAndUpdateCmd($zoneName . '_power_state', $getStatusZone->power);
+		$device->checkAndUpdateCmd($zoneName . '_max_volume', $getStatusZone->max_volume);
 		$device->checkAndUpdateCmd($zoneName . '_volume_state', $getStatusZone->volume);
 		$device->checkAndUpdateCmd($zoneName . '_mute_state', $getStatusZone->mute);
 		$device->checkAndUpdateCmd($zoneName . '_input', $getStatusZone->input);

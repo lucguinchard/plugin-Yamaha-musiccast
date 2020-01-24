@@ -3,7 +3,7 @@
 	height: 150px;
 }
 
-.YamahaMusiccast .zone .display {
+.YamahaMusiccast .zone .display,.YamahaMusiccast .zone .displayoff {
 	height: inherit;
 	overflow: auto;
 	text-align: center;

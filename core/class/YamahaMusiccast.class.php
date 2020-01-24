@@ -604,7 +604,9 @@ class YamahaMusiccast extends eqLogic {
 			file_put_contents($fileAlbumART, file_get_contents($url));
 			$device->checkAndUpdateCmd('netusb_albumart_url', $result->albumart_url);
 		} else {
-			unlink($fileAlbumART);
+			if(file_exists($fileAlbumART)) {
+				unlink($fileAlbumART);
+			}
 		}
 		if (!empty($result->albumart_id)) {
 			$device->checkAndUpdateCmd('netusb_albumart_id', $result->albumart_id);

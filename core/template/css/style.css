@@ -67,7 +67,7 @@
 	width: 23px;
 	height: 24px;
 	border: 0;
-	content: "\f028";
+	background: url('sound.png');
 	cursor: pointer;
 }
 
@@ -75,6 +75,6 @@
 	width: 23px;
 	height: 24px;
 	border: 0;
-	content: "\f028";
+	background: url('sound.png');
 	cursor: pointer;
 }

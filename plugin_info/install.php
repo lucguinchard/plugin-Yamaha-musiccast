@@ -37,9 +37,6 @@ function YamahaMusiccast_update()
 		$cron->setSchedule('* * * * *');
 		$cron->save();
 	}
-	log::add('YamahaMusiccast', 'erreur', 'Création de ' . dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/');
-	$mkdir = mkdir(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/', 0700);
-	log::add('YamahaMusiccast', 'erreur', 'Création de ' . $mkdir);
 }
 
 

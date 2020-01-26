@@ -157,10 +157,11 @@ class YamahaMusiccast extends eqLogic {
 			$objects = scandir($dir);
 			foreach ($objects as $object) {
 				if ($object != "." && $object != "..") {
-					if (filetype($dir . "/" . $object) == "dir")
+					if (filetype($dir . "/" . $object) == "dir") {
 						rmdir($dir . "/" . $object);
-					else
+					} else {
 						unlink($dir . "/" . $object);
+					}
 				}
 			}
 			reset($objects);

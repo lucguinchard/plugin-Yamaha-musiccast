@@ -26,12 +26,22 @@
 	border-radius: 5%;
 }
 
+.YamahaMusiccast .zone .btn {
+	float:left;
+	padding: 4px 4px;
+}
+
 .YamahaMusiccast .zone .name {
 	writing-mode: vertical-lr;
 	height: 100%;
 	float: right;
 	text-align: center;
 	background-color: #ffffff20;
+}
+
+.YamahaMusiccast .zone .name span {
+	cursor: default;
+	line-height:28px;
 }
 
 .YamahaMusiccast .zone .audio_format {

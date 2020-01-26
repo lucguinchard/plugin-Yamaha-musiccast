@@ -39,7 +39,7 @@ if (!isConnect()) {
 		<div class="form-group">
 			<label class="col-lg-4 control-label">{{socket.name}}</label>
 			<div class="col-lg-2">
-				<input type="number" class="configKey form-control" data-l1key="socket.name" value=""/>
+				<input type="text" class="configKey form-control" data-l1key="socket.name" value=""/>
 			</div>
 		</div>
 	</fieldset>

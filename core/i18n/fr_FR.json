@@ -23,9 +23,9 @@
 		"Model": "Model"
 	},
 	"plugins\/YamahaMusiccast\/plugin_info\/configuration.php": {
-		"comment.socket": "Le démon ouvre un socket qui permet au appareil Yahama Musiccast de communiquer avec lui",
-		"socket.port": "Port du socket",
-		"socket.port.default": "9999"
+		"comment.socket": "Le démon ouvre un socket qui permet aux appareils Yahama Musiccast de communiquer avec lui",
+		"socket.port": "Port du socket :",
+		"socket.name": "Nom de l’application :"
 	},
 	"plugins\/YamahaMusiccast\/desktop\/js\/YamahaMusiccast.js": {
 		"Nom": "Nom",

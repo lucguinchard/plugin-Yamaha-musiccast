@@ -648,6 +648,7 @@ class YamahaMusiccast extends eqLogic {
 
 	static function CallAPI($method, $device, $path, $data = false) {
 		$port = config::byKey('socket.port', 'YamahaMusiccast');
+		$name = config::byKey('socket.name', 'YamahaMusiccast');
 		$curl = curl_init();
 
 		switch ($method) {
@@ -669,7 +670,7 @@ class YamahaMusiccast extends eqLogic {
 		// Optional Authentication:
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		$header[0] = "Content-Type: application/json";
-		$header[1] = "X-AppName: Musiccast/Jeedom";
+		$header[1] = "X-AppName: $name/1.0";
 		$header[2] = "X-AppPort: $port";
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 		$url = "http://" . $device->getLogicalId() . $path;

@@ -37,6 +37,9 @@ function YamahaMusiccast_update()
 		$cron->setSchedule('* * * * *');
 		$cron->save();
 	}
+	foreach (YamahaMusiccast::byType('YamahaMusiccast') as $device) {
+		$device->save();
+	}
 }
 
 

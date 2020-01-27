@@ -98,7 +98,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function postSave() {
-		$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg';
+		$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/';
 		if (!file_exists($deviceDir)) {
 			mkdir($deviceDir, 0700);
 		}

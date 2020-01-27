@@ -49,9 +49,10 @@ class YamahaMusiccastCmd extends cmd {
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=toggle");
 				break;
 			case "main_volume_change":
-				log::add('YamahaMusiccast', 'info', 'TODO:main_volume_change' . "/YamahaExtendedControl/v1/main/setVolume?volume=" . $_options['volume']);
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setVolume?volume=" . $_options['volume']);
 				break;
+			default :
+				log::add('YamahaMusiccast', 'info', 'TODO:Créer la commande ' . $this->getLogicalId());
 		}
 	}
 

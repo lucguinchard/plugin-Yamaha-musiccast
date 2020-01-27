@@ -510,11 +510,11 @@ class YamahaMusiccast extends eqLogic {
 			$cd = $result->cd;
 			log::add('YamahaMusiccast', 'info', 'TODO: CD. ' . print_r($cd, true));
 		}
-		if (!empty($dist = $result->dist)) {
+		if (!empty($result->dist)) {
 			$dist = $result->dist;
 			log::add('YamahaMusiccast', 'info', 'TODO: $dist. ' . print_r($dist, true));
 		}
-		if (!empty($clock = $result->clock)) {
+		if (!empty($result->clock)) {
 			$clock = $result->clock;
 			if (!empty($clock->settings_updated)) {
 			$settings_updated = $clock->settings_updated;

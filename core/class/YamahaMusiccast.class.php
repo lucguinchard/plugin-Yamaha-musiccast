@@ -121,8 +121,8 @@ class YamahaMusiccast extends eqLogic {
 				$this->createCmd($zoneName . '_audio_format');
 				$this->createCmd($zoneName . '_audio_fs');
 
-				$this->createCmd($zoneName . '_mute_on', 'action', 'other', null,);
-				$this->createCmd($zoneName . '_mute_off', 'action', 'other', null,);
+				$this->createCmd($zoneName . '_mute_on', 'action', 'other', null, null);
+				$this->createCmd($zoneName . '_mute_off', 'action', 'other', null, null);
 			}
 
 			$this->createCmd($zoneName . 'netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');

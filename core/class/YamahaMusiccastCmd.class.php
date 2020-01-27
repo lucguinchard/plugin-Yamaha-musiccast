@@ -58,34 +58,34 @@ class YamahaMusiccastCmd extends cmd {
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setVolume?volume=" . $_options['volume']);
 				break;
 			case "netusb_playback_play":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=play");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");
 				break;
 			case "netusb_playback_stop":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=stop");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=stop");
 				break;
 			case "netusb_playback_pause":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=pause");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=pause");
 				break;
 			case "netusb_playback_play_pause":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=play_pause");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play_pause");
 				break;
 			case "netusb_playback_previous":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=previous");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=previous");
 				break;
 			case "netusb_playback_next":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=next");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=next");
 				break;
 			case "netusb_playback_fast_reverse_start":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_reverse_start");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_reverse_start");
 				break;
 			case "netusb_playback_fast_reverse_end":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_reverse_end");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_reverse_end");
 				break;
 			case "netusb_playback_fast_forward_start":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_forward_start");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_forward_start");
 				break;
 			case "netusb_playback_fast_forward_end":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_forward_end");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_forward_end");
 				break;
 			case "netusb_shuffle_off":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=off");

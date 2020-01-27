@@ -142,6 +142,8 @@ class YamahaMusiccast extends eqLogic {
 			foreach ($getFeatures->zone as $zone) {
 				YamahaMusiccast::callZoneGetStatus($this, $zone->id);
 			}
+		} else {
+			log::add('YamahaMusiccast', 'erreur', 'L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable ou n’existe pas !');
 		}
 	}
 

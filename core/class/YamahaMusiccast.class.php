@@ -125,24 +125,24 @@ class YamahaMusiccast extends eqLogic {
 				$this->createCmd($zoneName . '_mute_off', 'action', 'other', null, null);
 			}
 
-			$this->createCmd($zoneName . 'netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');
-			$this->createCmd($zoneName . 'netusb_playback_stop', 'action', 'other', null, 'MEDIA_STOP');
-			$this->createCmd($zoneName . 'netusb_playback_pause', 'action', 'other', null, 'MEDIA_PAUSE');
-			$this->createCmd($zoneName . 'netusb_playback_play_pause', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_playback_previous', 'action', 'other', null, 'MEDIA_PREVIOUS');
-			$this->createCmd($zoneName . 'netusb_playback_next', 'action', 'other', null, 'MEDIA_NEXT');
-			$this->createCmd($zoneName . 'netusb_playback_fast_reverse_start', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_playback_fast_reverse_end', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_playback_fast_forward_start', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_playback_fast_forward_end', 'action', 'other', null);
+			$this->createCmd('netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');
+			$this->createCmd('netusb_playback_stop', 'action', 'other', null, 'MEDIA_STOP');
+			$this->createCmd('netusb_playback_pause', 'action', 'other', null, 'MEDIA_PAUSE');
+			$this->createCmd('netusb_playback_play_pause', 'action', 'other', null);
+			$this->createCmd('netusb_playback_previous', 'action', 'other', null, 'MEDIA_PREVIOUS');
+			$this->createCmd('netusb_playback_next', 'action', 'other', null, 'MEDIA_NEXT');
+			$this->createCmd('netusb_playback_fast_reverse_start', 'action', 'other', null);
+			$this->createCmd('netusb_playback_fast_reverse_end', 'action', 'other', null);
+			$this->createCmd( 'netusb_playback_fast_forward_start', 'action', 'other', null);
+			$this->createCmd('netusb_playback_fast_forward_end', 'action', 'other', null);
 
-			$this->createCmd($zoneName . 'netusb_shuffle_off', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_shuffle_on', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_shuffle_songs', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_shuffle_albums', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_repeat_off', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_repeat_one', 'action', 'other', null);
-			$this->createCmd($zoneName . 'netusb_repeat_all', 'action', 'other', null);
+			$this->createCmd('netusb_shuffle_off', 'action', 'other', null);
+			$this->createCmd('netusb_shuffle_on', 'action', 'other', null);
+			$this->createCmd('netusb_shuffle_songs', 'action', 'other', null);
+			$this->createCmd('netusb_shuffle_albums', 'action', 'other', null);
+			$this->createCmd('netusb_repeat_off', 'action', 'other', null);
+			$this->createCmd('netusb_repeat_one', 'action', 'other', null);
+			$this->createCmd('netusb_repeat_all', 'action', 'other', null);
 
 			$this->createCmd('netusb_input');
 			$this->createCmd('netusb_play_queue_type');

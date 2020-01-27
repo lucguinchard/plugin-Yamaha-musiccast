@@ -104,42 +104,44 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getFeatures");
 		$getFeatures = json_decode($jsonGetFeatures);
-		foreach ($getFeatures->zone as $zone) {
-			$zoneName = $zone->id;
-			foreach ($zone->func_list as $func) {
-				$this->createCmd($zoneName . '_' . $func . '_state');
+		if(!empty($getFeatures)) {
+			foreach ($getFeatures->zone as $zone) {
+				$zoneName = $zone->id;
+				foreach ($zone->func_list as $func) {
+					$this->createCmd($zoneName . '_' . $func . '_state');
+				}
+				$this->createCmd($zoneName . '_max_volume');
+				$this->createCmd($zoneName . '_input');
+				$this->createCmd($zoneName . '_power_on', 'action', 'other', null, 'ENERGY_ON');
+				$this->createCmd($zoneName . '_power_off', 'action', 'other', null, 'ENERGY_OFF');
+				$this->createCmd($zoneName . '_volume_change', 'action', 'slider', null, 'SET_VOLUME');
+
+				$this->createCmd($zoneName . '_audio_error');
+				$this->createCmd($zoneName . '_audio_format');
+				$this->createCmd($zoneName . '_audio_fs');
 			}
-			$this->createCmd($zoneName . '_max_volume');
-			$this->createCmd($zoneName . '_input');
-			$this->createCmd($zoneName . '_power_on', 'action', 'other', null, 'ENERGY_ON');
-			$this->createCmd($zoneName . '_power_off', 'action', 'other', null, 'ENERGY_OFF');
-			$this->createCmd($zoneName . '_volume_change', 'action', 'slider', null, 'SET_VOLUME');
 
-			$this->createCmd($zoneName . '_audio_error');
-			$this->createCmd($zoneName . '_audio_format');
-			$this->createCmd($zoneName . '_audio_fs');
-		}
+			$this->createCmd('netusb_input');
+			$this->createCmd('netusb_play_queue_type');
+			$this->createCmd('netusb_playback');
+			$this->createCmd('netusb_repeat');
+			$this->createCmd('netusb_shuffle');
+			$this->createCmd('netusb_play_time');
+			$this->createCmd('netusb_total_time');
+			$this->createCmd('netusb_artist');
+			$this->createCmd('netusb_album');
+			$this->createCmd('netusb_track');
+			$this->createCmd('netusb_albumart_url');
+			$this->createCmd('netusb_albumart_id');
+			$this->createCmd('netusb_usb_devicetype');
+			$this->createCmd('netusb_usb_auto_stopped');
+			$this->createCmd('netusb_attribute');
+			$this->createCmd('netusb_repeat_available');
+			$this->createCmd('netusb_shuffle_available');
 
-		$this->createCmd('netusb_input');
-		$this->createCmd('netusb_play_queue_type');
-		$this->createCmd('netusb_playback');
-		$this->createCmd('netusb_repeat');
-		$this->createCmd('netusb_shuffle');
-		$this->createCmd('netusb_play_time');
-		$this->createCmd('netusb_total_time');
-		$this->createCmd('netusb_artist');
-		$this->createCmd('netusb_album');
-		$this->createCmd('netusb_track');
-		$this->createCmd('netusb_albumart_url');
-		$this->createCmd('netusb_albumart_id');
-		$this->createCmd('netusb_usb_devicetype');
-		$this->createCmd('netusb_usb_auto_stopped');
-		$this->createCmd('netusb_attribute');
-		$this->createCmd('netusb_repeat_available');
-		$this->createCmd('netusb_shuffle_available');
-
-		foreach ($getFeatures->zone as $zone) {
-			YamahaMusiccast::callZoneGetStatus($this, $zone->id);
+			foreach ($getFeatures->zone as $zone) {
+				YamahaMusiccast::callZoneGetStatus($this, $zone->id);
+			}
 		}
 	}
 

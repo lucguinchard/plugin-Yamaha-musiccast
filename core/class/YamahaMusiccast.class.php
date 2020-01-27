@@ -120,7 +120,29 @@ class YamahaMusiccast extends eqLogic {
 				$this->createCmd($zoneName . '_audio_error');
 				$this->createCmd($zoneName . '_audio_format');
 				$this->createCmd($zoneName . '_audio_fs');
+
+				$this->createCmd($zoneName . '_mute_on', 'action', 'other', null,);
+				$this->createCmd($zoneName . '_mute_off', 'action', 'other', null,);
 			}
+
+			$this->createCmd($zoneName . 'netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');
+			$this->createCmd($zoneName . 'netusb_playback_stop', 'action', 'other', null, 'MEDIA_STOP');
+			$this->createCmd($zoneName . 'netusb_playback_pause', 'action', 'other', null, 'MEDIA_PAUSE');
+			$this->createCmd($zoneName . 'netusb_playback_play_pause', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_playback_previous', 'action', 'other', null, 'MEDIA_PREVIOUS');
+			$this->createCmd($zoneName . 'netusb_playback_next', 'action', 'other', null, 'MEDIA_NEXT');
+			$this->createCmd($zoneName . 'netusb_playback_fast_reverse_start', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_playback_fast_reverse_end', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_playback_fast_forward_start', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_playback_fast_forward_end', 'action', 'other', null);
+
+			$this->createCmd($zoneName . 'netusb_shuffle_off', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_shuffle_on', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_shuffle_songs', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_shuffle_albums', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_repeat_off', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_repeat_one', 'action', 'other', null);
+			$this->createCmd($zoneName . 'netusb_repeat_all', 'action', 'other', null);
 
 			$this->createCmd('netusb_input');
 			$this->createCmd('netusb_play_queue_type');
@@ -202,11 +224,18 @@ class YamahaMusiccast extends eqLogic {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
 			}
 		}
+
 		if ($this->getCmd(null, 'main_power_state')->execCmd() === 'on') {
 			$replace['#main_power_action_id#'] = $this->getCmd(null, 'main_power_off')->getId();
 		} else {
 			$replace['#main_power_action_id#'] = $this->getCmd(null, 'main_power_on')->getId();
 		}
+		if ($this->getCmd(null, 'main_mute_state')->execCmd() === 'true') {
+			$replace['#main_mute_action_id#'] = $this->getCmd(null, 'main_mute_off')->getId();
+		} else {
+			$replace['#main_mute_action_id#'] = $this->getCmd(null, 'main_mute_on')->getId();
+		}
+
 		if (!is_object($this->getCmd(null, 'zone2_power_state'))) {
 			$replace['#zone2_display#'] = 'display:none;';
 		}

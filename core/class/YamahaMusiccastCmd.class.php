@@ -38,6 +38,12 @@ class YamahaMusiccastCmd extends cmd {
 		}
 		$device = $this->getEqLogic();
 		switch ($this->getLogicalId()) {
+			case "main_mute_on":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setMute?enable=true");
+				break;
+			case "main_mute_off":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setMute?enable=false");
+				break;
 			case "main_power_on":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=on");
 				break;
@@ -50,6 +56,57 @@ class YamahaMusiccastCmd extends cmd {
 				break;
 			case "main_volume_change":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setVolume?volume=" . $_options['volume']);
+				break;
+			case "netusb_playback_play":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=play");
+				break;
+			case "netusb_playback_stop":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=stop");
+				break;
+			case "netusb_playback_pause":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=pause");
+				break;
+			case "netusb_playback_play_pause":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=play_pause");
+				break;
+			case "netusb_playback_previous":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=previous");
+				break;
+			case "netusb_playback_next":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=next");
+				break;
+			case "netusb_playback_fast_reverse_start":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_reverse_start");
+				break;
+			case "netusb_playback_fast_reverse_end":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_reverse_end");
+				break;
+			case "netusb_playback_fast_forward_start":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_forward_start");
+				break;
+			case "netusb_playback_fast_forward_end":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback=fast_forward_end");
+				break;
+			case "netusb_shuffle_off":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=off");
+				break;
+			case "netusb_shuffle_on":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=on");
+				break;
+			case "netusb_shuffle_songs":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=songs");
+				break;
+			case "netusb_shuffle_albums":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=albums");
+				break;
+			case "netusb_repeat_off":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=off");
+				break;
+			case "netusb_repeat_one":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=one");
+				break;
+			case "netusb_repeat_all":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=all");
 				break;
 			default :
 				log::add('YamahaMusiccast', 'info', 'TODO:Créer la commande ' . $this->getLogicalId());

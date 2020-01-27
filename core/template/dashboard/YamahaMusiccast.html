@@ -22,6 +22,32 @@
 				#netusb_play_time#/#netusb_total_time#<br/>
 				<span class="" data-cmd_id="#main_volume_state_id#">#main_volume_state#/#main_max_volume#</span>
 				<input class="volume_range" type="range" min="0" max="#main_max_volume#" value="#main_volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#main_volume_change_id#', value: {volume: this.value}});"/>
+				<nav class="nav">
+					<a class="cmd action_playlist" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire">
+						<i class="fa fa-random shuffle"></i>
+					</a>
+					<a class="cmd action_playlist" data-cmd_id="#netusb_repeat_id#" onclick="jeedom.cmd.execute({id: #netusb_repeat_id#});" title="Répéter">
+						<i class="fa fa-sync repeat"></i>
+					</a>
+					<a class="cmd action_list" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent">
+						<i class="fas fa-step-backward"></i>
+					</a>
+					<a class="cmd play" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Lecture">
+						<i class="fas fa-play"></i>
+					</a>
+					<a class="cmd pause" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Pause">
+						<i class="fas fa-pause"></i>
+					</a>
+					<a class="cmd stop" data-cmd_id="#netusb_playback_stop_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});" title="Stop">
+						<i class="fas fa-stop"></i>
+					</a>
+					<a class="cmd action_list" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant">
+						<i class="fas fa-step-forward"></i>
+					</a>
+					<a class="cmd" data-cmd_id="#main_mute_action_id#" onclick="jeedom.cmd.execute({id: #main_mute_action_id#});" title="Mute">
+						<i class="icon jeedomapp-audiomute"></i>
+					</a>
+				</nav>
 				#main_mute_state#<br/>
 				#main_sound_program_state#<br/>
 				#main_link_audio_quality_state#<br/>
@@ -57,13 +83,13 @@
 	</div>
 	<script>
 		if ('#main_power_state#' == 'on') {
-			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_off_id#})});
-			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .display").css('display', 'block');
-			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .displayoff").css('display', 'none');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_off_id#})});
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .display").css('display', 'block');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .displayoff").css('display', 'none');
 		} else {
-			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_on_id#})});
-			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .display").css('display', 'none');
-			$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .displayoff").css('display', 'block');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_on_id#})});
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .display").css('display', 'none');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .displayoff").css('display', 'block');
 		}
 	</script>
 </div>

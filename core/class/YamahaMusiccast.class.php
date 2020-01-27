@@ -674,7 +674,7 @@ class YamahaMusiccast extends eqLogic {
 		// Optional Authentication:
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		$header[0] = "Content-Type: application/json";
-		$header[1] = "X-AppName: $name/1.0";
+		$header[1] = "X-AppName: MusicCast/1.0 ($name)";
 		$header[2] = "X-AppPort: $port";
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 		$url = "http://" . $device->getLogicalId() . $path;

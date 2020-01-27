@@ -98,7 +98,10 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function postSave() {
-		mkdir(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId(), 0700);
+		$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg';
+		if (!file_exists($deviceDir)) {
+			mkdir($deviceDir, 0700);
+		}
 		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getFeatures");
 		$getFeatures = json_decode($jsonGetFeatures);
 		foreach ($getFeatures->zone as $zone) {

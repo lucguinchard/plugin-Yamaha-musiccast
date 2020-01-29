@@ -60,25 +60,23 @@ function addCmdToTable(_cmd) {
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
 
-<script>
-	$('.searchMusiccast').on('click', function () {
-		$.ajax({
-			type: "POST",
-			url: "plugins/musiccast/core/ajax/musiccast.ajax.php",
-			data: {
-				action: "searchMusiccast",
-			},
-			dataType: 'json',
-			error: function (request, status, error) {
-				handleAjaxError(request, status, error);
-			},
-			success: function (data) {
-				if (data.state != 'ok') {
-					$('#div_alert').showAlert({message: data.result, level: 'danger'});
-					return;
-				}
-				$('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
+$('.searchMusiccast').on('click', function () {
+	$.ajax({
+		type: "POST",
+		url: "plugins/musiccast/core/ajax/musiccast.ajax.php",
+		data: {
+			action: "searchMusiccast",
+		},
+		dataType: 'json',
+		error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+		},
+		success: function (data) {
+			if (data.state != 'ok') {
+				$('#div_alert').showAlert({message: data.result, level: 'danger'});
+				return;
 			}
-		})
-	});
-</script>
+			$('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
+		}
+	})
+});

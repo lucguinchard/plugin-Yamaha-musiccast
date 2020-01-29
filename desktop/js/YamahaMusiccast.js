@@ -63,7 +63,7 @@ function addCmdToTable(_cmd) {
 $('.searchMusiccast').on('click', function () {
 	$.ajax({
 		type: "POST",
-		url: "plugins/musiccast/core/ajax/musiccast.ajax.php",
+		url: "plugins/YamahaMusiccast/core/ajax/YamahaMusiccast.ajax.php",
 		data: {
 			action: "searchMusiccast",
 		},

@@ -475,7 +475,7 @@ class YamahaMusiccast extends eqLogic {
 			}
 		}
 		if (empty($device)) {
-			log::add('YamahaMusiccast', 'error', 'Erreur lors de traitement_message : device is null');
+			log::add('YamahaMusiccast', 'info', 'L’appareil ' . $host . ' n’existe plus');
 			return;
 		}
 		$device_id = $result->device_id;

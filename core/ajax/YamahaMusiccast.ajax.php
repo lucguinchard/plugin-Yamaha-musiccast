@@ -36,6 +36,11 @@ try {
 	// Initialise la gestion des requêtes Ajax
 	ajax::init();
 
+	if (init('action') == 'searchMusiccast') {
+		YamahaMusiccast::saveDeviceList();
+		ajax::success();
+	}
+
 	// Lève une exception si la requête n'a pas été traitée avec succès (Appel de la fonction ajax::success());
 	throw new \Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
 	/* **********Catch exeption*************** */

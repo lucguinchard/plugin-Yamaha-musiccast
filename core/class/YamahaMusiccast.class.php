@@ -133,7 +133,7 @@ class YamahaMusiccast extends eqLogic {
 			$this->createCmd('netusb_playback_next', 'action', 'other', null, 'MEDIA_NEXT');
 			$this->createCmd('netusb_playback_fast_reverse_start', 'action', 'other', null);
 			$this->createCmd('netusb_playback_fast_reverse_end', 'action', 'other', null);
-			$this->createCmd( 'netusb_playback_fast_forward_start', 'action', 'other', null);
+			$this->createCmd('netusb_playback_fast_forward_start', 'action', 'other', null);
 			$this->createCmd('netusb_playback_fast_forward_end', 'action', 'other', null);
 
 			$this->createCmd('netusb_shuffle_off', 'action', 'other', null);
@@ -364,6 +364,86 @@ class YamahaMusiccast extends eqLogic {
 		YamahaMusiccast::callYamahaMusiccast();
 	}
 
+	public static function saveDeviceList() {
+		$ipList[] = this::searchDeviceList();
+		foreach ($ipList as $ip) {
+			$device = musiccast::byLogicalId($ip, 'YamahaMusiccast');
+			if (!is_object($device)) {
+				$device = new self();
+				$device->setName($ip);
+				$device->save();
+			}
+		}
+	}
+
+	public static function searchDeviceList() {
+		log::add('YamahaMusiccast', 'debug', 'searchDeviceList');
+		$ipCast = "239.255.255.250";
+		$port = 1900;
+		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+		$level = getprotobyname("ip");
+		socket_set_option($sock, $level, IP_MULTICAST_TTL, 2);
+
+		$data = "M-SEARCH * HTTP/1.1\r\n";
+		$data .= "HOST: $ipCast:$port\r\n";
+		$data .= "MAN: \"ssdp:discover\"\r\n";
+		$data .= "MX: 2\r\n";
+		$data .= "ST: urn:schemas-upnp-org:device:MediaRenderer:1\r\n";
+
+		socket_sendto($sock, $data, strlen($data), null, $ipCast, $port);
+
+		$read = [$sock];
+		$write = [];
+		$except = [];
+		$name = null;
+		$port = null;
+		$tmp = "";
+
+		$response = "";
+		while (socket_select($read, $write, $except, 1)) {
+			socket_recvfrom($sock, $tmp, 2048, null, $name, $port);
+			$response .= $tmp;
+		}
+
+
+		$devices = [];
+		foreach (explode("\r\n\r\n", $response) as $reply) {
+			if (!$reply) {
+				continue;
+			}
+
+			$data = [];
+			foreach (explode("\r\n", $reply) as $line) {
+				if (!$pos = strpos($line, ":")) {
+					continue;
+				}
+				$key = strtolower(substr($line, 0, $pos));
+				$val = trim(substr($line, $pos + 1));
+				$data[$key] = $val;
+			}
+			$devices[] = $data;
+		}
+
+		$return = [];
+		$unique = [];
+		foreach ($devices as $device) {
+			if ($device["st"] !== "urn:schemas-upnp-org:device:MediaRenderer:1") {
+				continue;
+			}
+			if (in_array($device["usn"], $unique)) {
+				continue;
+			}
+
+			$url = parse_url($device["location"]);
+			$ip = $url["host"];
+
+			$return[] = $ip;
+			$unique[] = $device["usn"];
+		}
+		log::add('YamahaMusiccast', 'debug', print_r($return, true));
+		return $return;
+	}
+
 	public static function callYamahaMusiccast() {
 		$devices = self::byType('YamahaMusiccast');
 		$date = date("Y-m-d H:i:s");
@@ -545,7 +625,7 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->clock)) {
 			$clock = $result->clock;
 			if (!empty($clock->settings_updated)) {
-			$settings_updated = $clock->settings_updated;
+				$settings_updated = $clock->settings_updated;
 				log::add('YamahaMusiccast', 'info', 'TODO: isSettingsUpdated ' . print_r($settings_updated, true));
 			}
 		}

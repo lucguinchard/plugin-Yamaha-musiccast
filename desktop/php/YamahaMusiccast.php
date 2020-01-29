@@ -28,9 +28,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 	<div class="col-lg-2 col-md-3 col-sm-4">
 		<div class="bs-sidebar">
 			<ul id="ul_eqLogic" class="nav nav-list bs-sidenav">
-				<a class="btn btn-default eqLogicAction" style="width : 100%;margin-top : 5px;margin-bottom: 5px;"
-				   data-action="add">
-					<i class="fa fa-plus-circle"></i> {{Ajouter un Musiccast}}
+				<a class="btn btn-default eqLogicAction searchMusiccast" style="width : 100%;margin-top : 5px;margin-bottom: 5px;">
+					<i class="fas fa-search"></i> {{Recherche des appareils Musiccast}}
 				</a>
 				<li class="filter" style="margin-bottom: 5px;">
 					<input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/>
@@ -49,11 +48,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 		 style="border-left: solid 1px #EEE; padding-left: 25px;">
 		<legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
 		<div class="eqLogicThumbnailContainer">
-			<div class="cursor eqLogicAction" data-action="add"
+			<div class="cursor eqLogicAction searchMusiccast"
 				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-				<i class="fa fa-plus-circle" style="font-size : 6em;color:#94ca02;"></i>
+				<i class="fa fa-plus-search" style="font-size : 6em;"></i>
 				<br>
-				<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02">{{Ajouter}}</span>
+				<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;">{{Rechercher les équipements Yamaha Musiccast}}</span>
 			</div>
 			<div class="cursor eqLogicAction" data-action="gotoPluginConf"
 				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">

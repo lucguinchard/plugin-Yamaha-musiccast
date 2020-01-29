@@ -365,11 +365,11 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function saveDeviceList() {
-		$ipList[] = this::searchDeviceList();
+		$ipList = YamahaMusiccast::searchDeviceList();
 		foreach ($ipList as $ip) {
 			$device = musiccast::byLogicalId($ip, 'YamahaMusiccast');
 			if (!is_object($device)) {
-				$device = new self();
+				$device = new YamahaMusiccast();
 				$device->setName($ip);
 				$device->preSave();
 				$device->save();

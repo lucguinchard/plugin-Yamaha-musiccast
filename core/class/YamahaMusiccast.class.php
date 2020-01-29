@@ -371,7 +371,9 @@ class YamahaMusiccast extends eqLogic {
 			if (!is_object($device)) {
 				$device = new self();
 				$device->setName($ip);
+				$device->preSave();
 				$device->save();
+				$device->postSave();
 			}
 		}
 	}

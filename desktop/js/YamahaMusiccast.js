@@ -60,7 +60,7 @@ function addCmdToTable(_cmd) {
 	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
 
-$('.searchMusiccast').on('click', function () {
+$('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 	$.ajax({
 		type: "POST",
 		url: "plugins/YamahaMusiccast/core/ajax/YamahaMusiccast.ajax.php",

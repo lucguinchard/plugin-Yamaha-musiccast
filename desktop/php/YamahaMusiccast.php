@@ -48,13 +48,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
 		 style="border-left: solid 1px #EEE; padding-left: 25px;">
 		<legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
 		<div class="eqLogicThumbnailContainer">
-			<div class="cursor eqLogicAction searchMusiccast"
+			<div class="cursor eqLogicAction" data-action="searchMusiccast"
 				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
 				<i class="fa fa-search-plus" style="font-size : 6em;"></i>
 				<br>
 				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Recherche automatique}}</span>
 			</div>
-			<div class="cursor eqLogicAction searchMusiccast" data-action="add"
+			<div class="cursor eqLogicAction" data-action="add"
 				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
 				<i class="fa fa-plus-circle" style="font-size : 6em;"></i>
 				<br>

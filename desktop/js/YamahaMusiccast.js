@@ -76,7 +76,19 @@ $('.searchMusiccast').on('click', function () {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
-			$('#div_alert').showAlert({message: '{{Synchronisation réussie}}', level: 'success'});
+			modifyWithoutSave = false;
+			var vars = getUrlVars();
+			var url = 'index.php?';
+			for (var i in vars) {
+				if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
+				  url += i + '=' + vars[i].replace('#', '') + '&';
+				}
+			}
+			url += 'id=' + data.id + '&saveSuccessFull=1';
+			if (document.location.toString().match('#')) {
+			  url += '#' + document.location.toString().split('#')[1];
+			}
+			loadPage(url);
 		}
 	})
 });

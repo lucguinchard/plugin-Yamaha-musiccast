@@ -54,11 +54,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<br>
 				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Recherche automatique}}</span>
 			</div>
-			<div class="cursor eqLogicAction searchMusiccast"
+			<div class="cursor eqLogicAction searchMusiccast" data-action="add"
 				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-				<i class="fa fa-plus-search" style="font-size : 6em;"></i>
+				<i class="fa fa-plus-circle" style="font-size : 6em;"></i>
 				<br>
-				<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;">{{Rechercher par IP}}</span>
+				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Rechercher par IP}}</span>
 			</div>
 			<div class="cursor eqLogicAction" data-action="gotoPluginConf"
 				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">

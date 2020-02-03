@@ -81,14 +81,40 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 			var url = 'index.php?';
 			for (var i in vars) {
 				if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
-				  url += i + '=' + vars[i].replace('#', '') + '&';
+					url += i + '=' + vars[i].replace('#', '') + '&';
 				}
 			}
 			url += 'id=' + data.id + '&saveSuccessFull=1';
 			if (document.location.toString().match('#')) {
-			  url += '#' + document.location.toString().split('#')[1];
+				url += '#' + document.location.toString().split('#')[1];
 			}
 			loadPage(url);
 		}
 	})
+});
+
+$('.eqLogicAction[data-action=addIP]').on('click', function () {
+	bootbox.prompt("{{Quel est l’IP de l’appareil Musiccast ?}}", function (result) {
+		if (result !== null) {
+			nextdom.eqLogic.save({
+				type: eqType,
+				eqLogics: [{name: result}],
+				error: function (error) {
+					notify('Erreur', error.message, 'error');
+				},
+				success: function (_data) {
+					var vars = getUrlVars();
+					var url = 'index.php?';
+					for (var i in vars) {
+						if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
+							url += i + '=' + vars[i].replace('#', '') + '&';
+						}
+					}
+					modifyWithoutSave = false;
+					url += 'id=' + _data.id + '&saveSuccessFull=1';
+					loadPage(url);
+				}
+			});
+		}
+	});
 });

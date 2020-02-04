@@ -377,6 +377,7 @@ class YamahaMusiccast extends eqLogic {
 				$device->postSave();
 			}
 		}
+		return count($ipList);
 	}
 
 	public static function searchDeviceList() {

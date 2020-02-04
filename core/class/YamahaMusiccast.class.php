@@ -70,9 +70,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getNetworkStatus");
 		if ($jsonGetNetworkStatus === false) {
-			log::add('YamahaMusiccast', 'erreur', 'L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable ou n’existant !');
-			$this->setIsVisible(0);
-			$this->setIsEnable(0);
+			throw new Exception(__('L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable ou n’existant !'), __FILE__);
 		} else {
 			$getNetworkStatus = json_decode($jsonGetNetworkStatus);
 			$this->setName($getNetworkStatus->network_name);
@@ -99,13 +97,13 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function postSave() {
-		$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/';
-		if (!file_exists($deviceDir)) {
-			mkdir($deviceDir, 0700);
-		}
 		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getFeatures");
 		$getFeatures = json_decode($jsonGetFeatures);
 		if (!empty($getFeatures)) {
+			$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/';
+			if (!file_exists($deviceDir)) {
+				mkdir($deviceDir, 0700);
+			}
 			foreach ($getFeatures->zone as $zone) {
 				$zoneName = $zone->id;
 				foreach ($zone->func_list as $func) {

@@ -30,5 +30,13 @@ class ajax
     public static function success()
     {
         MockedActions::add('ajax_success');
-    }
+	}
+
+    /**
+     * Renvoie une confirmation de la requête avec un message.
+     */
+    public static function successMsg($msg)
+    {
+        MockedActions::add('ajax_success', array('msg' => $msg));
+	}
 }

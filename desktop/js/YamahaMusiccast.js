@@ -75,6 +75,8 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 			if (data.state != 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
+			} else {
+				$('#div_alert').showAlert({message: data.result, level: 'success'});
 			}
 			modifyWithoutSave = false;
 			var vars = getUrlVars();

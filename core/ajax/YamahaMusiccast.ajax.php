@@ -39,9 +39,9 @@ try {
 	if (init('action') == 'searchMusiccast') {
 		$nb = YamahaMusiccast::saveDeviceList();
 		if($nb === 0) {
-			ajax::error(__('La recherche n’a pas trouvé d’appareil compatible.'));
+			ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.'));
 		} else {
-			ajax::success($nb);
+			ajax::successMsg($nb);
 		}
 	}
 

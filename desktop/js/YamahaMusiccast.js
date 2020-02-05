@@ -96,9 +96,9 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 });
 
 $('.eqLogicAction[data-action=addIP]').on('click', function () {
-	bootbox.prompt("{{Quel est l’IP de l’appareil Musiccast ?}}", function (result) {
+	bootbox.prompt("{{Quel est l’IP de votre nouvel appareil Musiccast ?}}", function (result) {
 		if (result !== null) {
-			nextdom.eqLogic.save({
+			jeedom.eqLogic.save({
 				type: eqType,
 				eqLogics: [{name: result}],
 				error: function (error) {

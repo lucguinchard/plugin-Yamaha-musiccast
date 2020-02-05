@@ -1,23 +1,15 @@
 # Description
 
-Plugin permettant de ....
+Ce plugin permettant de gérer les appareils Yamaha compatible Musiccast.
+Musiccast est une API dévellopé par Yamaha sur ces appareils.
 
-description
+Cette API permet pour chaque appareil:
+ - de voir et les informations matériels.
+ - de voir et modifier les informations logiciels (lecture des différentes zones, gestion net-radio, gestion réveil).
+ - de recevoir un retour d’information à chauque mise à jour des informations logiciels.
 
 # Market
 
-Retrouvez le sur le [Market](https://www.jeedom.com/market/index.php?v=d&p=market&type=plugin&&name=Plugin) Jeedom
+# La communauté Jeedom
 
-~~Changer **_Plugin_** par le nom du plugin dans l'adresse https du lien~~
-
-# Prévisualisation
-
-~~Insérer un screenshot du plugin en mode desktop~~
-
-![screenshot1](../images/ExtraTemplate_icon.png)
-
-# Forum
-
-Lien vers le [Forum](https://www.jeedom.com/forum/viewtopic.php?t=xxxx)
-
-~~Remplacer `t=xxxx` par le bon numéro de forum~~
+Lien vers le [Forum](https://community.jeedom.com/tags/plugin-musiccast)

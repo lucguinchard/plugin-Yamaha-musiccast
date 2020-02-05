@@ -363,6 +363,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function saveDeviceList() {
+		$return = [];
 		$ipList = YamahaMusiccast::searchDeviceList();
 		foreach ($ipList as $ip) {
 			$device = YamahaMusiccast::byLogicalId($ip, 'YamahaMusiccast');
@@ -373,9 +374,11 @@ class YamahaMusiccast extends eqLogic {
 				$device->preSave();
 				$device->save();
 				$device->postSave();
+				$return['list'][$ip] = $device->getName();
 			}
 		}
-		return count($ipList);
+		$return['nbFinal'] = count($ipList);
+		return $return;
 	}
 
 	public static function searchDeviceList() {

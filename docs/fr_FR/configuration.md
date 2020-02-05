@@ -2,7 +2,7 @@
 
 La partie configuration du plugin permet :
 
-* config 1,
+* port du socket
 * config 2,
 * config 3.
 

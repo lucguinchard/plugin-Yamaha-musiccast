@@ -1,6 +1,11 @@
 # Changelog
 
-### Version 0.1: (**_date_** 11 janvier 2020)
+### Version 0.2: (**4 février 2020**)
+
+* Mise en place de la page de configuration avec le mode recherche automatique et la recherche par ip
+* Mise en place d’un template d’affichage minimal.
+
+### Version 0.1: (**11 janvier 2020**)
 
 * Création d’un démon permettant de lancer un socket pour le dialogue entre les apparails Yamaha-Musiccast.
 * Utilisation du cron5 pour déclancher le dialogue entre les apparails Yamaha-Musiccast et le pluging Jeedom.

@@ -52,19 +52,19 @@ $eqLogics = eqLogic::byType($plugin->getId());
 		<legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
 		<div class="eqLogicThumbnailContainer">
 			<div class="cursor eqLogicAction" data-action="gotoPluginConf"
-				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-				<i class="fa fa-wrench" style="font-size : 6em;color:#767676;"></i>
+				 style="text-align: center; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
+				<i class="fa fa-wrench" style="font-size : 6em;"></i>
 				<br>
 				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Configuration}}</span>
 			</div>
 			<div class="cursor eqLogicAction" data-action="searchMusiccast"
-				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
+				 style="text-align: center; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
 				<i class="fa fa-search-plus" style="font-size : 6em;"></i>
 				<br>
 				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Recherche auto}}</span>
 			</div>
 			<div class="cursor eqLogicAction" data-action="addIP" title="{{Cette opération est utitile quand les appareils ne se trouve pas sur le même réseau (ex: Docker ou VM en mode bridge)}}"
-				 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
+				 style="text-align: center; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
 				<i class="fa fa-plus-circle" style="font-size : 6em;"></i>
 				<br>
 				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Rechercher IP}}</span>
@@ -75,7 +75,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<?php
 			foreach ($eqLogics as $eqLogic) {
 				$opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
-				echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="text-align: center; background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
+				echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="text-align: center; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
 				echo '<img src="' . $plugin->getPathImgIcon() . '" height="105" width="95" />';
 				echo "<br>";
 				echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;">' . $eqLogic->getHumanName(true, true) . '</span>';

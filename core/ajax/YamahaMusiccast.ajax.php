@@ -39,9 +39,13 @@ try {
 	if (init('action') == 'searchMusiccast') {
 		$return = YamahaMusiccast::saveDeviceList();
 		if($return === 0) {
-			ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.'));
+			ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.'). ' ' . __('Pour plus d’information consulter la ') . ' <a href="https://lucguinchard.github.io/plugin-Yamaha-musiccast/fr_FR/#tocAnchor-1-5">' . __('FAQ') . '</a>');
 		} else {
-			ajax::error('La recherche a trouvé ' . $return['nbFinal'] . ' appareil(s) compatible(s)  ' . print_r($result['list'], true));
+			$deviceList = "";
+			foreach ($return['list'] as $device){
+				$deviceList .= $device->getName() . ', ';
+			}
+			ajax::error('La recherche a trouvé ' . $return['nbFinal'] . ' appareil(s) compatible(s) : ' . substr($deviceList, 0, -2) . '');
 		}
 	}
 

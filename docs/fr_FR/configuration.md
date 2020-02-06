@@ -1,22 +1,13 @@
 # Configuration
 
-La partie configuration du plugin permet :
-
-* port du socket
-* config 2,
-* config 3.
-
-### Configuration du plugin
-
 Après téléchargement du plugin, il faut l’activer, celui-ci ne nécessite aucune autre configuration.
 
-### Configuration des équipements
+La partie configuration du plugin permet le paramétrage du socket pour le dialogue entre les appareils Musiccast et (jee|next)dom :
 
-description de la configuration du **plugin**, exemple d'_italique_ de **_bold Italique_** et de `code`
+* Port du socket - permet de choisir le port sur lequel les appareils Musiccast dialogueront.
+* Nom de l'application (Ce paramétre sera surement supprimé)
 
-```
-bloc code
+### Ajout des équipements
 
-```
-
-screenshot des écrans de config
+Dans le cadre d’une installation de (jee|next)dom dans le même réseau que les appareils musiccast, la `Recherche automatique` marche sans problème.
+Sinon il faudra utiliser le Recherche par IP et ajouter chaqu’un des appareils unitairement.

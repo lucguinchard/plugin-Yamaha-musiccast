@@ -2,7 +2,7 @@
 
 Après téléchargement du plugin, il faut l’activer, celui-ci ne nécessite aucune autre configuration.
 
-La partie configuration du plugin permet le paramétrage du socket pour le dialogue entre les appareils Musiccast et (jee|next)dom :
+La partie configuration du plugin permet le paramétrage du socket pour le dialogue entre les appareils Musiccast et (jee\|next)dom :
 
 * Port du socket - permet de choisir le port sur lequel les appareils Musiccast dialogueront.
 * Nom de l'application (Ce paramétre sera surement supprimé)

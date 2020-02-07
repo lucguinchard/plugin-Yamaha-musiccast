@@ -1,37 +1,48 @@
-.YamahaMusiccast .zone {
-	border: 1px solid black;
-	height: 150px;
-}
-
-.YamahaMusiccast .zone .display,.YamahaMusiccast .zone .displayoff {
+.YamahaMusiccast .display,.YamahaMusiccast .displayoff {
 	position: relative;
 	height: inherit;
 	overflow: auto;
 }
-.YamahaMusiccast .zone .center {
+
+.YamahaMusiccast .center {
 	text-align: center;
 }
 
-.YamahaMusiccast .zone .display .pochette {
-	height: 80px;
+.YamahaMusiccast .display .visual {
+	position: relative;
+}
+
+.YamahaMusiccast .display .pochette {
+	height: 120px;
 	margin: 5px;
 	border-radius: 10%;
 }
 
-.YamahaMusiccast .zone .display .pochette_input {
+.YamahaMusiccast .display .pochette_input, .YamahaMusiccast .audio_format {
 	position: absolute;
-	top: 70px;
-	left: 70px;
+	top: 110px;
+
+}
+.YamahaMusiccast .display .pochette_input {
+	left: 175px;
 	height: 20px;
 	border-radius: 5%;
 }
 
-.YamahaMusiccast .zone .btn {
+.YamahaMusiccast .audio_format {
+	left: 55px;
+	border-radius: 10%;
+	padding: 0 2px;
+	background-color: gainsboro;
+	font-size: xx-small;
+}
+
+.YamahaMusiccast .btn {
 	float:left;
 	padding: 4px 4px;
 }
 
-.YamahaMusiccast .zone .name {
+.YamahaMusiccast .name {
 	writing-mode: vertical-lr;
 	height: 100%;
 	float: right;
@@ -39,21 +50,10 @@
 	background-color: #ffffff20;
 }
 
-.YamahaMusiccast .zone .name span {
+.YamahaMusiccast .name span {
 	cursor: default;
 	line-height:28px;
 }
-
-.YamahaMusiccast .zone .audio_format {
-	position: absolute;
-	top: 75px;
-	left: 2px;
-	border-radius: 10%;
-	padding: 0 2px;
-	background-color: gainsboro;
-	font-size: xx-small;
-}
-
 
 .volume_range {
 	-webkit-appearance: none;
@@ -73,18 +73,24 @@
 
 .volume_range::-webkit-slider-thumb {
 	-webkit-appearance: none;
-	appearance: none;
-	width: 23px;
-	height: 24px;
+}
+.volume_range::-webkit-slider-thumb, .volume_range::-moz-range-thumb  {
+	width: 15px;
+	height: 15px;
 	border: 0;
-	background: url('sound.png');
 	cursor: pointer;
+	background-color: black;
 }
 
-.volume_range::-moz-range-thumb {
-	width: 23px;
-	height: 24px;
-	border: 0;
-	background: url('sound.png');
-	cursor: pointer;
+.one-line-defile {
+	white-space: nowrap;
+	-webkit-animation:linear marqueelike 20s infinite ;
+	-moz-animation:linear marqueelike 20s infinite ;
+	-o-animation:linear marqueelike 20s infinite ;
+	-ms-animation:linear marqueelike 20s infinite ;
+	animation:linear marqueelike 20s infinite ;
+}
+
+.artiste-album {
+	font-size :0.9em;
 }

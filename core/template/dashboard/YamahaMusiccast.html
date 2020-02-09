@@ -64,13 +64,13 @@
 	#netusb_shuffle_available#<br/>
 	<script>
 		if ('#main_power_state#' == 'on') {
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_off_id#})});
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .display").css('display', 'block');
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .displayoff").css('display', 'none');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #main_power_off_id#})});
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .display").css('display', 'block');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff").css('display', 'none');
 		} else {
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .power").click(function() {jeedom.cmd.execute({id: #main_power_on_id#})});
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .display").css('display', 'none');
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .main .displayoff").css('display', 'block');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #main_power_on_id#})});
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .display").css('display', 'none');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff").css('display', 'block');
 		}
 	</script>
 </div>

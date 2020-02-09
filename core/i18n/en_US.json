@@ -19,7 +19,11 @@
 		"Sauvegarder": "Save",
 		"Supprimer": "Delete",
 		"Type": "Type",
-		"Visible": "Visible"
+		"Visible": "Visible",
+		"Model": "Model",
+		"ip": "IP",
+		"lastCommunication": "Last Update",
+		"lastCallAPI": "Last call API"
 	},
 	"plugins\/YamahaMusiccast\/plugin_info\/configuration.php": {
 		"comment.socket": "The daemon opens a socket which allows the Yahama Musiccast device to communicate with it",

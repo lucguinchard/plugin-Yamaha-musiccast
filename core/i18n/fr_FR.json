@@ -20,7 +20,10 @@
 		"Supprimer": "Supprimer",
 		"Type": "Type",
 		"Visible": "Visible",
-		"Model": "Model"
+		"Model": "Model",
+		"ip": "IP",
+		"lastCommunication": "Dernière mise à jour",
+		"lastCallAPI": "Date de dernière appel de l’API"
 	},
 	"plugins\/YamahaMusiccast\/plugin_info\/configuration.php": {
 		"comment.socket": "Le démon ouvre un socket qui permet aux appareils Yahama Musiccast de communiquer avec lui",

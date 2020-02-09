@@ -160,6 +160,27 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									   data-l1key="configuration" data-l2key="model_name"/>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="Musiccast-param">{{ip}}</label>
+							<div class="col-sm-3">
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+									   data-l1key="logicalId"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="Musiccast-param">{{lastCommunication}}</label>
+							<div class="col-sm-3">
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+									   data-l1key="status" data-l2key="lastCommunication"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="Musiccast-param">{{lastCallAPI}}</label>
+							<div class="col-sm-3">
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+									   data-l1key="status" data-l2key="lastCallAPI"/>
+							</div>
+						</div>
 					</fieldset>
 				</form>
 			</div>

@@ -746,15 +746,33 @@ class YamahaMusiccast extends eqLogic {
 	static function callZoneGetStatus($device, $zoneName) {
 		$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zoneName/getStatus");
 		$getStatusZone = json_decode($jsonGetStatusZone);
-		$device->checkAndUpdateCmd($zoneName . '_power_state', $getStatusZone->power);
-		$device->checkAndUpdateCmd($zoneName . '_max_volume', $getStatusZone->max_volume);
-		$device->checkAndUpdateCmd($zoneName . '_volume_state', $getStatusZone->volume);
-		$device->checkAndUpdateCmd($zoneName . '_mute_state', $getStatusZone->mute);
-		$device->checkAndUpdateCmd($zoneName . '_input', $getStatusZone->input);
-		$device->checkAndUpdateCmd($zoneName . '_sound_program_state', $getStatusZone->sound_program);
-		$device->checkAndUpdateCmd($zoneName . '_link_audio_quality_state', $getStatusZone->link_audio_quality);
-		$device->checkAndUpdateCmd($zoneName . '_link_audio_delay_state', $getStatusZone->link_audio_delay);
-		$device->checkAndUpdateCmd($zoneName . '_link_control_state', $getStatusZone->link_control);
+		if (!empty($getStatusZone->power)) {
+			$device->checkAndUpdateCmd($zoneName . '_power_state', $getStatusZone->power);
+		}
+		if (!empty($getStatusZone->max_volume)) {
+			$device->checkAndUpdateCmd($zoneName . '_max_volume', $getStatusZone->max_volume);
+		}
+		if (!empty($getStatusZone->volume)) {
+			$device->checkAndUpdateCmd($zoneName . '_volume_state', $getStatusZone->volume);
+		}
+		if (!empty($getStatusZone->mute)) {
+			$device->checkAndUpdateCmd($zoneName . '_mute_state', $getStatusZone->mute);
+		}
+		if (!empty($getStatusZone->input)) {
+			$device->checkAndUpdateCmd($zoneName . '_input', $getStatusZone->input);
+		}
+		if (!empty($getStatusZone->sound_program)) {
+			$device->checkAndUpdateCmd($zoneName . '_sound_program_state', $getStatusZone->sound_program);
+		}
+		if (!empty($getStatusZone->link_audio_quality)) {
+			$device->checkAndUpdateCmd($zoneName . '_link_audio_quality_state', $getStatusZone->link_audio_quality);
+		}
+		if (!empty($getStatusZone->link_audio_delay)) {
+			$device->checkAndUpdateCmd($zoneName . '_link_audio_delay_state', $getStatusZone->link_audio_delay);
+		}
+		if (!empty($getStatusZone->link_control)) {
+			$device->checkAndUpdateCmd($zoneName . '_link_control_state', $getStatusZone->link_control);
+		}
 	}
 
 	static function CallAPI($method, $device, $path, $data = false) {

@@ -141,7 +141,7 @@ class YamahaMusiccast extends eqLogic {
 		if ($this->getCmd(null, 'mute_state')->execCmd() === 'true') {
 			$replace['#mute_action_id#'] = $this->getCmd(null, 'mute_off')->getId();
 		} else {
-			$replace['#mute_action_id#'] = $this->getCmd(null, 'mmute_on')->getId();
+			$replace['#mute_action_id#'] = $this->getCmd(null, 'mute_on')->getId();
 		}
 
 		foreach ($this->getCmd('action') as $cmd) {
@@ -610,7 +610,6 @@ class YamahaMusiccast extends eqLogic {
 		}
 		if (empty($deviceList)) {
 			log::add('YamahaMusiccast', 'info', 'L’appareil ' . $host . ' n’existe plus');
-			continue;
 		}
 		//log::add('YamahaMusiccast', 'debug', '$device_id' . $device_id . '       ' . print_r($result, true));
 	}

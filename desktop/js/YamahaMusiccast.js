@@ -98,13 +98,25 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 $('.eqLogicAction[data-action=addIP]').on('click', function () {
 	bootbox.prompt("{{Quel est l’IP de votre nouvel appareil Musiccast ?}}", function (result) {
 		if (result !== null) {
-			jeedom.eqLogic.save({
-				type: eqType,
-				eqLogics: [{name: result}],
-				error: function (error) {
-					notify('Erreur', error.message, 'error');
+			$.ajax({
+				type: "POST",
+				url: "plugins/YamahaMusiccast/core/ajax/YamahaMusiccast.ajax.php",
+				data: {
+					action: "saveIP",
+					ip: result,
 				},
-				success: function (_data) {
+				dataType: 'json',
+				error: function (request, status, error) {
+					handleAjaxError(request, status, error);
+				},
+				success: function (data) {
+					if (data.state != 'ok') {
+						$('#div_alert').showAlert({message: data.result, level: 'danger'});
+						return;
+					} else {
+						$('#div_alert').showAlert({message: data.result, level: 'success'});
+					}
+					modifyWithoutSave = false;
 					var vars = getUrlVars();
 					var url = 'index.php?';
 					for (var i in vars) {
@@ -112,11 +124,13 @@ $('.eqLogicAction[data-action=addIP]').on('click', function () {
 							url += i + '=' + vars[i].replace('#', '') + '&';
 						}
 					}
-					modifyWithoutSave = false;
-					url += 'id=' + _data.id + '&saveSuccessFull=1';
+					url += 'id=' + data.id + '&saveSuccessFull=1';
+					if (document.location.toString().match('#')) {
+						url += '#' + document.location.toString().split('#')[1];
+					}
 					loadPage(url);
 				}
-			});
+			})
 		}
 	});
 });

@@ -615,16 +615,16 @@ class YamahaMusiccast extends eqLogic {
 
 	static function callZone($eqLogic, $zoneName, $zone) {
 		if (!empty($zone->power)) {
-			$eqLogic->checkAndUpdateCmd($zoneName . '_power_state', $zone->power);
+			$eqLogic->checkAndUpdateCmd('power_state', $zone->power);
 		}
 		if (!empty($zone->input)) {
-			$eqLogic->checkAndUpdateCmd($zoneName . '_input', $zone->input);
+			$eqLogic->checkAndUpdateCmd('input', $zone->input);
 		}
 		if (!empty($zone->volume)) {
-			$eqLogic->checkAndUpdateCmd($zoneName . '_volume_state', $zone->volume);
+			$eqLogic->checkAndUpdateCmd('volume_state', $zone->volume);
 		}
 		if (!empty($zone->mute)) {
-			$eqLogic->checkAndUpdateCmd($zoneName . '_mute_state', $zone->mute);
+			$eqLogic->checkAndUpdateCmd('mute_state', $zone->mute);
 		}
 		if (!empty($zone->status_updated)) {
 			YamahaMusiccast::callZoneGetStatus($eqLogic, $zoneName);
@@ -640,13 +640,13 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->audio)) {
 			$audio = $result->audio;
 			if (!empty($audio->error)) {
-				$eqLogic->checkAndUpdateCmd($zoneName . '_audio_error', $audio->error);
+				$eqLogic->checkAndUpdateCmd('audio_error', $audio->error);
 			}
 			if (!empty($audio->format)) {
-				$eqLogic->checkAndUpdateCmd($zoneName . '_audio_format', $audio->format);
+				$eqLogic->checkAndUpdateCmd('audio_format', $audio->format);
 			}
 			if (!empty($audio->fs)) {
-				$eqLogic->checkAndUpdateCmd($zoneName . '_audio_fs', $audio->fs);
+				$eqLogic->checkAndUpdateCmd('audio_fs', $audio->fs);
 			}
 		}
 	}

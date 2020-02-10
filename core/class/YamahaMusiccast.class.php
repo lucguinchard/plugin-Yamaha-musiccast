@@ -454,7 +454,7 @@ class YamahaMusiccast extends eqLogic {
 	public static function traitement_message($host, $port, $json) {
 		//log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $json);
 		$result = json_decode($json);
-		$deviceList = = array();
+		$deviceList = array();
 		$devices = self::byType('YamahaMusiccast');
 		foreach ($devices as $eqLogic) {
 			$ip = $eqLogic->getConfiguration('ip');

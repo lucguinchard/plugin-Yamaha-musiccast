@@ -360,6 +360,7 @@ class YamahaMusiccast extends eqLogic {
 				$getNetworkStatus = json_decode($jsonGetNetworkStatus);
 				$device->setName($getNetworkStatus->network_name . " " . $zoneName);
 				$device->setConfiguration('model_name', $getDeviceInfo->model_name);
+				$device->save();
 			}
 		}
 		return $deviceZoneList;

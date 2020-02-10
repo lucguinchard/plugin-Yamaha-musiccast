@@ -67,7 +67,7 @@ try {
 	}
 
 	// Lève une exception si la requête n'a pas été traitée avec succès (Appel de la fonction ajax::success());
-	throw new \Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
+	throw new \Exception(__('Aucune méthode correspondante à : ', __FILE__) . $action);
 	/* **********Catch exeption*************** */
 } catch (\Exception $e) {
 	// Affiche l'exception levé à l'utilisateur

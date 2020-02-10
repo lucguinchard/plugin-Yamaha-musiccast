@@ -164,7 +164,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<label class="col-sm-3 control-label" for="Musiccast-param">{{ip}}</label>
 							<div class="col-sm-3">
 								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
-									   data-l1key="logicalId"/>
+									   data-l1key="configuration" data-l2key="ip"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="Musiccast-param">{{zone}}</label>
+							<div class="col-sm-3">
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+									   data-l1key="configuration" data-l2key="zone"/>
 							</div>
 						</div>
 						<div class="form-group">

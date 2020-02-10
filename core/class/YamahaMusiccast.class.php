@@ -266,7 +266,7 @@ class YamahaMusiccast extends eqLogic {
 		$return = array();
 		$ipList = YamahaMusiccast::searchDeviceIpList();
 		foreach ($ipList as $ip) {
-			$return[$ip] = saveDeviceIp($ip);
+			$return[$ip] = YamahaMusiccast::saveDeviceIp($ip);
 		}
 		return $return;
 	}
@@ -278,7 +278,7 @@ class YamahaMusiccast extends eqLogic {
 		$jsonGetDeviceInfo = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getDeviceInfo");
 		$getDeviceInfo = json_decode($jsonGetDeviceInfo);
 
-		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $this, "/YamahaExtendedControl/v1/system/getFeatures");
+		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getFeatures");
 		$getFeatures = json_decode($jsonGetFeatures);
 		if (!empty($getFeatures)) {
 			foreach ($getFeatures->zone as $zone) {
@@ -290,78 +290,76 @@ class YamahaMusiccast extends eqLogic {
 					$device = new YamahaMusiccast();
 					$device->setEqType_name('YamahaMusiccast');
 				}
+				$device->setName($logicalId);
 				$device->setLogicalId($logicalId);
 				$device->setCategory('multimedia', 1);
 				$device->setIsVisible(1);
 				$device->setIsEnable(1);
+				$device->setConfiguration('zone', $zoneName);
+				$device->setConfiguration('ip', $ip);
 				$device->save();
 			
-				$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/';
+				$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/';
 				if (!file_exists($deviceDir)) {
 					mkdir($deviceDir, 0700);
 				}
 				
 				foreach ($zone->func_list as $func) {
-					$this->createCmd($func . '_state');
+					$device->createCmd($func . '_state');
 				}
-				$this->createCmd('max_volume');
-				$this->createCmd('input');
-				$this->createCmd('power_on', 'action', 'other', null, 'ENERGY_ON');
-				$this->createCmd('power_off', 'action', 'other', null, 'ENERGY_OFF');
-				$this->createCmd('volume_change', 'action', 'slider', null, 'SET_VOLUME');
+				$device->createCmd('max_volume');
+				$device->createCmd('input');
+				$device->createCmd('power_on', 'action', 'other', null, 'ENERGY_ON');
+				$device->createCmd('power_off', 'action', 'other', null, 'ENERGY_OFF');
+				$device->createCmd('volume_change', 'action', 'slider', null, 'SET_VOLUME');
 
-				$this->createCmd('audio_error');
-				$this->createCmd('audio_format');
-				$this->createCmd('audio_fs');
+				$device->createCmd('audio_error');
+				$device->createCmd('audio_format');
+				$device->createCmd('audio_fs');
 
-				$this->createCmd('mute_on', 'action', 'other', null, null);
-				$this->createCmd('mute_off', 'action', 'other', null, null);
+				$device->createCmd('mute_on', 'action', 'other', null, null);
+				$device->createCmd('mute_off', 'action', 'other', null, null);
 
-				$this->createCmd('netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');
-				$this->createCmd('netusb_playback_stop', 'action', 'other', null, 'MEDIA_STOP');
-				$this->createCmd('netusb_playback_pause', 'action', 'other', null, 'MEDIA_PAUSE');
-				$this->createCmd('netusb_playback_play_pause', 'action', 'other', null);
-				$this->createCmd('netusb_playback_previous', 'action', 'other', null, 'MEDIA_PREVIOUS');
-				$this->createCmd('netusb_playback_next', 'action', 'other', null, 'MEDIA_NEXT');
-				$this->createCmd('netusb_playback_fast_reverse_start', 'action', 'other', null);
-				$this->createCmd('netusb_playback_fast_reverse_end', 'action', 'other', null);
-				$this->createCmd('netusb_playback_fast_forward_start', 'action', 'other', null);
-				$this->createCmd('netusb_playback_fast_forward_end', 'action', 'other', null);
+				$device->createCmd('netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');
+				$device->createCmd('netusb_playback_stop', 'action', 'other', null, 'MEDIA_STOP');
+				$device->createCmd('netusb_playback_pause', 'action', 'other', null, 'MEDIA_PAUSE');
+				$device->createCmd('netusb_playback_play_pause', 'action', 'other', null);
+				$device->createCmd('netusb_playback_previous', 'action', 'other', null, 'MEDIA_PREVIOUS');
+				$device->createCmd('netusb_playback_next', 'action', 'other', null, 'MEDIA_NEXT');
+				$device->createCmd('netusb_playback_fast_reverse_start', 'action', 'other', null);
+				$device->createCmd('netusb_playback_fast_reverse_end', 'action', 'other', null);
+				$device->createCmd('netusb_playback_fast_forward_start', 'action', 'other', null);
+				$device->createCmd('netusb_playback_fast_forward_end', 'action', 'other', null);
 
-				$this->createCmd('netusb_shuffle_off', 'action', 'other', null);
-				$this->createCmd('netusb_shuffle_on', 'action', 'other', null);
-				$this->createCmd('netusb_shuffle_songs', 'action', 'other', null);
-				$this->createCmd('netusb_shuffle_albums', 'action', 'other', null);
-				$this->createCmd('netusb_repeat_off', 'action', 'other', null);
-				$this->createCmd('netusb_repeat_one', 'action', 'other', null);
-				$this->createCmd('netusb_repeat_all', 'action', 'other', null);
+				$device->createCmd('netusb_shuffle_off', 'action', 'other', null);
+				$device->createCmd('netusb_shuffle_on', 'action', 'other', null);
+				$device->createCmd('netusb_shuffle_songs', 'action', 'other', null);
+				$device->createCmd('netusb_shuffle_albums', 'action', 'other', null);
+				$device->createCmd('netusb_repeat_off', 'action', 'other', null);
+				$device->createCmd('netusb_repeat_one', 'action', 'other', null);
+				$device->createCmd('netusb_repeat_all', 'action', 'other', null);
 
-				$this->createCmd('netusb_input');
-				$this->createCmd('netusb_play_queue_type');
-				$this->createCmd('netusb_playback');
-				$this->createCmd('netusb_repeat');
-				$this->createCmd('netusb_shuffle');
-				$this->createCmd('netusb_play_time');
-				$this->createCmd('netusb_total_time');
-				$this->createCmd('netusb_artist');
-				$this->createCmd('netusb_album');
-				$this->createCmd('netusb_track');
-				$this->createCmd('netusb_albumart_url');
-				$this->createCmd('netusb_albumart_id');
-				$this->createCmd('netusb_usb_devicetype');
-				$this->createCmd('netusb_usb_auto_stopped');
-				$this->createCmd('netusb_attribute');
-				$this->createCmd('netusb_repeat_available');
-				$this->createCmd('netusb_shuffle_available');
-
-				foreach ($getFeatures->zone as $zone) {
-					YamahaMusiccast::callZoneGetStatus($this, $zone->id);
-				}
+				$device->createCmd('netusb_input');
+				$device->createCmd('netusb_play_queue_type');
+				$device->createCmd('netusb_playback');
+				$device->createCmd('netusb_repeat');
+				$device->createCmd('netusb_shuffle');
+				$device->createCmd('netusb_play_time');
+				$device->createCmd('netusb_total_time');
+				$device->createCmd('netusb_artist');
+				$device->createCmd('netusb_album');
+				$device->createCmd('netusb_track');
+				$device->createCmd('netusb_albumart_url');
+				$device->createCmd('netusb_albumart_id');
+				$device->createCmd('netusb_usb_devicetype');
+				$device->createCmd('netusb_usb_auto_stopped');
+				$device->createCmd('netusb_attribute');
+				$device->createCmd('netusb_repeat_available');
+				$device->createCmd('netusb_shuffle_available');
+				YamahaMusiccast::callZoneGetStatus($device, $zoneName);
 				$getNetworkStatus = json_decode($jsonGetNetworkStatus);
-				$this->setName($getNetworkStatus->network_name . " " . $zoneName);
-				$this->setConfiguration('model_name', $getDeviceInfo->model_name);
-				$this->setConfiguration('zone', $zoneName);
-				$this->setConfiguration('ip', $ip);
+				$device->setName($getNetworkStatus->network_name . " " . $zoneName);
+				$device->setConfiguration('model_name', $getDeviceInfo->model_name);
 			}
 		}
 		return $deviceZoneList;
@@ -779,11 +777,11 @@ class YamahaMusiccast extends eqLogic {
 		$header[1] = "X-AppName: MusicCast/1.0 ($name)";
 		$header[2] = "X-AppPort: $port";
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-		if($eqLogic instanceof String) {
+		if(is_string($eqLogic)) {
 			$url = "http://" . $eqLogic . $path;
 		} else {
 			$url = "http://" . $eqLogic->getConfiguration('ip') . $path;
-			$device->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
+			$eqLogic->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
 		}
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

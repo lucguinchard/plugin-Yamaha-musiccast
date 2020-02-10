@@ -36,7 +36,7 @@ try {
 	// Initialise la gestion des requêtes Ajax
 	ajax::init();
 	$action = init('action');
-	switch(init('action')) {
+	switch($action) {
 		case 'searchMusiccast':
 			$return = YamahaMusiccast::searchAndSaveDeviceList();
 			$nb = count($return);

@@ -283,7 +283,7 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($getFeatures)) {
 			foreach ($getFeatures->zone as $zone) {
 				$zoneName = $zone->id;
-				array_push($deviceZoneList, $zoneName)
+				array_push($deviceZoneList, $zoneName);
 				$logicalId = $ip.':'.$zoneName;
 				$device = YamahaMusiccast::byLogicalId($logicalId, 'YamahaMusiccast');
 				if (!is_object($device)) {

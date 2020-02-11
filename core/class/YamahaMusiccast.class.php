@@ -454,12 +454,12 @@ class YamahaMusiccast extends eqLogic {
 		//log::add('YamahaMusiccast', 'debug', 'Traitement  : ' . $host . ':' . $port . ' → ' . $json);
 		$result = json_decode($json);
 		$eqLogicByIPList = array();
-		$$eqLogicList = self::byType('YamahaMusiccast');
-		foreach ($$eqLogicList as $eqLogic) {
+		$eqLogicList = self::byType('YamahaMusiccast');
+		foreach ($eqLogicList as $eqLogic) {
 			$ip = $eqLogic->getConfiguration('ip');
 			$zone = $eqLogic->getConfiguration('zone');
 			if ($ip === $host) {
-				array_push($$eqLogicByIPList, $eqLogic);
+				array_push($eqLogicByIPList, $eqLogic);
 				$device_id = $result->device_id;
 				if (!empty($result->system)) {
 					$system = $result->system;
@@ -608,7 +608,7 @@ class YamahaMusiccast extends eqLogic {
 				$eqLogic->refreshWidget();
 			}
 		}
-		if (empty($$eqLogicByIPList)) {
+		if (empty($eqLogicByIPList)) {
 			log::add('YamahaMusiccast', 'info', 'L’appareil ' . $host . ' n’existe plus');
 		}
 		//log::add('YamahaMusiccast', 'debug', '$device_id' . $device_id . '       ' . print_r($result, true));

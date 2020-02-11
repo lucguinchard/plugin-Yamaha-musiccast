@@ -37,7 +37,7 @@ class YamahaMusiccastCmd extends cmd {
 			return;
 		}
 		$device = $this->getEqLogic();
-		$zone = $this->getConfiguration('zone');
+		$zone = $device->getConfiguration('zone');
 		switch ($this->getLogicalId()) {
 			case "mute_on":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=true");

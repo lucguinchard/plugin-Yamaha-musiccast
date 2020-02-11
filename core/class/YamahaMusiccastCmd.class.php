@@ -37,25 +37,26 @@ class YamahaMusiccastCmd extends cmd {
 			return;
 		}
 		$device = $this->getEqLogic();
+		$zone = $device->getConfiguration('zone');
 		switch ($this->getLogicalId()) {
-			case "main_mute_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setMute?enable=true");
+			case "mute_on":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=true");
 				break;
-			case "main_mute_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setMute?enable=false");
+			case "mute_off":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=false");
 				break;
-			case "main_power_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=on");
+			case "power_on":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
 				break;
-			case "main_power_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=standby");
+			case "power_off":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=standby");
 				break;
-			case "main_power_toggle":
+			case "power_toggle":
 				log::add('YamahaMusiccast', 'info', 'TODO:main_power_Toggle');
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setPower?power=toggle");
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=toggle");
 				break;
-			case "main_volume_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/main/setVolume?volume=" . $_options['volume']);
+			case "volume_change":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['volume']);
 				break;
 			case "netusb_playback_play":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");

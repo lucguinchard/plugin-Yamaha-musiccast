@@ -35,23 +35,39 @@ try {
 
 	// Initialise la gestion des requêtes Ajax
 	ajax::init();
-
-	if (init('action') == 'searchMusiccast') {
-		$return = YamahaMusiccast::saveDeviceList();
-		$nb = count($return);
-		if($nb === 0) {
-			ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.'). ' ' . __('Pour plus d’information consulter la ') . ' <a href="https://lucguinchard.github.io/plugin-Yamaha-musiccast/fr_FR/#tocAnchor-1-5">' . __('FAQ') . '</a>');
-		} else {
-			$deviceList = "";
-			foreach ($return as $device){
-				$deviceList .= $device->getName() . ', ';
+	$action = init('action');
+	switch($action) {
+		case 'searchMusiccast':
+			$return = YamahaMusiccast::searchAndSaveDeviceList();
+			$nb = count($return);
+			if($nb === 0) {
+				ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.'). ' ' . __('Pour plus d’information consulter la ') . ' <a href="https://lucguinchard.github.io/plugin-Yamaha-musiccast/fr_FR/#tocAnchor-1-5">' . __('FAQ') . '</a>');
+			} else {
+				$deviceList = "";
+				foreach ($return as $device){
+					$deviceList .= $device->getName() . ', ';
+				}
+				ajax::error('La recherche a trouvé ' . $nb . ' appareil(s) compatible(s) : ' . substr($deviceList, 0, -2) . '');
 			}
-			ajax::error('La recherche a trouvé ' . $nb . ' appareil(s) compatible(s) : ' . substr($deviceList, 0, -2) . '');
-		}
+			break;
+		case 'saveIP':
+			$ip = init('ip');
+			$return = YamahaMusiccast::saveDeviceIp($ip);
+			$nb = count($return);
+			if($nb === 0) {
+				ajax::error(__('La recherche n’a pas trouvé d’appareil compatible pour : ' . $ip));
+			} else {
+				$zoneList = "";
+				foreach ($return as $zone){
+					$zoneList .= $zone . ', ';
+				}
+				ajax::error('La recherche a trouvé un appareil compatible avec la(es) zone(s) suivante(s) :' . substr($zoneList, 0, -2));
+			}
+			break;
 	}
 
 	// Lève une exception si la requête n'a pas été traitée avec succès (Appel de la fonction ajax::success());
-	throw new \Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
+	throw new \Exception(__('Aucune méthode correspondante à : ', __FILE__) . $action);
 	/* **********Catch exeption*************** */
 } catch (\Exception $e) {
 	// Affiche l'exception levé à l'utilisateur

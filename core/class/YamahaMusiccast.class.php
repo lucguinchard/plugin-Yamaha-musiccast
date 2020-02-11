@@ -687,7 +687,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$fileAlbumART = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $eqLogic->getId() . '/AlbumART.jpg';
 		if (!empty($result->albumart_url)) {
-			$url = "http://" . $eqLogic->getLogicalId() . $result->albumart_url;
+			$url = "http://" . $eqLogic->getConfiguration('ip') . $result->albumart_url;
 			file_put_contents($fileAlbumART, file_get_contents($url));
 			$eqLogic->checkAndUpdateCmd('netusb_albumart_url', $result->albumart_url);
 		} else {

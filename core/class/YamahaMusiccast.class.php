@@ -274,17 +274,109 @@ class YamahaMusiccast extends eqLogic {
 	public static function saveDeviceIp($ip) {
 		$deviceZoneList = array();
 		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getNetworkStatus");
-		if ($jsonGetNetworkStatus === false) throw new Exception(__('L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable ou n’existant !'), __FILE__);
+		if ($jsonGetNetworkStatus === false)
+			throw new Exception(__('L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable ou n’existant !'), __FILE__);
 		$jsonGetDeviceInfo = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getDeviceInfo");
 		$getDeviceInfo = json_decode($jsonGetDeviceInfo);
 
 		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getFeatures");
 		$getFeatures = json_decode($jsonGetFeatures);
 		if (!empty($getFeatures)) {
+			$fonc_list = $getFeatures->func_list;
+			if(in_array("wired_lan", $fonc_list)) {
+
+			}
+			if(in_array("wireless_lan", $fonc_list)) {
+
+			}
+			if(in_array("wireless_direct", $fonc_list)) {
+
+			}
+			if(in_array("extend_1_band", $fonc_list)) {
+
+			}
+			if(in_array("dfs_option", $fonc_list)) {
+
+			}
+			if(in_array("network_standby_auto", $fonc_list)) {
+
+			}
+			if(in_array("network_standby", $fonc_list)) {
+
+			}
+			if(in_array("bluetooth_standby", $fonc_list)) {
+
+			}
+			if(in_array("bluetooth_tx_setting", $fonc_list)) {
+
+			}
+			if(in_array("auto_power_standby", $fonc_list)) {
+
+			}
+			if(in_array("ir_sensor", $fonc_list)) {
+
+			}
+			if(in_array("speaker_a", $fonc_list)) {
+
+			}
+			if(in_array("speaker_b", $fonc_list)) {
+
+			}
+			if(in_array("zone_b_volume_sync", $fonc_list)) {
+
+			}
+			if(in_array("headphone", $fonc_list)) {
+
+			}
+			if(in_array("hdmi_out_1", $fonc_list)) {
+
+			}
+			if(in_array("dimmer", $fonc_list)) {
+
+			}
+			if(in_array("hdmi_out_2", $fonc_list)) {
+
+			}
+			if(in_array("hdmi_out_3", $fonc_list)) {
+
+			}
+			if(in_array("airplay", $fonc_list)) {
+
+			}
+			if(in_array("stereo_pair", $fonc_list)) {
+
+			}
+			if(in_array("speaker_settings", $fonc_list)) {
+
+			}
+			if(in_array("disklavier_settings", $fonc_list)) {
+
+			}
+			if(in_array("background_download", $fonc_list)) {
+
+			}
+			if(in_array("remote_info", $fonc_list)) {
+
+			}
+			if(in_array("network_reboot", $fonc_list)) {
+
+			}
+			if(in_array("system_reboot", $fonc_list)) {
+
+			}
+			if(in_array("auto_play", $fonc_list)) {
+
+			}
+			if(in_array("speaker_pattern", $fonc_list)) {
+
+			}
+			if(in_array("party_mode", $fonc_list)) {
+
+			}
 			foreach ($getFeatures->zone as $zone) {
 				$zoneName = $zone->id;
 				array_push($deviceZoneList, $zoneName);
-				$logicalId = $ip.':'.$zoneName;
+				$logicalId = $ip . ':' . $zoneName;
 				$device = YamahaMusiccast::byLogicalId($logicalId, 'YamahaMusiccast');
 				if (!is_object($device)) {
 					$device = new YamahaMusiccast();
@@ -298,14 +390,102 @@ class YamahaMusiccast extends eqLogic {
 				$device->setConfiguration('zone', $zoneName);
 				$device->setConfiguration('ip', $ip);
 				$device->save();
-			
+
 				$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/';
 				if (!file_exists($deviceDir)) {
 					mkdir($deviceDir, 0700);
 				}
-				
+
 				foreach ($zone->func_list as $func) {
 					$device->createCmd($func . '_state');
+				}
+				$fonc_list = $zone->func_list;
+				if(in_array("power", $fonc_list)) {
+					
+				}
+				if(in_array("sleep", $fonc_list)) {
+					
+				}
+				if(in_array("volume", $fonc_list)) {
+					
+				}
+				if(in_array("mute", $fonc_list)) {
+					
+				}
+				if(in_array("sound_program", $fonc_list)) {
+					
+				}
+				if(in_array("surround_3d", $fonc_list)) {
+					
+				}
+				if(in_array("direct", $fonc_list)) {
+					
+				}
+				if(in_array("pure_direct", $fonc_list)) {
+					
+				}
+				if(in_array("enhancer", $fonc_list)) {
+					
+				}
+				if(in_array("tone_control", $fonc_list)) {
+					
+				}
+				if(in_array("equalizer", $fonc_list)) {
+					
+				}
+				if(in_array("balance", $fonc_list)) {
+					
+				}
+				if(in_array("dialogue_level", $fonc_list)) {
+					
+				}
+				if(in_array("dialogue_lift", $fonc_list)) {
+					
+				}
+				if(in_array("bass_extension", $fonc_list)) {
+					
+				}
+				if(in_array("clear_voice", $fonc_list)) {
+					
+				}
+				if(in_array("signal_info", $fonc_list)) {
+					
+				}
+				if(in_array("subwoofer_volume", $fonc_list)) {
+					
+				}
+				if(in_array("prepare_input_change", $fonc_list)) {
+					
+				}
+				if(in_array("link_control", $fonc_list)) {
+					
+				}
+				if(in_array("link_audio_delay", $fonc_list)) {
+					
+				}
+				if(in_array("link_audio_quality", $fonc_list)) {
+					
+				}
+				if(in_array("scene", $fonc_list)) {
+					
+				}
+				if(in_array("contents_display", $fonc_list)) {
+					
+				}
+				if(in_array("cursor", $fonc_list)) {
+					
+				}
+				if(in_array("menu", $fonc_list)) {
+					
+				}
+				if(in_array("actual_volume", $fonc_list)) {
+					
+				}
+				if(in_array("audio_select", $fonc_list)) {
+					
+				}
+				if(in_array("surr_decoder_type", $fonc_list)) {
+					
 				}
 				$device->createCmd('max_volume');
 				$device->createCmd('input');
@@ -779,19 +959,110 @@ class YamahaMusiccast extends eqLogic {
 		$header[1] = "X-AppName: MusicCast/1.0 ($name)";
 		$header[2] = "X-AppPort: $port";
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-		if(is_string($eqLogic)) {
-			$url = "http://" . $eqLogic . $path;
+		$ip = null;
+		if (is_string($eqLogic)) {
+			$ip = $eqLogic;
 		} else {
-			$url = "http://" . $eqLogic->getConfiguration('ip') . $path;
-			$eqLogic->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
+			$ip = $eqLogic->getConfiguration('ip');
 		}
+		$url = "http://" . $ip . $path;
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
-		$result = curl_exec($curl);
-
+		$result = json_decode(curl_exec($curl));
 		curl_close($curl);
-
+		if (!empty($result->response_code)) {
+			if (!is_string($eqLogic)) {
+				$eqLogic->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
+			}
+			$response_code = $result->response_code;
+			$message = "KO";
+			$logLevel = "erreur";
+			switch ($response_code) {
+				case 0:
+					$message = "Successful request";
+					$logLevel = false;
+					break;
+				case 1:
+					$message = "Initializing";
+					break;
+				case 2:
+					$message = "Internal Error";
+					break;
+				case 3:
+					$message = "Invalid Request (A method did not exist, a method wasn’t appropriate etc)";
+					break;
+				case 4:
+					$message = "Invalid Parameter (Out of range, invalid characters etc.)";
+					break;
+				case 5:
+					$message = "Guarded (Unable to setup in current status etc.)";
+					break;
+				case 6:
+					$message = "Time Out";
+					break;
+				case 99:
+					$message = "Firmware Updating";
+					break;
+				case 100:
+					$message = "Access Error";
+					break;
+				case 101:
+					$message = "Other Errors";
+					break;
+				case 102:
+					$message = "Wrong User Name";
+					break;
+				case 103:
+					$message = "Wrong Password";
+					break;
+				case 104:
+					$message = "Account Expired";
+					break;
+				case 105:
+					$message = "Account Disconnected/Gone Off/Shut Down";
+					break;
+				case 106:
+					$message = "Account Number Reached to the Limit";
+					break;
+				case 107:
+					$message = "Server Maintenance";
+					break;
+				case 108:
+					$message = "Invalid Account";
+					break;
+				case 109:
+					$message = "License Error";
+					break;
+				case 110:
+					$message = "Read Only Mode";
+					break;
+				case 111:
+					$message = "Max Stations";
+					break;
+				case 112:
+					$message = "Access Denied";
+					break;
+				case 113:
+					$message = "There is a need to specify the additional destination Playlist";
+					break;
+				case 114:
+					$message = "There is a need to create a new Playlist";
+					break;
+				case 115:
+					$message = "Simultaneous logins has reached the upper limit";
+					break;
+				case 200:
+					$message = "Linking in progress";
+					break;
+				case 201:
+					$message = "Unlinking in prog";
+					break;
+			}
+			if ($logLevel) {
+				log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);
+			}
+		}
 		return $result;
 	}
 

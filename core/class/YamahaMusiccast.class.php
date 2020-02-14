@@ -1067,6 +1067,8 @@ class YamahaMusiccast extends eqLogic {
 				case 201:
 					$message = "Unlinking in prog";
 					break;
+				default :
+					$message = "CallAPI - response_code not found : " . $response_code;
 			}
 			if ($logLevel) {
 				log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);

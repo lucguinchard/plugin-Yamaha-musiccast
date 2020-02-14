@@ -133,6 +133,10 @@ class YamahaMusiccast extends eqLogic {
 			}
 		}
 
+		foreach ($this->getCmd('action') as $cmd) {
+			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+		}
+
 		if ($this->getCmd(null, 'power_state')->execCmd() === 'on') {
 			$replace['#power_action_id#'] = $this->getCmd(null, 'power_off')->getId();
 		} else {
@@ -142,10 +146,6 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#mute_action_id#'] = $this->getCmd(null, 'mute_off')->getId();
 		} else {
 			$replace['#mute_action_id#'] = $this->getCmd(null, 'mute_on')->getId();
-		}
-
-		foreach ($this->getCmd('action') as $cmd) {
-			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 		}
 
 		if (file_exists(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg')) {
@@ -273,106 +273,15 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function saveDeviceIp($ip) {
 		$deviceZoneList = array();
-		$jsonGetNetworkStatus = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getNetworkStatus");
-		if ($jsonGetNetworkStatus === false)
+		$getNetworkStatus = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getNetworkStatus");
+		if ($getNetworkStatus === false) {
 			throw new Exception(__('L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable ou n’existant !'), __FILE__);
-		$jsonGetDeviceInfo = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getDeviceInfo");
-		$getDeviceInfo = json_decode($jsonGetDeviceInfo);
+		}
+		$getDeviceInfo = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getDeviceInfo");
 
-		$jsonGetFeatures = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getFeatures");
-		$getFeatures = json_decode($jsonGetFeatures);
-		if (!empty($getFeatures)) {
-			$fonc_list = $getFeatures->func_list;
-			if(in_array("wired_lan", $fonc_list)) {
-
-			}
-			if(in_array("wireless_lan", $fonc_list)) {
-
-			}
-			if(in_array("wireless_direct", $fonc_list)) {
-
-			}
-			if(in_array("extend_1_band", $fonc_list)) {
-
-			}
-			if(in_array("dfs_option", $fonc_list)) {
-
-			}
-			if(in_array("network_standby_auto", $fonc_list)) {
-
-			}
-			if(in_array("network_standby", $fonc_list)) {
-
-			}
-			if(in_array("bluetooth_standby", $fonc_list)) {
-
-			}
-			if(in_array("bluetooth_tx_setting", $fonc_list)) {
-
-			}
-			if(in_array("auto_power_standby", $fonc_list)) {
-
-			}
-			if(in_array("ir_sensor", $fonc_list)) {
-
-			}
-			if(in_array("speaker_a", $fonc_list)) {
-
-			}
-			if(in_array("speaker_b", $fonc_list)) {
-
-			}
-			if(in_array("zone_b_volume_sync", $fonc_list)) {
-
-			}
-			if(in_array("headphone", $fonc_list)) {
-
-			}
-			if(in_array("hdmi_out_1", $fonc_list)) {
-
-			}
-			if(in_array("dimmer", $fonc_list)) {
-
-			}
-			if(in_array("hdmi_out_2", $fonc_list)) {
-
-			}
-			if(in_array("hdmi_out_3", $fonc_list)) {
-
-			}
-			if(in_array("airplay", $fonc_list)) {
-
-			}
-			if(in_array("stereo_pair", $fonc_list)) {
-
-			}
-			if(in_array("speaker_settings", $fonc_list)) {
-
-			}
-			if(in_array("disklavier_settings", $fonc_list)) {
-
-			}
-			if(in_array("background_download", $fonc_list)) {
-
-			}
-			if(in_array("remote_info", $fonc_list)) {
-
-			}
-			if(in_array("network_reboot", $fonc_list)) {
-
-			}
-			if(in_array("system_reboot", $fonc_list)) {
-
-			}
-			if(in_array("auto_play", $fonc_list)) {
-
-			}
-			if(in_array("speaker_pattern", $fonc_list)) {
-
-			}
-			if(in_array("party_mode", $fonc_list)) {
-
-			}
+		$getFeatures = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getFeatures");
+		if ($getFeatures !== false) {
+			$fonc_list_features = $getFeatures->system->func_list;
 			foreach ($getFeatures->zone as $zone) {
 				$zoneName = $zone->id;
 				array_push($deviceZoneList, $zoneName);
@@ -396,109 +305,210 @@ class YamahaMusiccast extends eqLogic {
 					mkdir($deviceDir, 0700);
 				}
 
-				foreach ($zone->func_list as $func) {
-					$device->createCmd($func . '_state');
+				if(in_array("wired_lan", $fonc_list_features)) {
+					$device->createCmd('set_wired_lan', 'action', 'other', null, null);
 				}
-				$fonc_list = $zone->func_list;
-				if(in_array("power", $fonc_list)) {
+				if(in_array("wireless_lan", $fonc_list_features)) {
+					$device->createCmd('set_wirless_lan', 'action', 'other', null, null);
+				}
+				if(in_array("wireless_direct", $fonc_list_features)) {
+					$device->createCmd('set_wirless_direct', 'action', 'other', null, null);
+				}
+				if(in_array("extend_1_band", $fonc_list_features)) {
+				}
+				if(in_array("dfs_option", $fonc_list_features)) {
+				}
+				if(in_array("network_standby_auto", $fonc_list_features)) {
+				}
+				if(in_array("network_standby", $fonc_list_features)) {
+
+				}
+				if(in_array("bluetooth_standby", $fonc_list_features)) {
+					$device->createCmd('disconnect_bluetooth_device', 'action', 'other', null, null);
+					$device->createCmd('connect_bluetooth_device', 'action', 'other', null, null);
+					$device->createCmd('update_bluetooth_device_list', 'action', 'other', null, null);
+
+				}
+				if(in_array("bluetooth_tx_setting", $fonc_list_features)) {
+					$device->createCmd('set_bluetooth_tx_setting', 'action', 'other', null, null);
+
+				}
+				if(in_array("auto_power_standby", $fonc_list_features)) {
+					$device->createCmd('auto_power_standby_on', 'action', 'other', null, null);
+					$device->createCmd('auto_power_standby_off', 'action', 'other', null, null);
+
+				}
+				if(in_array("ir_sensor", $fonc_list_features)) {
+					$device->createCmd('ir_sensor_on', 'action', 'other', null, null);
+					$device->createCmd('ir_sensor_off', 'action', 'other', null, null);
+
+				}
+				if(in_array("speaker_a", $fonc_list_features)) {
+					$device->createCmd('speaker_a_on', 'action', 'other', null, null);
+					$device->createCmd('speaker_a_off', 'action', 'other', null, null);
+				}
+				if(in_array("dimmer", $fonc_list_features)) {
+					$device->createCmd('dimmer', 'action', 'other', null, null);
+				}
+				if(in_array("speaker_b", $fonc_list_features)) {
+					$device->createCmd('speaker_b_on', 'action', 'other', null, null);
+					$device->createCmd('speaker_b_off', 'action', 'other', null, null);
+				}
+				if(in_array("zone_b_volume_sync", $fonc_list_features)) {
+					$device->createCmd('zone_b_volume_sync_on', 'action', 'other', null, null);
+					$device->createCmd('zone_b_volume_sync_off', 'action', 'other', null, null);
+				}
+				if(in_array("headphone", $fonc_list_features)) {
+
+				}
+				if(in_array("hdmi_out_1", $fonc_list_features)) {
+					$device->createCmd('hdmi_out_1_on', 'action', 'other', null, null);
+					$device->createCmd('hdmi_out_1_off', 'action', 'other', null, null);
+				}
+				if(in_array("hdmi_out_2", $fonc_list_features)) {
+					$device->createCmd('hdmi_out_2_on', 'action', 'other', null, null);
+					$device->createCmd('hdmi_out_2_off', 'action', 'other', null, null);
+				}
+				if(in_array("hdmi_out_3", $fonc_list_features)) {
+					$device->createCmd('hdmi_out_3_on', 'action', 'other', null, null);
+					$device->createCmd('hdmi_out_3_off', 'action', 'other', null, null);
+				}
+				if(in_array("airplay", $fonc_list_features)) {
+					$device->createCmd('set_air_play_pin', 'action', 'other', null, null);
+				}
+				if(in_array("stereo_pair", $fonc_list_features)) {
+
+				}
+				if(in_array("speaker_settings", $fonc_list_features)) {
+
+				}
+				if(in_array("disklavier_settings", $fonc_list_features)) {
+
+				}
+				if(in_array("background_download", $fonc_list_features)) {
+
+				}
+				if(in_array("remote_info", $fonc_list_features)) {
+
+				}
+				if(in_array("network_reboot", $fonc_list_features)) {
+
+				}
+				if(in_array("system_reboot", $fonc_list_features)) {
+
+				}
+				if(in_array("auto_play", $fonc_list_features)) {
+					$device->createCmd('auto_play_on', 'action', 'other', null, null);
+					$device->createCmd('auto_play_off', 'action', 'other', null, null);
+				}
+				if(in_array("speaker_pattern", $fonc_list_features)) {
+
+				}
+				if(in_array("party_mode", $fonc_list_features)) {
+
+				}
+				$fonc_list_zone = $zone->func_list;
+				if(in_array("power", $fonc_list_zone)) {
+					$device->createCmd('power_state');
+					$device->createCmd('power_on', 'action', 'other', null, 'ENERGY_ON');
+					$device->createCmd('power_off', 'action', 'other', null, 'ENERGY_OFF');
+				}
+				if(in_array("sleep", $fonc_list_zone)) {
 					
 				}
-				if(in_array("sleep", $fonc_list)) {
+				if(in_array("volume", $fonc_list_zone)) {
+					$device->createCmd('volume_change', 'action', 'slider', null, 'SET_VOLUME');
+					$device->createCmd('volume_change_step', 'action', 'slider', null, 'SET_VOLUME');
+					$device->createCmd('volume_state');
+					$device->createCmd('max_volume');
+				}
+				if(in_array("mute", $fonc_list_zone)) {
+					$device->createCmd('mute_on', 'action', 'other', null, null);
+					$device->createCmd('mute_off', 'action', 'other', null, null);
+					$device->createCmd('mute_state');
+				}
+				if(in_array("sound_program", $fonc_list_zone)) {
+					$device->createCmd('sound_program_change', 'action', 'other', null, null);
+					$device->createCmd('sound_program_state');
+				}
+				if(in_array("surround_3d", $fonc_list_zone)) {
 					
 				}
-				if(in_array("volume", $fonc_list)) {
+				if(in_array("direct", $fonc_list_zone)) {
 					
 				}
-				if(in_array("mute", $fonc_list)) {
+				if(in_array("pure_direct", $fonc_list_zone)) {
 					
 				}
-				if(in_array("sound_program", $fonc_list)) {
+				if(in_array("enhancer", $fonc_list_zone)) {
 					
 				}
-				if(in_array("surround_3d", $fonc_list)) {
+				if(in_array("tone_control", $fonc_list_zone)) {
 					
 				}
-				if(in_array("direct", $fonc_list)) {
+				if(in_array("equalizer", $fonc_list_zone)) {
 					
 				}
-				if(in_array("pure_direct", $fonc_list)) {
+				if(in_array("balance", $fonc_list_zone)) {
 					
 				}
-				if(in_array("enhancer", $fonc_list)) {
+				if(in_array("dialogue_level", $fonc_list_zone)) {
 					
 				}
-				if(in_array("tone_control", $fonc_list)) {
+				if(in_array("dialogue_lift", $fonc_list_zone)) {
 					
 				}
-				if(in_array("equalizer", $fonc_list)) {
+				if(in_array("bass_extension", $fonc_list_zone)) {
 					
 				}
-				if(in_array("balance", $fonc_list)) {
+				if(in_array("clear_voice", $fonc_list_zone)) {
 					
 				}
-				if(in_array("dialogue_level", $fonc_list)) {
+				if(in_array("signal_info", $fonc_list_zone)) {
 					
 				}
-				if(in_array("dialogue_lift", $fonc_list)) {
+				if(in_array("subwoofer_volume", $fonc_list_zone)) {
 					
 				}
-				if(in_array("bass_extension", $fonc_list)) {
+				if(in_array("prepare_input_change", $fonc_list_zone)) {
 					
 				}
-				if(in_array("clear_voice", $fonc_list)) {
+				if(in_array("link_control", $fonc_list_zone)) {
 					
 				}
-				if(in_array("signal_info", $fonc_list)) {
+				if(in_array("link_audio_delay", $fonc_list_zone)) {
 					
 				}
-				if(in_array("subwoofer_volume", $fonc_list)) {
+				if(in_array("link_audio_quality", $fonc_list_zone)) {
 					
 				}
-				if(in_array("prepare_input_change", $fonc_list)) {
+				if(in_array("scene", $fonc_list_zone)) {
 					
 				}
-				if(in_array("link_control", $fonc_list)) {
+				if(in_array("contents_display", $fonc_list_zone)) {
 					
 				}
-				if(in_array("link_audio_delay", $fonc_list)) {
+				if(in_array("cursor", $fonc_list_zone)) {
 					
 				}
-				if(in_array("link_audio_quality", $fonc_list)) {
+				if(in_array("menu", $fonc_list_zone)) {
 					
 				}
-				if(in_array("scene", $fonc_list)) {
+				if(in_array("actual_volume", $fonc_list_zone)) {
 					
 				}
-				if(in_array("contents_display", $fonc_list)) {
+				if(in_array("audio_select", $fonc_list_zone)) {
 					
 				}
-				if(in_array("cursor", $fonc_list)) {
+				if(in_array("surr_decoder_type", $fonc_list_zone)) {
 					
 				}
-				if(in_array("menu", $fonc_list)) {
-					
-				}
-				if(in_array("actual_volume", $fonc_list)) {
-					
-				}
-				if(in_array("audio_select", $fonc_list)) {
-					
-				}
-				if(in_array("surr_decoder_type", $fonc_list)) {
-					
-				}
-				$device->createCmd('max_volume');
 				$device->createCmd('input');
-				$device->createCmd('power_on', 'action', 'other', null, 'ENERGY_ON');
-				$device->createCmd('power_off', 'action', 'other', null, 'ENERGY_OFF');
-				$device->createCmd('volume_change', 'action', 'slider', null, 'SET_VOLUME');
 
 				$device->createCmd('audio_error');
 				$device->createCmd('audio_format');
 				$device->createCmd('audio_fs');
 
-				$device->createCmd('mute_on', 'action', 'other', null, null);
-				$device->createCmd('mute_off', 'action', 'other', null, null);
 
 				$device->createCmd('netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');
 				$device->createCmd('netusb_playback_stop', 'action', 'other', null, 'MEDIA_STOP');
@@ -536,11 +546,14 @@ class YamahaMusiccast extends eqLogic {
 				$device->createCmd('netusb_attribute');
 				$device->createCmd('netusb_repeat_available');
 				$device->createCmd('netusb_shuffle_available');
-				YamahaMusiccast::callZoneGetStatus($device, $zoneName);
-				$getNetworkStatus = json_decode($jsonGetNetworkStatus);
-				$device->setName($getNetworkStatus->network_name . " " . $zoneName);
+				if($zoneName === 'main') {
+					$device->setName($getNetworkStatus->network_name);
+				} else {
+					$device->setName($getNetworkStatus->network_name . " (" . $zoneName . ")");
+				}
 				$device->setConfiguration('model_name', $getDeviceInfo->model_name);
 				$device->save();
+				YamahaMusiccast::callZoneGetStatus($device, $zoneName);
 			}
 		}
 		return $deviceZoneList;
@@ -816,8 +829,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	static function callZoneGetSignalInfo($eqLogic, $zoneName) {
-		$json = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
-		$result = json_decode($json);
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
 		if (!empty($result->audio)) {
 			$audio = $result->audio;
 			if (!empty($audio->error)) {
@@ -833,9 +845,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	static function callNetusbGetPlayInfo($eqLogic) {
-		$json = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/netusb/getPlayInfo");
-		$result = json_decode($json);
-
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/netusb/getPlayInfo");
 		if (!empty($result->input)) {
 			$eqLogic->checkAndUpdateCmd('netusb_input', $result->input);
 		}
@@ -901,8 +911,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	static function callZoneGetStatus($eqLogic, $zoneName) {
-		$jsonGetStatusZone = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/$zoneName/getStatus");
-		$getStatusZone = json_decode($jsonGetStatusZone);
+		$getStatusZone = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/$zoneName/getStatus");
 		if (!empty($getStatusZone->power)) {
 			$eqLogic->checkAndUpdateCmd('power_state', $getStatusZone->power);
 		}

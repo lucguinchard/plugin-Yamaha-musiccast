@@ -1,3 +1,7 @@
+.YamahaMusiccast .btn {
+	margin-right:0;
+}
+
 .YamahaMusiccast .panelBox {
 	position: relative;
 	height: inherit;
@@ -56,7 +60,7 @@
 	line-height:28px;
 }
 
-.volume_range {
+.YamahaMusiccast .volume_range {
 	margin: 7px;
 	-webkit-appearance: none;
 	width: 65% !important;
@@ -69,14 +73,14 @@
 	transition: opacity .2s;
 }
 
-.volume_range:hover {
+.YamahaMusiccast .volume_range:hover {
   opacity: 1;
 }
 
-.volume_range::-webkit-slider-thumb {
+.YamahaMusiccast .volume_range::-webkit-slider-thumb {
 	-webkit-appearance: none;
 }
-.volume_range::-webkit-slider-thumb, .volume_range::-moz-range-thumb  {
+.YamahaMusiccast .volume_range::-webkit-slider-thumb, .volume_range::-moz-range-thumb  {
 	width: 15px;
 	height: 15px;
 	border: 0;
@@ -84,7 +88,7 @@
 	background-color: black;
 }
 
-.one-line-defile {
+.YamahaMusiccast .one-line-defile {
 	white-space: nowrap;
 	-webkit-animation:linear marqueelike 20s infinite ;
 	-moz-animation:linear marqueelike 20s infinite ;
@@ -93,6 +97,6 @@
 	animation:linear marqueelike 20s infinite ;
 }
 
-.artiste-album {
+.YamahaMusiccast .artiste-album {
 	font-size :0.9em;
 }

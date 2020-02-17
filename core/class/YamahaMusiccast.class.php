@@ -324,12 +324,14 @@ class YamahaMusiccast extends eqLogic {
 
 				}
 				if(in_array("bluetooth_standby", $fonc_list_features)) {
+					$device->createCmd('bluetooth_standby_state');
 					$device->createCmd('disconnect_bluetooth_device', 'action', 'other', null, null);
 					$device->createCmd('connect_bluetooth_device', 'action', 'other', null, null);
 					$device->createCmd('update_bluetooth_device_list', 'action', 'other', null, null);
 
 				}
 				if(in_array("bluetooth_tx_setting", $fonc_list_features)) {
+					$device->createCmd('bluetooth_tx_setting_state');
 					$device->createCmd('set_bluetooth_tx_setting', 'action', 'other', null, null);
 
 				}
@@ -656,9 +658,9 @@ class YamahaMusiccast extends eqLogic {
 				$device_id = $result->device_id;
 				if (!empty($result->system)) {
 					$system = $result->system;
-					$bluetooth_info_updated = $system->bluetooth_info_updated;
-					if (!empty($bluetooth_info_updated)) {
-						log::add('YamahaMusiccast', 'info', 'TODO: $bluetooth_info_updated - pull renewed info using /system/getBluetoothInfo ' . print_r($bluetooth_info_updated, true));
+					if (!empty($system->bluetooth_info_updated)) {
+						$bluetooth_info_updated = $system->bluetooth_info_updated;
+						YamahaMusiccast::callBluetoothInfo($eqLogic, $bluetooth_info_updated);
 					}
 					if (!empty($system->func_status_updated)) {
 						$func_status_updated = $system->func_status_updated;
@@ -680,8 +682,8 @@ class YamahaMusiccast extends eqLogic {
 						$stereo_pair_info_updated = $system->stereo_pair_info_updated;
 						log::add('YamahaMusiccast', 'info', 'TODO: $stereo_pair_info_updated - Reserved ' . print_r($stereo_pair_info_updated, true));
 					}
-					$tag_updated = $system->tag_updated;
-					if (!empty($tag_updated)) {
+					if (!empty($system->tag_updated)) {
+						$tag_updated = $system->tag_updated;
 						log::add('YamahaMusiccast', 'info', 'TODO: $tag_updated - Reserved ' . print_r($tag_updated, true));
 					}
 				}
@@ -841,6 +843,19 @@ class YamahaMusiccast extends eqLogic {
 			if (!empty($audio->fs)) {
 				$eqLogic->checkAndUpdateCmd('audio_fs', $audio->fs);
 			}
+		}
+	}
+
+	static function callBluetoothInfo($eqLogic, $bluetooth_info_updated) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/system/getBluetoothInfo");
+		if (!empty($result->bluetooth_standby)) {
+			$eqLogic->checkAndUpdateCmd('bluetooth_standby_state', $result->bluetooth_standby);
+		}
+		if (!empty($result->bluetooth_tx_setting)) {
+			$eqLogic->checkAndUpdateCmd('bluetooth_tx_setting_state', $result->bluetooth_tx_setting);
+		}
+		if (!empty($result->bluetooth_device)) {
+			log::add('YamahaMusiccast', 'info', 'TODO:  Gestion des devices : $bluetooth_info_updated ' . print_r($result->bluetooth_device, true));
 		}
 	}
 

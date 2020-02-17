@@ -10,7 +10,21 @@
 		<a href="#eqLink#" style="#hideEqLogicName#">#name_display#</a>
 	</center>
 	<div>
-		<div class="display center">
+		<div class="panel sound_config" style="display: none;">
+			<h3>Réglages Audio</h3>
+			<h4>Son</h4>
+			#sound_program_state#<br/>
+			<h4>Égalisseur</h4>
+			<h4>Veille</h4>
+			<h4>Information</h4>
+			<h4>Bluetooth</h4>
+			#link_audio_quality_state#<br/>
+			#link_audio_delay_state#<br/>
+			#link_control_state#<br/>
+			#audio_error#<br/>
+			#netusb_play_queue_type#<br/>
+		</div>
+		<div class="panel playlist">
 			<div class="one-line-defile">#netusb_track#</div>
 			<div class="one-line-defile artiste-album">#netusb_artist# - #netusb_album#</div>
 			<div class="visual">
@@ -20,8 +34,16 @@
 			</div>
 			#netusb_play_time#/#netusb_total_time#<br/>
 			<span class="" data-cmd_id="#volume_state_id#">#volume_state#/#max_volume#</span>
-			<input class="volume_range" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {volume: this.value}});"/>
-			<nav class="nav">
+			<nav class="nav nav_sound">
+				<a class="btn cmd" data-cmd_id="#mute_action_id#" onclick="jeedom.cmd.execute({id: #mute_action_id#});" title="Mute">
+					<i class="icon jeedomapp-audiomute"></i>
+				</a>
+				<input class="volume_range btn" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {volume: this.value}});"/>
+				<a class="btn cmd" title="Réglage audio">
+					<i class="icon jeedomapp-preset"></i>
+				</a>
+			</nav>
+			<nav class="nav nav_playlist">
 				<a class="btn cmd action_playlist" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire">
 					<i class="fa fa-random shuffle"></i>
 				</a>
@@ -43,18 +65,9 @@
 				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant">
 					<i class="fas fa-step-forward"></i>
 				</a>
-				<a class="btn cmd" data-cmd_id="#mute_action_id#" onclick="jeedom.cmd.execute({id: #mute_action_id#});" title="Mute">
-					<i class="icon jeedomapp-audiomute"></i>
-				</a>
 			</nav>
-			#sound_program_state#<br/>
-			#link_audio_quality_state#<br/>
-			#link_audio_delay_state#<br/>
-			#link_control_state#<br/>
-			#audio_error#<br/>
-			#netusb_play_queue_type#<br/>
 		</div>
-		<div class="displayoff">
+		<div class="panel displayoff">
 		</div>
 	</div>
 	#netusb_usb_devicetype#<br/>
@@ -65,11 +78,11 @@
 	<script>
 		if ('#power_state#' == 'on') {
 		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #power_off_id#})});
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .display").css('display', 'block');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist").css('display', 'block');
 		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff").css('display', 'none');
 		} else {
 		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #power_on_id#})});
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .display").css('display', 'none');
+		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist").css('display', 'none');
 		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff").css('display', 'block');
 		}
 	</script>

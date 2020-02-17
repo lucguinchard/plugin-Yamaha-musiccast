@@ -10,7 +10,7 @@
 		<a href="#eqLink#" style="#hideEqLogicName#">#name_display#</a>
 	</center>
 	<div>
-		<div class="panel sound_config" style="display: none;">
+		<div class="panelBox sound_config" style="display: none;">
 			<h3>Réglages Audio</h3>
 			<h4>Son</h4>
 			#sound_program_state#<br/>
@@ -24,7 +24,7 @@
 			#audio_error#<br/>
 			#netusb_play_queue_type#<br/>
 		</div>
-		<div class="panel playlist">
+		<div class="panelBox playlist">
 			<div class="one-line-defile">#netusb_track#</div>
 			<div class="one-line-defile artiste-album">#netusb_artist# - #netusb_album#</div>
 			<div class="visual">
@@ -32,8 +32,6 @@
 				<img class="pochette_input" src="plugins/YamahaMusiccast/ressources/input/#input#.png"/>
 				<span class="audio_format">#audio_format# - #audio_fs#</span>
 			</div>
-			#netusb_play_time#/#netusb_total_time#<br/>
-			<span class="" data-cmd_id="#volume_state_id#">#volume_state#/#max_volume#</span>
 			<nav class="nav nav_sound">
 				<a class="btn cmd" data-cmd_id="#mute_action_id#" onclick="jeedom.cmd.execute({id: #mute_action_id#});" title="Mute">
 					<i class="icon jeedomapp-audiomute"></i>
@@ -67,7 +65,7 @@
 				</a>
 			</nav>
 		</div>
-		<div class="panel displayoff">
+		<div class="panelBox displayoff">
 		</div>
 	</div>
 	#netusb_usb_devicetype#<br/>
@@ -75,6 +73,8 @@
 	#netusb_attribute#<br/>
 	#netusb_repeat_available#<br/>
 	#netusb_shuffle_available#<br/>
+	#netusb_play_time#/#netusb_total_time#<br/>
+	<span class="" data-cmd_id="#volume_state_id#">#volume_state#/#max_volume#</span>
 	<script>
 		if ('#power_state#' == 'on') {
 		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #power_off_id#})});

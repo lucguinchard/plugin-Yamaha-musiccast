@@ -1,36 +1,41 @@
-.YamahaMusiccast .display,.YamahaMusiccast .displayoff {
+.YamahaMusiccast .btn  i{
+	margin-right:0 !important;
+}
+
+.YamahaMusiccast .panelBox {
 	position: relative;
 	height: inherit;
 	overflow: auto;
+	padding: 0px 10px;
 }
 
-.YamahaMusiccast .center {
+.YamahaMusiccast .playlist {
 	text-align: center;
 }
 
-.YamahaMusiccast .display .visual {
+.YamahaMusiccast .playlist .visual {
 	position: relative;
 }
 
-.YamahaMusiccast .display .pochette {
-	height: 120px;
+.YamahaMusiccast .playlist .pochette {
+	width: 80%;
 	margin: 5px;
 	border-radius: 10%;
 }
 
-.YamahaMusiccast .display .pochette_input, .YamahaMusiccast .audio_format {
+.YamahaMusiccast .playlist .pochette_input, .YamahaMusiccast .audio_format {
 	position: absolute;
-	top: 110px;
+	top: 90%;
 
 }
-.YamahaMusiccast .display .pochette_input {
-	left: 175px;
+.YamahaMusiccast .playlist .pochette_input {
+	left: 85%;
 	height: 20px;
 	border-radius: 5%;
 }
 
 .YamahaMusiccast .audio_format {
-	left: 55px;
+	left: 5%;
 	border-radius: 10%;
 	padding: 0 2px;
 	background-color: gainsboro;
@@ -55,9 +60,10 @@
 	line-height:28px;
 }
 
-.volume_range {
+.YamahaMusiccast .volume_range {
+	margin: 7px;
 	-webkit-appearance: none;
-	width: 100%;
+	width: 65% !important;
 	height: 10px;
 	border-radius: 5px;
 	background: #d3d3d3;
@@ -67,14 +73,14 @@
 	transition: opacity .2s;
 }
 
-.volume_range:hover {
+.YamahaMusiccast .volume_range:hover {
   opacity: 1;
 }
 
-.volume_range::-webkit-slider-thumb {
+.YamahaMusiccast .volume_range::-webkit-slider-thumb {
 	-webkit-appearance: none;
 }
-.volume_range::-webkit-slider-thumb, .volume_range::-moz-range-thumb  {
+.YamahaMusiccast .volume_range::-webkit-slider-thumb, .volume_range::-moz-range-thumb  {
 	width: 15px;
 	height: 15px;
 	border: 0;
@@ -82,7 +88,7 @@
 	background-color: black;
 }
 
-.one-line-defile {
+.YamahaMusiccast .one-line-defile {
 	white-space: nowrap;
 	-webkit-animation:linear marqueelike 20s infinite ;
 	-moz-animation:linear marqueelike 20s infinite ;
@@ -91,6 +97,6 @@
 	animation:linear marqueelike 20s infinite ;
 }
 
-.artiste-album {
+.YamahaMusiccast .artiste-album {
 	font-size :0.9em;
 }

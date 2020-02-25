@@ -995,101 +995,97 @@ class YamahaMusiccast extends eqLogic {
 
 		$result = json_decode(curl_exec($curl));
 		curl_close($curl);
-		if (!empty($result->response_code)) {
-			if (!is_string($eqLogic)) {
-				$eqLogic->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
-			}
-			$response_code = $result->response_code;
-			$message = "KO";
-			$logLevel = "error";
-			switch ($response_code) {
-				case 0:
-					$message = "Successful request";
-					$logLevel = false;
-					break;
-				case 1:
-					$message = "Initializing";
-					break;
-				case 2:
-					$message = "Internal Error";
-					break;
-				case 3:
-					$message = "Invalid Request (A method did not exist, a method wasn’t appropriate etc)";
-					break;
-				case 4:
-					$message = "Invalid Parameter (Out of range, invalid characters etc.)";
-					break;
-				case 5:
-					$message = "Guarded (Unable to setup in current status etc.)";
-					break;
-				case 6:
-					$message = "Time Out";
-					break;
-				case 99:
-					$message = "Firmware Updating";
-					break;
-				case 100:
-					$message = "Access Error";
-					break;
-				case 101:
-					$message = "Other Errors";
-					break;
-				case 102:
-					$message = "Wrong User Name";
-					break;
-				case 103:
-					$message = "Wrong Password";
-					break;
-				case 104:
-					$message = "Account Expired";
-					break;
-				case 105:
-					$message = "Account Disconnected/Gone Off/Shut Down";
-					break;
-				case 106:
-					$message = "Account Number Reached to the Limit";
-					break;
-				case 107:
-					$message = "Server Maintenance";
-					break;
-				case 108:
-					$message = "Invalid Account";
-					break;
-				case 109:
-					$message = "License Error";
-					break;
-				case 110:
-					$message = "Read Only Mode";
-					break;
-				case 111:
-					$message = "Max Stations";
-					break;
-				case 112:
-					$message = "Access Denied";
-					break;
-				case 113:
-					$message = "There is a need to specify the additional destination Playlist";
-					break;
-				case 114:
-					$message = "There is a need to create a new Playlist";
-					break;
-				case 115:
-					$message = "Simultaneous logins has reached the upper limit";
-					break;
-				case 200:
-					$message = "Linking in progress";
-					break;
-				case 201:
-					$message = "Unlinking in prog";
-					break;
-				default :
-					$message = "CallAPI - response_code not found : " . $response_code;
-			}
-			if ($logLevel) {
-				log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);
-			}
-		} else {
-			log::add('YamahaMusiccast', 'error', 'Resultat appel ' . $url . ' : no response_code - ' . print_r($result, true));
+		if (!is_string($eqLogic)) {
+			$eqLogic->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
+		}
+		$response_code = $result->response_code;
+		$message = "KO";
+		$logLevel = "error";
+		switch ($response_code) {
+			case 0:
+				$message = "Successful request";
+				$logLevel = false;
+				break;
+			case 1:
+				$message = "Initializing";
+				break;
+			case 2:
+				$message = "Internal Error";
+				break;
+			case 3:
+				$message = "Invalid Request (A method did not exist, a method wasn’t appropriate etc)";
+				break;
+			case 4:
+				$message = "Invalid Parameter (Out of range, invalid characters etc.)";
+				break;
+			case 5:
+				$message = "Guarded (Unable to setup in current status etc.)";
+				break;
+			case 6:
+				$message = "Time Out";
+				break;
+			case 99:
+				$message = "Firmware Updating";
+				break;
+			case 100:
+				$message = "Access Error";
+				break;
+			case 101:
+				$message = "Other Errors";
+				break;
+			case 102:
+				$message = "Wrong User Name";
+				break;
+			case 103:
+				$message = "Wrong Password";
+				break;
+			case 104:
+				$message = "Account Expired";
+				break;
+			case 105:
+				$message = "Account Disconnected/Gone Off/Shut Down";
+				break;
+			case 106:
+				$message = "Account Number Reached to the Limit";
+				break;
+			case 107:
+				$message = "Server Maintenance";
+				break;
+			case 108:
+				$message = "Invalid Account";
+				break;
+			case 109:
+				$message = "License Error";
+				break;
+			case 110:
+				$message = "Read Only Mode";
+				break;
+			case 111:
+				$message = "Max Stations";
+				break;
+			case 112:
+				$message = "Access Denied";
+				break;
+			case 113:
+				$message = "There is a need to specify the additional destination Playlist";
+				break;
+			case 114:
+				$message = "There is a need to create a new Playlist";
+				break;
+			case 115:
+				$message = "Simultaneous logins has reached the upper limit";
+				break;
+			case 200:
+				$message = "Linking in progress";
+				break;
+			case 201:
+				$message = "Unlinking in prog";
+				break;
+			default :
+				$message = "CallAPI - response_code not found : " . $response_code;
+		}
+		if ($logLevel) {
+			log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);
 		}
 		return $result;
 	}

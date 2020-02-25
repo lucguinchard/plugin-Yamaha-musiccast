@@ -89,7 +89,7 @@
 .YamahaMusiccast .volume_range::-webkit-slider-thumb {
 	-webkit-appearance: none;
 }
-.YamahaMusiccast .volume_range::-webkit-slider-thumb, .volume_range::-moz-range-thumb  {
+.YamahaMusiccast .volume_range::-webkit-slider-thumb,.YamahaMusiccast .volume_range::-moz-range-thumb  {
 	width: 15px;
 	height: 15px;
 	border: 0;

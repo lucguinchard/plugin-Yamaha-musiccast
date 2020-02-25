@@ -1001,7 +1001,7 @@ class YamahaMusiccast extends eqLogic {
 			}
 			$response_code = $result->response_code;
 			$message = "KO";
-			$logLevel = "erreur";
+			$logLevel = "error";
 			switch ($response_code) {
 				case 0:
 					$message = "Successful request";
@@ -1088,6 +1088,8 @@ class YamahaMusiccast extends eqLogic {
 			if ($logLevel) {
 				log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);
 			}
+		} else {
+			log::add('YamahaMusiccast', 'error', 'Resultat appel ' . $url . ' : no response_code - ' . $result);
 		}
 		return $result;
 	}

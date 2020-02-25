@@ -86,15 +86,12 @@
 	opacity: 1;
 }
 
-.YamahaMusiccast .volume_range::-webkit-slider-thumb {
-	-webkit-appearance: none;
-}
 .YamahaMusiccast .volume_range::-webkit-slider-thumb,.YamahaMusiccast .volume_range::-moz-range-thumb  {
 	width: 15px;
 	height: 15px;
 	border: 0;
 	cursor: pointer;
-	background-color: black;
+	background-color: cadetblue;
 }
 
 .YamahaMusiccast .one-line-defile {

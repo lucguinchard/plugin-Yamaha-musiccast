@@ -106,3 +106,7 @@
 .YamahaMusiccast .artiste-album {
 	font-size :0.9em;
 }
+
+.YamahaMusiccast .one-line-defile {
+	overflow: hidden;
+}

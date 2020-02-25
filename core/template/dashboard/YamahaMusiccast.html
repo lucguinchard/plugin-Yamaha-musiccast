@@ -1,5 +1,5 @@
 <div class="eqLogic-widget eqLogic allowResize YamahaMusiccast" data-category="multimedia"
-	 style="width: 250px;height: 320px;padding : 0px;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#;"
+	 style="width: 250px;height: 340px;padding : 0px;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#;"
 	 data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="dashboard" >
 	<link rel="stylesheet" href="plugins/YamahaMusiccast/core/template/css/style.css"/>
 	<center class="widget-name">
@@ -37,30 +37,30 @@
 					<i class="icon jeedomapp-audiomute"></i>
 				</a>
 				<input class="volume_range btn" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {volume: this.value}});"/>
-				<a class="btn cmd" title="Réglage audio">
+				<a class="btn cmd" title="Réglage audio" style="float: right;">
 					<i class="icon jeedomapp-preset"></i>
 				</a>
 			</nav>
 			<nav class="nav nav_playlist">
-				<a class="btn cmd action_playlist" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire">
+				<a class="btn cmd action_playlist" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire" style="float: right;">
 					<i class="fa fa-random shuffle"></i>
 				</a>
 				<a class="btn cmd action_playlist" data-cmd_id="#netusb_repeat_id#" onclick="jeedom.cmd.execute({id: #netusb_repeat_id#});" title="Répéter">
 					<i class="fa fa-sync repeat"></i>
 				</a>
-				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent">
+				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent" style="float: none;">
 					<i class="fas fa-step-backward"></i>
 				</a>
-				<a class="btn cmd play" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Lecture">
+				<a class="btn cmd play" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Lecture" style="float: none;">
 					<i class="fas fa-play"></i>
 				</a>
-				<a class="btn cmd pause" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Pause">
+				<a class="btn cmd pause" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Pause" style="float: none;">
 					<i class="fas fa-pause"></i>
 				</a>
-				<a class="btn cmd stop" data-cmd_id="#netusb_playback_stop_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});" title="Stop">
+				<a class="btn cmd stop" data-cmd_id="#netusb_playback_stop_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});" title="Stop" style="float: none;">
 					<i class="fas fa-stop"></i>
 				</a>
-				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant">
+				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant" style="float: none;">
 					<i class="fas fa-step-forward"></i>
 				</a>
 			</nav>
@@ -68,13 +68,6 @@
 		<div class="panelBox displayoff">
 		</div>
 	</div>
-	#netusb_usb_devicetype#<br/>
-	#netusb_usb_auto_stopped#<br/>
-	#netusb_attribute#<br/>
-	#netusb_repeat_available#<br/>
-	#netusb_shuffle_available#<br/>
-	#netusb_play_time#/#netusb_total_time#<br/>
-	<span class="" data-cmd_id="#volume_state_id#">#volume_state#/#max_volume#</span>
 	<script>
 		if ('#power_state#' == 'on') {
 		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #power_off_id#})});

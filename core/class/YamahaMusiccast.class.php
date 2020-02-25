@@ -1089,7 +1089,7 @@ class YamahaMusiccast extends eqLogic {
 				log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);
 			}
 		} else {
-			log::add('YamahaMusiccast', 'error', 'Resultat appel ' . $url . ' : no response_code - ' . $result);
+			log::add('YamahaMusiccast', 'error', 'Resultat appel ' . $url . ' : no response_code - ' . print_r($result, true));
 		}
 		return $result;
 	}

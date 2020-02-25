@@ -68,13 +68,6 @@
 		<div class="panelBox displayoff">
 		</div>
 	</div>
-	#netusb_usb_devicetype#<br/>
-	#netusb_usb_auto_stopped#<br/>
-	#netusb_attribute#<br/>
-	#netusb_repeat_available#<br/>
-	#netusb_shuffle_available#<br/>
-	#netusb_play_time#/#netusb_total_time#<br/>
-	<span class="" data-cmd_id="#volume_state_id#">#volume_state#/#max_volume#</span>
 	<script>
 		if ('#power_state#' == 'on') {
 		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #power_off_id#})});

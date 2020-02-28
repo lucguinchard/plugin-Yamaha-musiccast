@@ -169,7 +169,7 @@ class YamahaMusiccastCmd extends cmd {
 				break;
 			//setSleep
 			case "volume_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['volume']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['slider']);
 				break;
 			case "volume_change_step":
 				//volume = up or down

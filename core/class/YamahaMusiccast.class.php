@@ -449,12 +449,10 @@ class YamahaMusiccast extends eqLogic {
 						$sound_program_list = $getNameText->sound_program_list;
 						foreach ($sound_program_list as $sound_program) {
 							$sound_program_list_string .= $sound_program->id . "|".$sound_program->text . ";";
-							log::add('YamahaMusiccast', 'info', 'config_sound_program_change ... ' . $sound_program_list_string);
 						}
 					}
 					
 					$config_sound_program_change['listValue'] = substr($sound_program_list_string, 0, -1);
-					log::add('YamahaMusiccast', 'info', 'config_sound_program_change ... ' . $config_sound_program_change['listValue']);
 					$device->createCmd('sound_program_change', 'action', 'select', false , null, $config_sound_program_change)->save();
 					$device->createCmd('sound_program_state')->save();
 				}

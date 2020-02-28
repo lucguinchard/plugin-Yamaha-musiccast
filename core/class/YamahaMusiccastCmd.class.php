@@ -194,7 +194,7 @@ class YamahaMusiccastCmd extends cmd {
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['input'] . "&mode=" . $_options['mode']);
 				break;
 			case "sound_program_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?input=" . $_options['select']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?program=" . $_options['select']);
 				break;
 			case "3d_surround_on":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=true");

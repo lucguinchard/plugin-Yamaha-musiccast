@@ -529,6 +529,15 @@ class YamahaMusiccast extends eqLogic {
 					
 				}
 				$device->createCmd('input')->save();
+				$input_change_string = "";
+				if (!empty($getNameText->input_list)) {
+					$input_list = $getNameText->input_list;
+					foreach ($input_list as $input) {
+						$input_change_string .= $input->id . "|".$input->text . ";";
+					}
+				}
+				$config_input_change['listValue'] = substr($input_change_string, 0, -1);
+				$device->createCmd('input_change', 'action', 'select', false , null, $config_input_change)->save();
 
 				$device->createCmd('audio_error')->save();
 				$device->createCmd('audio_format')->save();

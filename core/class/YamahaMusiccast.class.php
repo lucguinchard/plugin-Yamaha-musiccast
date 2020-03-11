@@ -145,6 +145,8 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 			if(!empty($cmd->getDisplay('icon'))) {
 				$replace['#' . $cmd->getLogicalId() . '_icon#'] = $cmd->getDisplay('icon');
+			} else {
+				$replace['#' . $cmd->getLogicalId() . '_icon#'] = "<i class='icon divers-vlc1' title='Veuillez mettre une icon à l’action : ". $cmd->getLogicalId() ."'></i>";
 			}
 		}
 

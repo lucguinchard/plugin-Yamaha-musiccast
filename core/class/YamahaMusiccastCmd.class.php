@@ -107,7 +107,7 @@ class YamahaMusiccastCmd extends cmd {
 				  Value Range: calculated by minimum/maximum/step values gotten
 				  via /system/getFeatures
 				 */
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setDimmer?value=" . $_options['volume']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setDimmer?value=" . $_options['slider']);
 				break;
 			case 'zone_b_volume_sync_on' :
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setZoneBVolumeSync?enable=true");
@@ -169,7 +169,7 @@ class YamahaMusiccastCmd extends cmd {
 				break;
 			//setSleep
 			case "volume_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['volume']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['slider']);
 				break;
 			case "volume_change_step":
 				//volume = up or down
@@ -194,7 +194,7 @@ class YamahaMusiccastCmd extends cmd {
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['input'] . "&mode=" . $_options['mode']);
 				break;
 			case "sound_program_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?input=" . $_options['sound_program']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?program=" . $_options['select']);
 				break;
 			case "3d_surround_on":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=true");

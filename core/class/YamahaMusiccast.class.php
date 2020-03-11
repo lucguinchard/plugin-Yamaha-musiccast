@@ -61,7 +61,7 @@ class YamahaMusiccast extends eqLogic {
 		
 	}
 
-	public function createCmd($name, $type = 'info', $subtype = 'string', $repeatEventManagement = 'never', $generic_type = null) {
+	public function createCmd($name, $type = 'info', $subtype = 'string', $icon = false, $generic_type = null, $configurationList = [], $placeholderList = []) {
 		$cmd = $this->getCmd(null, $name);
 		if (!is_object($cmd)) {
 			$cmd = new YamahaMusiccastCmd();
@@ -70,10 +70,18 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$cmd->setType($type);
 		$cmd->setSubType($subtype);
-		$cmd->setConfiguration('repeatEventManagement', $repeatEventManagement);
 		$cmd->setGeneric_type($generic_type);
+		if($icon) {
+			$cmd->setDisplay('icon',$icon);
+		}
+		foreach ($configurationList as $key => $value){
+			$cmd->setConfiguration($key, $value);
+		}
+		foreach ($placeholderList as $value){
+			$cmd->setDisplay($value . '_placeholder', __('placeholder.'.$value, __FILE__));
+		}
 		$cmd->setEqLogic_id($this->getId());
-		$cmd->save();
+		return $cmd;
 	}
 
 	public function preUpdate() {
@@ -135,6 +143,9 @@ class YamahaMusiccast extends eqLogic {
 
 		foreach ($this->getCmd('action') as $cmd) {
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			if(!empty($cmd->getDisplay('icon'))) {
+				$replace['#' . $cmd->getLogicalId() . '_icon#'] = $cmd->getDisplay('icon');
+			}
 		}
 
 		if ($this->getCmd(null, 'power_state')->execCmd() === 'on') {
@@ -306,13 +317,13 @@ class YamahaMusiccast extends eqLogic {
 				}
 
 				if(in_array("wired_lan", $fonc_list_features)) {
-					$device->createCmd('set_wired_lan', 'action', 'other', null, null);
+					$device->createCmd('set_wired_lan', 'action', 'other')->save();
 				}
 				if(in_array("wireless_lan", $fonc_list_features)) {
-					$device->createCmd('set_wirless_lan', 'action', 'other', null, null);
+					$device->createCmd('set_wirless_lan', 'action', 'other')->save();
 				}
 				if(in_array("wireless_direct", $fonc_list_features)) {
-					$device->createCmd('set_wirless_direct', 'action', 'other', null, null);
+					$device->createCmd('set_wirless_direct', 'action', 'other')->save();
 				}
 				if(in_array("extend_1_band", $fonc_list_features)) {
 				}
@@ -324,59 +335,59 @@ class YamahaMusiccast extends eqLogic {
 
 				}
 				if(in_array("bluetooth_standby", $fonc_list_features)) {
-					$device->createCmd('bluetooth_standby_state');
-					$device->createCmd('disconnect_bluetooth_device', 'action', 'other', null, null);
-					$device->createCmd('connect_bluetooth_device', 'action', 'other', null, null);
-					$device->createCmd('update_bluetooth_device_list', 'action', 'other', null, null);
+					$device->createCmd('bluetooth_standby_state')->save();
+					$device->createCmd('disconnect_bluetooth_device', 'action', 'other')->save();
+					$device->createCmd('connect_bluetooth_device', 'action', 'other')->save();
+					$device->createCmd('update_bluetooth_device_list', 'action', 'other')->save();
 
 				}
 				if(in_array("bluetooth_tx_setting", $fonc_list_features)) {
-					$device->createCmd('bluetooth_tx_setting_state');
-					$device->createCmd('set_bluetooth_tx_setting', 'action', 'other', null, null);
+					$device->createCmd('bluetooth_tx_setting_state')->save();
+					$device->createCmd('set_bluetooth_tx_setting', 'action', 'other')->save();
 
 				}
 				if(in_array("auto_power_standby", $fonc_list_features)) {
-					$device->createCmd('auto_power_standby_on', 'action', 'other', null, null);
-					$device->createCmd('auto_power_standby_off', 'action', 'other', null, null);
+					$device->createCmd('auto_power_standby_on', 'action', 'other')->save();
+					$device->createCmd('auto_power_standby_off', 'action', 'other')->save();
 
 				}
 				if(in_array("ir_sensor", $fonc_list_features)) {
-					$device->createCmd('ir_sensor_on', 'action', 'other', null, null);
-					$device->createCmd('ir_sensor_off', 'action', 'other', null, null);
+					$device->createCmd('ir_sensor_on', 'action', 'other')->save();
+					$device->createCmd('ir_sensor_off', 'action', 'other')->save();
 
 				}
 				if(in_array("speaker_a", $fonc_list_features)) {
-					$device->createCmd('speaker_a_on', 'action', 'other', null, null);
-					$device->createCmd('speaker_a_off', 'action', 'other', null, null);
+					$device->createCmd('speaker_a_on', 'action', 'other')->save();
+					$device->createCmd('speaker_a_off', 'action', 'other')->save();
 				}
 				if(in_array("dimmer", $fonc_list_features)) {
-					$device->createCmd('dimmer', 'action', 'other', null, null);
+					$device->createCmd('dimmer', 'action', 'other')->save();
 				}
 				if(in_array("speaker_b", $fonc_list_features)) {
-					$device->createCmd('speaker_b_on', 'action', 'other', null, null);
-					$device->createCmd('speaker_b_off', 'action', 'other', null, null);
+					$device->createCmd('speaker_b_on', 'action', 'other')->save();
+					$device->createCmd('speaker_b_off', 'action', 'other')->save();
 				}
 				if(in_array("zone_b_volume_sync", $fonc_list_features)) {
-					$device->createCmd('zone_b_volume_sync_on', 'action', 'other', null, null);
-					$device->createCmd('zone_b_volume_sync_off', 'action', 'other', null, null);
+					$device->createCmd('zone_b_volume_sync_on', 'action', 'other')->save();
+					$device->createCmd('zone_b_volume_sync_off', 'action', 'other')->save();
 				}
 				if(in_array("headphone", $fonc_list_features)) {
 
 				}
 				if(in_array("hdmi_out_1", $fonc_list_features)) {
-					$device->createCmd('hdmi_out_1_on', 'action', 'other', null, null);
-					$device->createCmd('hdmi_out_1_off', 'action', 'other', null, null);
+					$device->createCmd('hdmi_out_1_on', 'action', 'other')->save();
+					$device->createCmd('hdmi_out_1_off', 'action', 'other')->save();
 				}
 				if(in_array("hdmi_out_2", $fonc_list_features)) {
-					$device->createCmd('hdmi_out_2_on', 'action', 'other', null, null);
-					$device->createCmd('hdmi_out_2_off', 'action', 'other', null, null);
+					$device->createCmd('hdmi_out_2_on', 'action', 'other')->save();
+					$device->createCmd('hdmi_out_2_off', 'action', 'other')->save();
 				}
 				if(in_array("hdmi_out_3", $fonc_list_features)) {
-					$device->createCmd('hdmi_out_3_on', 'action', 'other', null, null);
-					$device->createCmd('hdmi_out_3_off', 'action', 'other', null, null);
+					$device->createCmd('hdmi_out_3_on', 'action', 'other')->save();
+					$device->createCmd('hdmi_out_3_off', 'action', 'other')->save();
 				}
 				if(in_array("airplay", $fonc_list_features)) {
-					$device->createCmd('set_air_play_pin', 'action', 'other', null, null);
+					$device->createCmd('set_air_play_pin', 'action', 'other')->save();
 				}
 				if(in_array("stereo_pair", $fonc_list_features)) {
 
@@ -400,8 +411,8 @@ class YamahaMusiccast extends eqLogic {
 
 				}
 				if(in_array("auto_play", $fonc_list_features)) {
-					$device->createCmd('auto_play_on', 'action', 'other', null, null);
-					$device->createCmd('auto_play_off', 'action', 'other', null, null);
+					$device->createCmd('auto_play_on', 'action', 'other')->save();
+					$device->createCmd('auto_play_off', 'action', 'other')->save();
 				}
 				if(in_array("speaker_pattern", $fonc_list_features)) {
 
@@ -411,27 +422,39 @@ class YamahaMusiccast extends eqLogic {
 				}
 				$fonc_list_zone = $zone->func_list;
 				if(in_array("power", $fonc_list_zone)) {
-					$device->createCmd('power_state');
-					$device->createCmd('power_on', 'action', 'other', null, 'ENERGY_ON');
-					$device->createCmd('power_off', 'action', 'other', null, 'ENERGY_OFF');
+					$device->createCmd('power_state')->save();
+					$device->createCmd('power_on', 'action', 'other', false, 'ENERGY_ON')->save();
+					$device->createCmd('power_off', 'action', 'other', false, 'ENERGY_OFF')->save();
 				}
 				if(in_array("sleep", $fonc_list_zone)) {
 					
 				}
 				if(in_array("volume", $fonc_list_zone)) {
-					$device->createCmd('volume_change', 'action', 'slider', null, 'SET_VOLUME');
-					$device->createCmd('volume_change_step', 'action', 'slider', null, 'SET_VOLUME');
-					$device->createCmd('volume_state');
-					$device->createCmd('max_volume');
+					$config_volume_change['minValue'] = 0;
+					$config_volume_change['maxValue'] = 50;// TODO:Utilisation de max_volume
+					$device->createCmd('volume_change', 'action', 'slider', false, 'SET_VOLUME', $config_volume_change)->save();
+					$device->createCmd('volume_change_step', 'action', 'other', false, 'SET_VOLUME')->save();
+					$device->createCmd('volume_state')->save();
+					$device->createCmd('max_volume')->save();
 				}
+				$getNameText = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getNameText");
 				if(in_array("mute", $fonc_list_zone)) {
-					$device->createCmd('mute_on', 'action', 'other', null, null);
-					$device->createCmd('mute_off', 'action', 'other', null, null);
-					$device->createCmd('mute_state');
+					$device->createCmd('mute_on', 'action', 'other')->save();
+					$device->createCmd('mute_off', 'action', 'other')->save();
+					$device->createCmd('mute_state')->save();
 				}
 				if(in_array("sound_program", $fonc_list_zone)) {
-					$device->createCmd('sound_program_change', 'action', 'other', null, null);
-					$device->createCmd('sound_program_state');
+					$sound_program_list_string = "";
+					if (!empty($getNameText->sound_program_list)) {
+						$sound_program_list = $getNameText->sound_program_list;
+						foreach ($sound_program_list as $sound_program) {
+							$sound_program_list_string .= $sound_program->id . "|".$sound_program->text . ";";
+						}
+					}
+					
+					$config_sound_program_change['listValue'] = substr($sound_program_list_string, 0, -1);
+					$device->createCmd('sound_program_change', 'action', 'select', false , null, $config_sound_program_change)->save();
+					$device->createCmd('sound_program_state')->save();
 				}
 				if(in_array("surround_3d", $fonc_list_zone)) {
 					
@@ -505,49 +528,58 @@ class YamahaMusiccast extends eqLogic {
 				if(in_array("surr_decoder_type", $fonc_list_zone)) {
 					
 				}
-				$device->createCmd('input');
+				$device->createCmd('input')->save();
+				$input_change_string = "";
+				if (!empty($getNameText->input_list)) {
+					$input_list = $getNameText->input_list;
+					foreach ($input_list as $input) {
+						$input_change_string .= $input->id . "|".$input->text . ";";
+					}
+				}
+				$config_input_change['listValue'] = substr($input_change_string, 0, -1);
+				$device->createCmd('input_change', 'action', 'select', false , null, $config_input_change)->save();
 
-				$device->createCmd('audio_error');
-				$device->createCmd('audio_format');
-				$device->createCmd('audio_fs');
+				$device->createCmd('audio_error')->save();
+				$device->createCmd('audio_format')->save();
+				$device->createCmd('audio_fs')->save();
 
 
-				$device->createCmd('netusb_playback_play', 'action', 'other', null, 'MEDIA_RESUME');
-				$device->createCmd('netusb_playback_stop', 'action', 'other', null, 'MEDIA_STOP');
-				$device->createCmd('netusb_playback_pause', 'action', 'other', null, 'MEDIA_PAUSE');
-				$device->createCmd('netusb_playback_play_pause', 'action', 'other', null);
-				$device->createCmd('netusb_playback_previous', 'action', 'other', null, 'MEDIA_PREVIOUS');
-				$device->createCmd('netusb_playback_next', 'action', 'other', null, 'MEDIA_NEXT');
-				$device->createCmd('netusb_playback_fast_reverse_start', 'action', 'other', null);
-				$device->createCmd('netusb_playback_fast_reverse_end', 'action', 'other', null);
-				$device->createCmd('netusb_playback_fast_forward_start', 'action', 'other', null);
-				$device->createCmd('netusb_playback_fast_forward_end', 'action', 'other', null);
+				$device->createCmd('netusb_playback_play', 'action', 'other', '<i class="fas fa-play"></i>', 'MEDIA_RESUME')->save();
+				$device->createCmd('netusb_playback_stop', 'action', 'other', '<i class="fas fa-stop"></i>', 'MEDIA_STOP')->save();
+				$device->createCmd('netusb_playback_pause', 'action', 'other', '<i class="fas fa-pause"></i>', 'MEDIA_PAUSE')->save();
+				$device->createCmd('netusb_playback_play_pause', 'action', 'other', '<i class="fas fa-play"></i><i class="fas fa-pause"></i>')->save();
+				$device->createCmd('netusb_playback_previous', 'action', 'other', '<i class="fas fa-step-backward"></i>', 'MEDIA_PREVIOUS')->save();
+				$device->createCmd('netusb_playback_next', 'action', 'other', '<i class="fas fa-step-forward"></i>', 'MEDIA_NEXT')->save();
+				$device->createCmd('netusb_playback_fast_reverse_start', 'action', 'other')->save();
+				$device->createCmd('netusb_playback_fast_reverse_end', 'action', 'other')->save();
+				$device->createCmd('netusb_playback_fast_forward_start', 'action', 'other')->save();
+				$device->createCmd('netusb_playback_fast_forward_end', 'action', 'other')->save();
 
-				$device->createCmd('netusb_shuffle_off', 'action', 'other', null);
-				$device->createCmd('netusb_shuffle_on', 'action', 'other', null);
-				$device->createCmd('netusb_shuffle_songs', 'action', 'other', null);
-				$device->createCmd('netusb_shuffle_albums', 'action', 'other', null);
-				$device->createCmd('netusb_repeat_off', 'action', 'other', null);
-				$device->createCmd('netusb_repeat_one', 'action', 'other', null);
-				$device->createCmd('netusb_repeat_all', 'action', 'other', null);
+				$device->createCmd('netusb_shuffle_off', 'action', 'other')->save();
+				$device->createCmd('netusb_shuffle_on', 'action', 'other')->save();
+				$device->createCmd('netusb_shuffle_songs', 'action', 'other')->save();
+				$device->createCmd('netusb_shuffle_albums', 'action', 'other')->save();
+				$device->createCmd('netusb_repeat_off', 'action', 'other')->save();
+				$device->createCmd('netusb_repeat_one', 'action', 'other')->save();
+				$device->createCmd('netusb_repeat_all', 'action', 'other')->save();
 
-				$device->createCmd('netusb_input');
-				$device->createCmd('netusb_play_queue_type');
-				$device->createCmd('netusb_playback');
-				$device->createCmd('netusb_repeat');
-				$device->createCmd('netusb_shuffle');
-				$device->createCmd('netusb_play_time');
-				$device->createCmd('netusb_total_time');
-				$device->createCmd('netusb_artist');
-				$device->createCmd('netusb_album');
-				$device->createCmd('netusb_track');
-				$device->createCmd('netusb_albumart_url');
-				$device->createCmd('netusb_albumart_id');
-				$device->createCmd('netusb_usb_devicetype');
-				$device->createCmd('netusb_usb_auto_stopped');
-				$device->createCmd('netusb_attribute');
-				$device->createCmd('netusb_repeat_available');
-				$device->createCmd('netusb_shuffle_available');
+				$device->createCmd('netusb_input')->save();
+				$device->createCmd('netusb_play_queue_type')->save();
+				$device->createCmd('netusb_playback')->save();
+				$device->createCmd('netusb_repeat')->save();
+				$device->createCmd('netusb_shuffle')->save();
+				$device->createCmd('netusb_play_time')->save();
+				$device->createCmd('netusb_total_time')->save();
+				$device->createCmd('netusb_artist')->save();
+				$device->createCmd('netusb_album')->save();
+				$device->createCmd('netusb_track')->save();
+				$device->createCmd('netusb_albumart_url')->save();
+				$device->createCmd('netusb_albumart_id')->save();
+				$device->createCmd('netusb_usb_devicetype')->save();
+				$device->createCmd('netusb_usb_auto_stopped')->save();
+				$device->createCmd('netusb_attribute')->save();
+				$device->createCmd('netusb_repeat_available')->save();
+				$device->createCmd('netusb_shuffle_available')->save();
 				if($zoneName === 'main') {
 					$device->setName($getNetworkStatus->network_name);
 				} else {
@@ -995,99 +1027,97 @@ class YamahaMusiccast extends eqLogic {
 
 		$result = json_decode(curl_exec($curl));
 		curl_close($curl);
-		if (!empty($result->response_code)) {
-			if (!is_string($eqLogic)) {
-				$eqLogic->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
-			}
-			$response_code = $result->response_code;
-			$message = "KO";
-			$logLevel = "erreur";
-			switch ($response_code) {
-				case 0:
-					$message = "Successful request";
-					$logLevel = false;
-					break;
-				case 1:
-					$message = "Initializing";
-					break;
-				case 2:
-					$message = "Internal Error";
-					break;
-				case 3:
-					$message = "Invalid Request (A method did not exist, a method wasn’t appropriate etc)";
-					break;
-				case 4:
-					$message = "Invalid Parameter (Out of range, invalid characters etc.)";
-					break;
-				case 5:
-					$message = "Guarded (Unable to setup in current status etc.)";
-					break;
-				case 6:
-					$message = "Time Out";
-					break;
-				case 99:
-					$message = "Firmware Updating";
-					break;
-				case 100:
-					$message = "Access Error";
-					break;
-				case 101:
-					$message = "Other Errors";
-					break;
-				case 102:
-					$message = "Wrong User Name";
-					break;
-				case 103:
-					$message = "Wrong Password";
-					break;
-				case 104:
-					$message = "Account Expired";
-					break;
-				case 105:
-					$message = "Account Disconnected/Gone Off/Shut Down";
-					break;
-				case 106:
-					$message = "Account Number Reached to the Limit";
-					break;
-				case 107:
-					$message = "Server Maintenance";
-					break;
-				case 108:
-					$message = "Invalid Account";
-					break;
-				case 109:
-					$message = "License Error";
-					break;
-				case 110:
-					$message = "Read Only Mode";
-					break;
-				case 111:
-					$message = "Max Stations";
-					break;
-				case 112:
-					$message = "Access Denied";
-					break;
-				case 113:
-					$message = "There is a need to specify the additional destination Playlist";
-					break;
-				case 114:
-					$message = "There is a need to create a new Playlist";
-					break;
-				case 115:
-					$message = "Simultaneous logins has reached the upper limit";
-					break;
-				case 200:
-					$message = "Linking in progress";
-					break;
-				case 201:
-					$message = "Unlinking in prog";
-					break;
-				default :
-					$message = "CallAPI - response_code not found : " . $response_code;
-			}
-			if ($logLevel) {
-				log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);
-			}
+		if (!is_string($eqLogic)) {
+			$eqLogic->setStatus('lastCallAPI', date("Y-m-d H:i:s"));
+		}
+		$response_code = $result->response_code;
+		$message = "KO";
+		$logLevel = "error";
+		switch ($response_code) {
+			case 0:
+				$message = "Successful request";
+				$logLevel = false;
+				break;
+			case 1:
+				$message = "Initializing";
+				break;
+			case 2:
+				$message = "Internal Error";
+				break;
+			case 3:
+				$message = "Invalid Request (A method did not exist, a method wasn’t appropriate etc)";
+				break;
+			case 4:
+				$message = "Invalid Parameter (Out of range, invalid characters etc.)";
+				break;
+			case 5:
+				$message = "Guarded (Unable to setup in current status etc.)";
+				break;
+			case 6:
+				$message = "Time Out";
+				break;
+			case 99:
+				$message = "Firmware Updating";
+				break;
+			case 100:
+				$message = "Access Error";
+				break;
+			case 101:
+				$message = "Other Errors";
+				break;
+			case 102:
+				$message = "Wrong User Name";
+				break;
+			case 103:
+				$message = "Wrong Password";
+				break;
+			case 104:
+				$message = "Account Expired";
+				break;
+			case 105:
+				$message = "Account Disconnected/Gone Off/Shut Down";
+				break;
+			case 106:
+				$message = "Account Number Reached to the Limit";
+				break;
+			case 107:
+				$message = "Server Maintenance";
+				break;
+			case 108:
+				$message = "Invalid Account";
+				break;
+			case 109:
+				$message = "License Error";
+				break;
+			case 110:
+				$message = "Read Only Mode";
+				break;
+			case 111:
+				$message = "Max Stations";
+				break;
+			case 112:
+				$message = "Access Denied";
+				break;
+			case 113:
+				$message = "There is a need to specify the additional destination Playlist";
+				break;
+			case 114:
+				$message = "There is a need to create a new Playlist";
+				break;
+			case 115:
+				$message = "Simultaneous logins has reached the upper limit";
+				break;
+			case 200:
+				$message = "Linking in progress";
+				break;
+			case 201:
+				$message = "Unlinking in prog";
+				break;
+			default :
+				$message = "CallAPI - response_code not found : " . $response_code;
+		}
+		if ($logLevel) {
+			log::add('YamahaMusiccast', $logLevel, 'Resultat appel ' . $url . ' : ' . $response_code . ' - ' . $message);
 		}
 		return $result;
 	}

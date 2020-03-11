@@ -36,9 +36,9 @@
 				<a class="btn cmd" data-cmd_id="#mute_action_id#" onclick="jeedom.cmd.execute({id: #mute_action_id#});" title="Mute">
 					<i class="icon jeedomapp-audiomute"></i>
 				</a>
-				<input class="volume_range btn" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {volume: this.value}});"/>
+				<input class="volume_range btn" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {slider: this.value}});"/>
 				<a class="btn cmd" title="Réglage audio" style="float: right;">
-					<i class="icon jeedomapp-preset"></i>
+					<i class="fas fa-sliders-h"></i>
 				</a>
 			</nav>
 			<nav class="nav nav_playlist">
@@ -49,19 +49,19 @@
 					<i class="fa fa-sync repeat"></i>
 				</a>
 				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent" style="float: none;">
-					<i class="fas fa-step-backward"></i>
+					#netusb_playback_previous_icon#
 				</a>
 				<a class="btn cmd play" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Lecture" style="float: none;">
-					<i class="fas fa-play"></i>
+					#netusb_playback_play_icon#
 				</a>
 				<a class="btn cmd pause" data-cmd_id="#netusb_playback_play_pause_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});" title="Pause" style="float: none;">
-					<i class="fas fa-pause"></i>
+					#netusb_playback_pause_icon#
 				</a>
 				<a class="btn cmd stop" data-cmd_id="#netusb_playback_stop_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});" title="Stop" style="float: none;">
-					<i class="fas fa-stop"></i>
+					#netusb_playback_stop_icon#
 				</a>
 				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant" style="float: none;">
-					<i class="fas fa-step-forward"></i>
+					#netusb_playback_next_icon#
 				</a>
 			</nav>
 		</div>

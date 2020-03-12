@@ -11,9 +11,12 @@
 	</center>
 	<div>
 		<div class="panelBox sound_config" style="display: none;">
+		<a class="cmd pull-right" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .sound_config').css('display', 'none');">
+			<i class="fa fa-times"></i>
+		</a>
 			<h3>Réglages Audio</h3>
 			<h4>Son</h4>
-			#sound_program_state#<br/>
+			<select onchange="jeedom.cmd.execute({id: '#sound_program_change_id#', value: {program: this.value}});">#sound_program_change_select#</select>
 			<h4>Égalisseur</h4>
 			<h4>Veille</h4>
 			<h4>Information</h4>
@@ -36,8 +39,8 @@
 				<a class="btn cmd" data-cmd_id="#mute_action_id#" onclick="jeedom.cmd.execute({id: #mute_action_id#});" title="Mute">
 					<i class="icon jeedomapp-audiomute"></i>
 				</a>
-				<input class="volume_range btn" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {slider: this.value}});"/>
-				<a class="btn cmd" title="Réglage audio" style="float: right;">
+				<input class="volume_range btn" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {volume: this.value}});"/>
+				<a class="btn cmd" title="Réglage audio" style="float: right;" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .sound_config').css('display', 'block');">
 					<i class="fas fa-sliders-h"></i>
 				</a>
 			</nav>
@@ -66,17 +69,20 @@
 			</nav>
 		</div>
 		<div class="panelBox displayoff">
+			<ul>
+				<li><a title="playlist#id#[i]" data-name="playlist#id#[i]'"><i class="fa fa-play"></i> ' + playlist#id#[i] + '</a></li>
+			</ul>
 		</div>
 	</div>
 	<script>
 		if ('#power_state#' == 'on') {
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #power_off_id#})});
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist").css('display', 'block');
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff").css('display', 'none');
+		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .power').click(function() {jeedom.cmd.execute({id: #power_off_id#})});
+		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist').css('display', 'block');
+		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'none');
 		} else {
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .power").click(function() {jeedom.cmd.execute({id: #power_on_id#})});
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist").css('display', 'none');
-		$(".YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff").css('display', 'block');
+		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .power').click(function() {jeedom.cmd.execute({id: #power_on_id#})});
+		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist').css('display', 'none');
+		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'block');
 		}
 	</script>
 </div>

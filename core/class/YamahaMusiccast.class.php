@@ -150,6 +150,23 @@ class YamahaMusiccast extends eqLogic {
 			}
 		}
 
+		$program_select = $this->getCmd(null, 'sound_program_change');
+		if ($program_select->getConfiguration('listValue', '') != '') {
+			$elements = explode(';', $program_select->getConfiguration('listValue', ''));
+			foreach ($elements as $element) {
+				$coupleArray = explode('|', $element);
+				$cmdValue = $this->getCmd(null, 'sound_program_state');
+				if ($cmdValue->execCmd() == $coupleArray[0]) {
+					$listOption .= '<option value="' . $coupleArray[0] . '" selected>' . $coupleArray[1] . '</option>';
+				} else {
+					$listOption .= '<option value="' . $coupleArray[0] . '">' . $coupleArray[1] . '</option>';
+				}
+			}
+			$replace['#sound_program_change_select#'] = $listOption;
+			// TODO: tester avec cette méthode
+			//$replace['#sound_program_change_select#'] = $program_select->toHtml();
+		}
+
 		if ($this->getCmd(null, 'power_state')->execCmd() === 'on') {
 			$replace['#power_action_id#'] = $this->getCmd(null, 'power_off')->getId();
 		} else {
@@ -455,7 +472,10 @@ class YamahaMusiccast extends eqLogic {
 					}
 					
 					$config_sound_program_change['listValue'] = substr($sound_program_list_string, 0, -1);
-					$device->createCmd('sound_program_change', 'action', 'select', false , null, $config_sound_program_change)->save();
+					$sound_program_change = $device->createCmd('sound_program_change', 'action', 'select', false , null, $config_sound_program_change)->save();
+					// TODO faire un test avec les lignes ci-dessous
+//					$sound_program_change->setValue('#sound_program_state#');
+//					$sound_program_change->save();
 					$device->createCmd('sound_program_state')->save();
 				}
 				if(in_array("surround_3d", $fonc_list_zone)) {

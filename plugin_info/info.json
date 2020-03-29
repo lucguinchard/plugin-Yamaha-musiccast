@@ -6,6 +6,8 @@
   "author": "Luc Guinchard",
   "require": "3.0",
   "category": "multimedia",
+  "display" : "panel",
+  "mobile" : "panel",
   "hasDependency": false,
   "hasOwnDeamon": true,
   "maxDependancyInstallTime": 0,

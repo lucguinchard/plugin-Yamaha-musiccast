@@ -17,6 +17,7 @@
 			<h3>Réglages Audio</h3>
 			<h4>Son</h4>
 			<select onchange="jeedom.cmd.execute({id: '#sound_program_change_id#', value: {program: this.value}});">#sound_program_change_select#</select>
+			<select onchange="jeedom.cmd.execute({id: '#input_change_id#', value: {input: this.value}});">#input_change_select#</select>
 			<h4>Égalisseur</h4>
 			<h4>Veille</h4>
 			<h4>Information</h4>
@@ -69,9 +70,9 @@
 			</nav>
 		</div>
 		<div class="panelBox displayoff">
-			<ul>
+			<!--ul>
 				<li><a title="playlist#id#[i]" data-name="playlist#id#[i]'"><i class="fa fa-play"></i> ' + playlist#id#[i] + '</a></li>
-			</ul>
+			</ul-->
 		</div>
 	</div>
 	<script>

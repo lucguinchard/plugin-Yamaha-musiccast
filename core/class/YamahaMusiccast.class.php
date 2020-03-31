@@ -167,6 +167,23 @@ class YamahaMusiccast extends eqLogic {
 			//$replace['#sound_program_change_select#'] = $program_select->toHtml();
 		}
 
+		$input_select = $this->getCmd(null, 'input_change');
+		if (!empty($input_select) && $input_select->getConfiguration('listValue', '') != '') {
+			$elements = explode(';', $input_select->getConfiguration('listValue', ''));
+			foreach ($elements as $element) {
+				$coupleArray = explode('|', $element);
+				$cmdValue = $this->getCmd(null, 'input');
+				if ($cmdValue->execCmd() == $coupleArray[0]) {
+					$listOption .= '<option value="' . $coupleArray[0] . '" selected>' . $coupleArray[1] . '</option>';
+				} else {
+					$listOption .= '<option value="' . $coupleArray[0] . '">' . $coupleArray[1] . '</option>';
+				}
+			}
+			$replace['#input_change_select#'] = $listOption;
+			// TODO: tester avec cette méthode
+			//$replace['#input_change_select#'] = $input_select->toHtml();
+		}
+
 		if ($this->getCmd(null, 'power_state')->execCmd() === 'on') {
 			$replace['#power_action_id#'] = $this->getCmd(null, 'power_off')->getId();
 		} else {
@@ -610,6 +627,7 @@ class YamahaMusiccast extends eqLogic {
 				$device->setConfiguration('model_name', $getDeviceInfo->model_name);
 				$device->save();
 				YamahaMusiccast::callZoneGetStatus($device, $zoneName);
+				YamahaMusiccast::callGetPresetInfoNetusb($device);
 			}
 		}
 		return $deviceZoneList;
@@ -812,7 +830,7 @@ class YamahaMusiccast extends eqLogic {
 					}
 					if (!empty($netusb->preset_info_updated)) {
 						$preset_info_updated = $netusb->preset_info_updated;
-						log::add('YamahaMusiccast', 'info', 'TODO: Whether or not preset info has changed. - Note: If so, pull renewed info using netusb/getPresetInfo ' . print_r($preset_info_updated, true));
+						YamahaMusiccast::callGetPresetInfoNetusb($eqLogic);
 					}
 					if (!empty($netusb->recent_info_updated)) {
 						$recent_info_updated = $netusb->recent_info_updated;
@@ -1007,6 +1025,16 @@ class YamahaMusiccast extends eqLogic {
 		}
 		if (!empty($getStatusZone->link_control)) {
 			$eqLogic->checkAndUpdateCmd('link_control_state', $getStatusZone->link_control);
+		}
+	}
+
+	static function callGetPresetInfoNetusb($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/netusb/getPresetInfo");
+		if (!empty($result->preset_info)) {
+			log::add('YamahaMusiccast', 'info', 'TODO: Gestion de preset_info ' . print_r($result->preset_info, true));
+		}
+		if (!empty($result->func_list)) {
+			log::add('YamahaMusiccast', 'info', 'TODO: Gestion de func_list ' . print_r($result->func_list, true));
 		}
 	}
 

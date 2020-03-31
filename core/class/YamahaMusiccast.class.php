@@ -151,7 +151,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 
 		$program_select = $this->getCmd(null, 'sound_program_change');
-		if ($program_select->getConfiguration('listValue', '') != '') {
+		if (!empty($program_select) && $program_select->getConfiguration('listValue', '') != '') {
 			$elements = explode(';', $program_select->getConfiguration('listValue', ''));
 			foreach ($elements as $element) {
 				$coupleArray = explode('|', $element);

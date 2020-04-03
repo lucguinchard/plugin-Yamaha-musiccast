@@ -16,8 +16,8 @@
 		</a>
 			<h3>Réglages Audio</h3>
 			<h4>Son</h4>
-			<select onchange="jeedom.cmd.execute({id: '#sound_program_change_id#', value: {program: this.value}});">#sound_program_change_select#</select>
-			<select onchange="jeedom.cmd.execute({id: '#input_change_id#', value: {input: this.value}});">#input_change_select#</select>
+			#sound_program_change_select#
+			#input_change_select#
 			<h4>Égalisseur</h4>
 			<h4>Veille</h4>
 			<h4>Information</h4>
@@ -33,7 +33,7 @@
 			<div class="one-line-defile artiste-album">#netusb_artist# - #netusb_album#</div>
 			<div class="visual">
 				<img class="pochette" src="#netusb_albumart_url#?#netusb_albumart_id#"/>
-				<img class="pochette_input" src="plugins/YamahaMusiccast/ressources/input/#input#.png"/>
+				<img class="pochette_input" src="#input_icon#"/>
 				<span class="audio_format">#audio_format# - #audio_fs#</span>
 			</div>
 			<nav class="nav nav_sound">

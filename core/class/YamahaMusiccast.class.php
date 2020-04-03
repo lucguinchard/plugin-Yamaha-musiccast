@@ -153,6 +153,7 @@ class YamahaMusiccast extends eqLogic {
 		$program_select = $this->getCmd(null, 'sound_program_change');
 		if (!empty($program_select) && $program_select->getConfiguration('listValue', '') != '') {
 			$elements = explode(';', $program_select->getConfiguration('listValue', ''));
+			$listOption = '<select onchange="jeedom.cmd.execute({id: ' . $replace['#sound_program_change_id#'] . ', value: {program: this.value}});">';
 			foreach ($elements as $element) {
 				$coupleArray = explode('|', $element);
 				$cmdValue = $this->getCmd(null, 'sound_program_state');
@@ -162,14 +163,18 @@ class YamahaMusiccast extends eqLogic {
 					$listOption .= '<option value="' . $coupleArray[0] . '">' . $coupleArray[1] . '</option>';
 				}
 			}
+			$listOption .= '</select>';
 			$replace['#sound_program_change_select#'] = $listOption;
 			// TODO: tester avec cette méthode
 			//$replace['#sound_program_change_select#'] = $program_select->toHtml();
+		} else {
+			$replace['#sound_program_change_select#'] = '';
 		}
 
 		$input_select = $this->getCmd(null, 'input_change');
 		if (!empty($input_select) && $input_select->getConfiguration('listValue', '') != '') {
 			$elements = explode(';', $input_select->getConfiguration('listValue', ''));
+			$listOption = '<select onchange="jeedom.cmd.execute({id: ' . $replace['#input_change_id#'] . ', value: {input: this.value}});">';
 			foreach ($elements as $element) {
 				$coupleArray = explode('|', $element);
 				$cmdValue = $this->getCmd(null, 'input');
@@ -179,9 +184,12 @@ class YamahaMusiccast extends eqLogic {
 					$listOption .= '<option value="' . $coupleArray[0] . '">' . $coupleArray[1] . '</option>';
 				}
 			}
+			$listOption .= '</select>';
 			$replace['#input_change_select#'] = $listOption;
 			// TODO: tester avec cette méthode
 			//$replace['#input_change_select#'] = $input_select->toHtml();
+		} else {
+			$replace['#input_change_select#'] = '';
 		}
 
 		if ($this->getCmd(null, 'power_state')->execCmd() === 'on') {
@@ -195,10 +203,18 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#mute_action_id#'] = $this->getCmd(null, 'mute_on')->getId();
 		}
 
-		if (file_exists(dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg')) {
-			$replace['#netusb_albumart_url#'] = '/plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg';
+		$img = '/plugins/YamahaMusiccast/ressources/' . $this->getId() . '/AlbumART.jpg';
+		if (file_exists(dirname(__FILE__) . '/../../../..' . $img)) {
+			$replace['#netusb_albumart_url#'] = $img;
 		} else {
 			$replace['#netusb_albumart_url#'] = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+		}
+
+		$img = '/plugins/YamahaMusiccast/ressources/input/' . $replace['#input#'] . '.png';
+		if (file_exists(dirname(__FILE__) . '/../../../..' . $img)) {
+			$replace['#input_icon#'] = $img;
+		} else {
+			$replace['#input_icon#'] = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
 		}
 		/* ------------ N'ajouter plus de code apres ici------------ */
 

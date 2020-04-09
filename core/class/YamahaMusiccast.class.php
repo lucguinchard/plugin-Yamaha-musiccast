@@ -363,6 +363,8 @@ class YamahaMusiccast extends eqLogic {
 				$device->setConfiguration('ip', $ip);
 				$device->save();
 
+				$getStatusZone = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zoneName/getStatus");
+
 				$deviceDir = dirname(__FILE__) . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/';
 				if (!file_exists($deviceDir)) {
 					mkdir($deviceDir, 0700);
@@ -399,42 +401,51 @@ class YamahaMusiccast extends eqLogic {
 
 				}
 				if(in_array("auto_power_standby", $fonc_list_features)) {
+					$device->createCmd('auto_power_standby_state')->save();
 					$device->createCmd('auto_power_standby_on', 'action', 'other')->save();
 					$device->createCmd('auto_power_standby_off', 'action', 'other')->save();
 
 				}
 				if(in_array("ir_sensor", $fonc_list_features)) {
+					$device->createCmd('ir_sensor_state')->save();
 					$device->createCmd('ir_sensor_on', 'action', 'other')->save();
 					$device->createCmd('ir_sensor_off', 'action', 'other')->save();
 
 				}
 				if(in_array("speaker_a", $fonc_list_features)) {
+					$device->createCmd('speaker_a_state')->save();
 					$device->createCmd('speaker_a_on', 'action', 'other')->save();
 					$device->createCmd('speaker_a_off', 'action', 'other')->save();
 				}
 				if(in_array("dimmer", $fonc_list_features)) {
+					$device->createCmd('dimmer_state')->save();
 					$device->createCmd('dimmer', 'action', 'other')->save();
 				}
 				if(in_array("speaker_b", $fonc_list_features)) {
+					$device->createCmd('speaker_b_state')->save();
 					$device->createCmd('speaker_b_on', 'action', 'other')->save();
 					$device->createCmd('speaker_b_off', 'action', 'other')->save();
 				}
 				if(in_array("zone_b_volume_sync", $fonc_list_features)) {
+					$device->createCmd('zone_b_volume_sync_state')->save();
 					$device->createCmd('zone_b_volume_sync_on', 'action', 'other')->save();
 					$device->createCmd('zone_b_volume_sync_off', 'action', 'other')->save();
 				}
 				if(in_array("headphone", $fonc_list_features)) {
-
+					$device->createCmd('headphone_state')->save();
 				}
 				if(in_array("hdmi_out_1", $fonc_list_features)) {
+					$device->createCmd('hdmi_out_1_state')->save();
 					$device->createCmd('hdmi_out_1_on', 'action', 'other')->save();
 					$device->createCmd('hdmi_out_1_off', 'action', 'other')->save();
 				}
 				if(in_array("hdmi_out_2", $fonc_list_features)) {
+					$device->createCmd('hdmi_out_2_state')->save();
 					$device->createCmd('hdmi_out_2_on', 'action', 'other')->save();
 					$device->createCmd('hdmi_out_2_off', 'action', 'other')->save();
 				}
 				if(in_array("hdmi_out_3", $fonc_list_features)) {
+					$device->createCmd('hdmi_out_3_state')->save();
 					$device->createCmd('hdmi_out_3_on', 'action', 'other')->save();
 					$device->createCmd('hdmi_out_3_off', 'action', 'other')->save();
 				}
@@ -463,14 +474,15 @@ class YamahaMusiccast extends eqLogic {
 
 				}
 				if(in_array("auto_play", $fonc_list_features)) {
+					$device->createCmd('auto_play_state')->save();
 					$device->createCmd('auto_play_on', 'action', 'other')->save();
 					$device->createCmd('auto_play_off', 'action', 'other')->save();
 				}
 				if(in_array("speaker_pattern", $fonc_list_features)) {
-
+					$device->createCmd('speaker_pattern_state_state')->save();
 				}
 				if(in_array("party_mode", $fonc_list_features)) {
-
+					$device->createCmd('party_mode_state')->save();
 				}
 				$fonc_list_zone = $zone->func_list;
 				if(in_array("power", $fonc_list_zone)) {
@@ -483,7 +495,9 @@ class YamahaMusiccast extends eqLogic {
 				}
 				if(in_array("volume", $fonc_list_zone)) {
 					$config_volume_change['minValue'] = 0;
-					$config_volume_change['maxValue'] = 50;// TODO:Utilisation de max_volume
+					if (!empty($getStatusZone->max_volume)) {
+						$config_volume_change['maxValue'] = $getStatusZone->max_volume;
+					}
 					$device->createCmd('volume_change', 'action', 'slider', false, 'SET_VOLUME', $config_volume_change)->save();
 					$device->createCmd('volume_change_step', 'action', 'other', false, 'SET_VOLUME')->save();
 					$device->createCmd('volume_state')->save();
@@ -748,15 +762,14 @@ class YamahaMusiccast extends eqLogic {
 					$system = $result->system;
 					if (!empty($system->bluetooth_info_updated)) {
 						$bluetooth_info_updated = $system->bluetooth_info_updated;
-						YamahaMusiccast::callBluetoothInfo($eqLogic, $bluetooth_info_updated);
+						YamahaMusiccast::callBluetoothInfo($eqLogic);
 					}
 					if (!empty($system->func_status_updated)) {
 						$func_status_updated = $system->func_status_updated;
-						log::add('YamahaMusiccast', 'info', 'TODO: $func_status_updated - pull renewed info using /system/getFuncStatus ' . print_r($func_status_updated, true));
+						YamahaMusiccast::callGetFuncStatus($eqLogic);
 					}
 					if (!empty($system->location_info_updated)) {
-						$location_info_updated = $system->location_info_updated;
-						log::add('YamahaMusiccast', 'info', 'TODO: $location_info_updated - pull renewed info using /system/getLocationInfo ' . print_r($location_info_updated, true));
+						YamahaMusiccast::callGetLocationInfo($eqLogic);
 					}
 					if (!empty($system->name_text_updated)) {
 						$name_text_updated = $system->name_text_updated;
@@ -934,7 +947,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 	}
 
-	static function callBluetoothInfo($eqLogic, $bluetooth_info_updated) {
+	static function callBluetoothInfo($eqLogic) {
 		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/system/getBluetoothInfo");
 		if (!empty($result->bluetooth_standby)) {
 			$eqLogic->checkAndUpdateCmd('bluetooth_standby_state', $result->bluetooth_standby);
@@ -1051,6 +1064,62 @@ class YamahaMusiccast extends eqLogic {
 		}
 		if (!empty($result->func_list)) {
 			log::add('YamahaMusiccast', 'info', 'TODO: Gestion de func_list ' . print_r($result->func_list, true));
+		}
+	}
+
+	static function callGetFuncStatus($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/system/getFuncStatus");
+		if (!empty($result->auto_power_standby)) {
+			$eqLogic->checkAndUpdateCmd('auto_power_standby_state', $result->auto_power_standby);
+		}
+		if (!empty($result->ir_sensor)) {
+			$eqLogic->checkAndUpdateCmd('ir_sensor_state', $result->ir_sensor);
+		}
+		if (!empty($result->speaker_a)) {
+			$eqLogic->checkAndUpdateCmd('speaker_a_state', $result->speaker_a);
+		}
+		if (!empty($result->speaker_b)) {
+			$eqLogic->checkAndUpdateCmd('speaker_b_state', $result->speaker_b);
+		}
+		if (!empty($result->headphone)) {
+			$eqLogic->checkAndUpdateCmd('headphone_state', $result->headphone);
+		}
+		if (!empty($result->dimmer)) {
+			$eqLogic->checkAndUpdateCmd('dimmer_state', $result->dimmer);
+		}
+		if (!empty($result->zone_b_volume_sync)) {
+			$eqLogic->checkAndUpdateCmd('zone_b_volume_sync_state', $result->zone_b_volume_sync);
+		}
+		if (!empty($result->hdmi_out_1)) {
+			$eqLogic->checkAndUpdateCmd('hdmi_out_1_state', $result->hdmi_out_1);
+		}
+		if (!empty($result->hdmi_out_2)) {
+			$eqLogic->checkAndUpdateCmd('hdmi_out_2_state', $result->hdmi_out_2);
+		}
+		if (!empty($result->hdmi_out_3)) {
+			$eqLogic->checkAndUpdateCmd('hdmi_out_3_state', $result->hdmi_out_3);
+		}
+		if (!empty($result->auto_play)) {
+			$eqLogic->checkAndUpdateCmd('auto_play_state', $result->auto_play);
+		}
+		if (!empty($result->speaker_pattern)) {
+			$eqLogic->checkAndUpdateCmd('speaker_pattern_state', $result->speaker_pattern);
+		}
+		if (!empty($result->party_mode)) {
+			$eqLogic->checkAndUpdateCmd('party_mode_state', $result->party_mode);
+		}
+	}
+
+	static function callGetLocationInfo($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/system/getLocationInfo");
+		if (!empty($result->id)) {
+		}
+		if (!empty($result->name)) {
+		}
+		if (!empty($result->zone_list)) {
+			foreach ($result->zone_list as $zone) {
+				
+			}
 		}
 	}
 

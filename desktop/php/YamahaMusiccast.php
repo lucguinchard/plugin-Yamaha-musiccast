@@ -104,7 +104,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			</li>
 			<li role="presentation" class="active">
 				<a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab">
-					<i class="fa fa-tachometer"></i> {{Equipement}}
+					<i class="fas fa-tachometer-alt"></i> {{Equipement}}
 				</a>
 			</li>
 			<li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab">
@@ -154,37 +154,37 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-param">{{Model}}</label>
+							<label class="col-sm-3 control-label" for="Musiccast-model">{{Model}}</label>
 							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-model"
 									   data-l1key="configuration" data-l2key="model_name"/>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-param">{{ip}}</label>
+							<label class="col-sm-3 control-label" for="Musiccast-ip">{{ip}}</label>
 							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-ip"
 									   data-l1key="configuration" data-l2key="ip"/>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-param">{{zone}}</label>
+							<label class="col-sm-3 control-label" for="Musiccast-zone">{{zone}}</label>
 							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-zone"
 									   data-l1key="configuration" data-l2key="zone"/>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-param">{{lastCommunication}}</label>
+							<label class="col-sm-3 control-label" for="Musiccast-lastCommunication">{{lastCommunication}}</label>
 							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCommunication"
 									   data-l1key="status" data-l2key="lastCommunication"/>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-param">{{lastCallAPI}}</label>
+							<label class="col-sm-3 control-label" for="Musiccast-lastCallAPI">{{lastCallAPI}}</label>
 							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-param"
+								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCallAPI"
 									   data-l1key="status" data-l2key="lastCallAPI"/>
 							</div>
 						</div>

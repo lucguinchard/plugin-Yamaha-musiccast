@@ -45,9 +45,11 @@ try {
 			} else {
 				$deviceList = "";
 				foreach ($return as $device){
-					$deviceList .= $device->getName() . ', ';
+					foreach ($device as $zone){
+						$deviceList .= $zone['name'] . '-' . $zone['zone'] . ', ';
+					}
 				}
-				ajax::error('La recherche a trouvé ' . $nb . ' appareil(s) compatible(s) : ' . substr($deviceList, 0, -2) . '');
+				ajax::error('La recherche a trouvé ' . $nb . ' zone(s) compatible(s) : ' . substr($deviceList, 0, -2) . '');
 			}
 			break;
 		case 'saveIP':
@@ -57,11 +59,11 @@ try {
 			if($nb === 0) {
 				ajax::error(__('La recherche n’a pas trouvé d’appareil compatible pour : ' . $ip));
 			} else {
-				$zoneList = "";
+				$deviceList = "";
 				foreach ($return as $zone){
-					$zoneList .= $zone . ', ';
+					$deviceList .= $zone['name'] . '-' . $zone['zone'] . ', ';
 				}
-				ajax::error('La recherche a trouvé un appareil compatible avec la(es) zone(s) suivante(s) :' . substr($zoneList, 0, -2));
+				ajax::error('La recherche a trouvé un appareil compatible avec la(es) zone(s) suivante(s) : ' . substr($deviceList, 0, -2));
 			}
 			break;
 	}

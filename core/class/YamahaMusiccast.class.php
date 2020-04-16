@@ -329,7 +329,7 @@ class YamahaMusiccast extends eqLogic {
 		$return = array();
 		$ipList = YamahaMusiccast::searchDeviceIpList();
 		foreach ($ipList as $ip) {
-			$return[$ip] = YamahaMusiccast::saveDeviceIp($ip);
+			array_push($return, YamahaMusiccast::saveDeviceIp($ip));
 		}
 		return $return;
 	}
@@ -343,11 +343,17 @@ class YamahaMusiccast extends eqLogic {
 		$getDeviceInfo = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getDeviceInfo");
 
 		$getFeatures = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getFeatures");
-		if ($getFeatures !== false) {
+		$getLocationInfo = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getLocationInfo");
+		
+		if (isset($getFeatures) && isset($getLocationInfo)) {
+			$musiccastId = $getLocationInfo->id;
+			$musiccastName = $getLocationInfo->name;
+			//YamahaMusiccast::setConfiguration('musiccastId', $musiccastId);
+			//YamahaMusiccast::setConfiguration('musiccastName', $musiccastName);
+			$musiccastZoneList = $getLocationInfo->zone_list;
 			$fonc_list_features = $getFeatures->system->func_list;
 			foreach ($getFeatures->zone as $zone) {
 				$zoneName = $zone->id;
-				array_push($deviceZoneList, $zoneName);
 				$logicalId = $ip . ':' . $zoneName;
 				$device = YamahaMusiccast::byLogicalId($logicalId, 'YamahaMusiccast');
 				if (!is_object($device)) {
@@ -357,8 +363,13 @@ class YamahaMusiccast extends eqLogic {
 				$device->setName($logicalId);
 				$device->setLogicalId($logicalId);
 				$device->setCategory('multimedia', 1);
-				$device->setIsVisible(1);
-				$device->setIsEnable(1);
+				if($musiccastZoneList->$zoneName) {
+					$device->setIsVisible(1);
+					$device->setIsEnable(1);
+				} else {
+					$device->setIsVisible(0);
+					$device->setIsEnable(0);
+				}
 				$device->setConfiguration('zone', $zoneName);
 				$device->setConfiguration('ip', $ip);
 				$device->save();
@@ -541,7 +552,15 @@ class YamahaMusiccast extends eqLogic {
 					
 				}
 				if(in_array("equalizer", $fonc_list_zone)) {
-					
+					$device->createCmd('equalizer_mode')->save();
+					$config_volume_change['minValue'] = -10;
+					$config_volume_change['maxValue'] = 10;
+					$device->createCmd('equalizer_low_change', 'action', 'slider', false, null, $config_volume_change)->save();
+					$device->createCmd('equalizer_low')->save();
+					$device->createCmd('equalizer_mid_change', 'action', 'slider', false, null, $config_volume_change)->save();
+					$device->createCmd('equalizer_mid')->save();
+					$device->createCmd('equalizer_high_change', 'action', 'slider', false, null, $config_volume_change)->save();
+					$device->createCmd('equalizer_high')->save();
 				}
 				if(in_array("balance", $fonc_list_zone)) {
 					
@@ -654,6 +673,10 @@ class YamahaMusiccast extends eqLogic {
 				} else {
 					$device->setName($getNetworkStatus->network_name . " (" . $zoneName . ")");
 				}
+				array_push($deviceZoneList, [
+					"name" => $getNetworkStatus->network_name ,
+					"zone" => $zoneName
+				]);
 				$device->setConfiguration('model_name', $getDeviceInfo->model_name);
 				$device->save();
 				YamahaMusiccast::callZoneGetStatus($device, $zoneName);
@@ -1054,6 +1077,21 @@ class YamahaMusiccast extends eqLogic {
 		}
 		if (!empty($getStatusZone->link_control)) {
 			$eqLogic->checkAndUpdateCmd('link_control_state', $getStatusZone->link_control);
+		}
+		if (!empty($getStatusZone->equalizer)) {
+			$equalizer = $getStatusZone->equalizer;
+			if (!empty($equalizer->mode)) {
+				$eqLogic->checkAndUpdateCmd('equalizer_mode', $equalizer->mode);
+			}
+			if (!empty($equalizer->low)) {
+				$eqLogic->checkAndUpdateCmd('equalizer_low', $equalizer->low);
+			}
+			if (!empty($equalizer->mid)) {
+				$eqLogic->checkAndUpdateCmd('equalizer_mid', $equalizer->mid);
+			}
+			if (!empty($equalizer->high)) {
+				$eqLogic->checkAndUpdateCmd('equalizer_high', $equalizer->high);
+			}
 		}
 	}
 

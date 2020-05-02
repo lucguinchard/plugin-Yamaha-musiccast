@@ -182,7 +182,7 @@ class YamahaMusiccastCmd extends cmd {
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=false");
 				break;
 			case "input_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['input']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select']);
 				break;
 			case "input_change_mode":
 				/**
@@ -191,10 +191,10 @@ class YamahaMusiccastCmd extends cmd {
 				  Value: "autoplay_disabled" (Restricts Auto Play of Net/USB
 				  related Inputs). Available on and after API Version
 				 */
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['input'] . "&mode=" . $_options['mode']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select'] . "&mode=" . $_options['mode']);
 				break;
 			case "sound_program_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?program=" . $_options['program']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?program=" . $_options['select']);
 				break;
 			case "3d_surround_on":
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=true");

@@ -164,6 +164,34 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#input_change_select#'] = '';
 		}
 
+		$equalizer_low_change = $this->getCmd(null, 'equalizer_low_change');
+		if (!empty($equalizer_low_change)) {
+			$replace['#equalizer_low_change#'] = $equalizer_low_change->toHtml();
+		} else {
+			$replace['#equalizer_low_change#'] = '';
+		}
+
+		$equalizer_mid_change = $this->getCmd(null, 'equalizer_mid_change');
+		if (!empty($equalizer_mid_change)) {
+			$replace['#equalizer_mid_change#'] = $equalizer_mid_change->toHtml();
+		} else {
+			$replace['#equalizer_mid_change#'] = '';
+		}
+
+		$equalizer_high_change = $this->getCmd(null, 'equalizer_high_change');
+		if (!empty($equalizer_high_change)) {
+			$replace['#equalizer_high_change#'] = $equalizer_high_change->toHtml();
+		} else {
+			$replace['#equalizer_high_change#'] = '';
+		}
+
+		$volume_change = $this->getCmd(null, 'volume_change');
+		if (!empty($volume_change)) {
+			$replace['#volume_change#'] = $volume_change->toHtml();
+		} else {
+			$replace['#volume_change#'] = '';
+		}
+
 		if ($this->getCmd(null, 'power_state')->execCmd() === 'on') {
 			$replace['#power_action_id#'] = $this->getCmd(null, 'power_off')->getId();
 		} else {
@@ -481,9 +509,14 @@ class YamahaMusiccast extends eqLogic {
 					if (!empty($getStatusZone->max_volume)) {
 						$config_volume_change['maxValue'] = $getStatusZone->max_volume;
 					}
-					$device->createCmd('volume_change', 'action', 'slider', false, 'SET_VOLUME', $config_volume_change)->save();
-					$device->createCmd('volume_change_step', 'action', 'other', false, 'SET_VOLUME')->save();
-					$device->createCmd('volume_state')->save();
+					$volume_state = $device->createCmd('volume_state');
+					$volume_state->save();
+					$volume = $device->createCmd('volume_change', 'action', 'slider', false, 'SET_VOLUME', $config_volume_change)->setValue($volume_state->getId());
+					$volume->setDisplay('showNameOndashboard','0');
+					$volume->setDisplay('showNameOnmobile','0');
+					$volume->setDisplay('showIconAndNamedashboard','0');
+					$volume->setDisplay('showIconAndNamemobile','0');
+					$volume->save();
 					$device->createCmd('max_volume')->save();
 				}
 				$getNameText = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getNameText");
@@ -525,12 +558,15 @@ class YamahaMusiccast extends eqLogic {
 					$device->createCmd('equalizer_mode')->save();
 					$config_volume_change['minValue'] = -10;
 					$config_volume_change['maxValue'] = 10;
-					$device->createCmd('equalizer_low_change', 'action', 'slider', false, null, $config_volume_change)->save();
-					$device->createCmd('equalizer_low')->save();
-					$device->createCmd('equalizer_mid_change', 'action', 'slider', false, null, $config_volume_change)->save();
-					$device->createCmd('equalizer_mid')->save();
-					$device->createCmd('equalizer_high_change', 'action', 'slider', false, null, $config_volume_change)->save();
-					$device->createCmd('equalizer_high')->save();
+					$equalizer_low = $device->createCmd('equalizer_low');
+					$equalizer_low->save();
+					$device->createCmd('equalizer_low_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_low->getId())->save();
+					$equalizer_mid = $device->createCmd('equalizer_mid');
+					$equalizer_mid->save();
+					$device->createCmd('equalizer_mid_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_mid->getId())->save();
+					$equalizer_high = $device->createCmd('equalizer_high');
+					$equalizer_high->save();
+					$device->createCmd('equalizer_high_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_high->getId())->save();
 				}
 				if(in_array("balance", $fonc_list_zone)) {
 					
@@ -895,7 +931,7 @@ class YamahaMusiccast extends eqLogic {
 						log::add('YamahaMusiccast', 'info', 'TODO: isSettingsUpdated ' . print_r($settings_updated, true));
 					}
 				}
-				$eqLogic->refreshWidget();
+				//$eqLogic->refreshWidget();
 			}
 		}
 		if (empty($eqLogicByIPList)) {

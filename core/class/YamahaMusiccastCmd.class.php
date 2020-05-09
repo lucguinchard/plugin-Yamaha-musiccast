@@ -169,7 +169,7 @@ class YamahaMusiccastCmd extends cmd {
 				break;
 			//setSleep
 			case "volume_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['volume']);
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['slider']);
 				break;
 			case "volume_change_step":
 				//volume = up or down
@@ -222,6 +222,15 @@ class YamahaMusiccastCmd extends cmd {
 				break;
 			//setToneControl
 			//setEqualizer
+			case "equalizer_low_change":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&low=" . $_options['slider']);
+				break;
+			case "equalizer_mid_change":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&mid=" . $_options['slider']);
+				break;
+			case "equalizer_high_change":
+				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&high=" . $_options['slider']);
+				break;
 			//setBalance
 			//setDialogueLevel
 			//setDialogueLift

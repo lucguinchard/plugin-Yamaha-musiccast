@@ -10,7 +10,7 @@
 		<a href="#eqLink#" style="#hideEqLogicName#">#name_display#</a>
 	</center>
 	<div>
-		<div class="panelBox sound_config" style="display: none;">
+		<div class="panelBox sound_config">
 		<a class="cmd pull-right" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .sound_config').css('display', 'none');">
 			<i class="fa fa-times"></i>
 		</a>
@@ -18,15 +18,18 @@
 			<h4>Son</h4>
 			#sound_program_change_select#
 			#input_change_select#
-			<h4>Égalisseur</h4>
-			<h4>Veille</h4>
+			<h4>Égaliseur</h4>
+			#equalizer_low_change#
+			#equalizer_mid_change#
+			#equalizer_high_change#
+			<!--h4>Veille</h4>
 			<h4>Information</h4>
 			<h4>Bluetooth</h4>
 			#link_audio_quality_state#<br/>
 			#link_audio_delay_state#<br/>
 			#link_control_state#<br/>
 			#audio_error#<br/>
-			#netusb_play_queue_type#<br/>
+			#netusb_play_queue_type#<br/-->
 		</div>
 		<div class="panelBox playlist">
 			<div class="one-line-defile">#netusb_track#</div>
@@ -40,7 +43,7 @@
 				<a class="btn cmd" data-cmd_id="#mute_action_id#" onclick="jeedom.cmd.execute({id: #mute_action_id#});" title="Mute">
 					<i class="icon jeedomapp-audiomute"></i>
 				</a>
-				<input class="volume_range btn" type="range" min="0" max="#max_volume#" value="#volume_state#" step="1" onchange="jeedom.cmd.execute({id: '#volume_change_id#', value: {volume: this.value}});"/>
+				#volume_change#
 				<a class="btn cmd" title="Réglage audio" style="float: right;" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .sound_config').css('display', 'block');">
 					<i class="fas fa-sliders-h"></i>
 				</a>

@@ -56,6 +56,13 @@
 	padding: 4px 4px;
 }
 
+.YamahaMusiccast .sound_config {
+	display: none;
+	position: absolute;
+	z-index: 5;
+	background-color: aliceblue;
+}
+
 .YamahaMusiccast .name {
 	writing-mode: vertical-lr;
 	height: 100%;

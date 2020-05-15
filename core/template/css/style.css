@@ -4,11 +4,17 @@
 	margin-right: 0 !important;
 	/*jeedom*/
 	font-size: 14px;
+	margin-top: 3px;
 }
 
-.YamahaMusiccast .widget-name .btn {
+.YamahaMusiccast .widget-name .cmd {
+	margin-top: 3px !important;
 	/*Nextdom*/
 	padding: 0px 4px;
+}
+
+.YamahaMusiccast .widget-name .cmd i {
+	font-size: 12px !important;
 }
 
 .YamahaMusiccast .panelBox {
@@ -32,7 +38,7 @@
 	border-radius: 10%;
 }
 
-.YamahaMusiccast .playlist .pochette_input, .YamahaMusiccast .audio_format {
+.YamahaMusiccast .playlist .pochette_input, .YamahaMusiccast .audio_format_box {
 	position: absolute;
 	top: 90%;
 
@@ -43,7 +49,7 @@
 	border-radius: 5%;
 }
 
-.YamahaMusiccast .audio_format {
+.YamahaMusiccast .audio_format_box {
 	left: 5%;
 	border-radius: 10%;
 	padding: 0 2px;
@@ -56,11 +62,17 @@
 	padding: 4px 4px;
 }
 
+.YamahaMusiccast .panelIcon {
+	height: 247.5px;
+	padding-top: 50px;
+}
+
 .YamahaMusiccast .sound_config {
 	display: none;
 	position: absolute;
 	z-index: 5;
-	background-color: aliceblue;
+	border: 2px solid;
+	margin:0 5px;
 }
 
 .YamahaMusiccast .name {
@@ -116,4 +128,9 @@
 
 .YamahaMusiccast .one-line-defile {
 	overflow: hidden;
+}
+
+.YamahaMusiccast .one-line-defile div,
+.YamahaMusiccast .audio_format div {
+	display: inline !important;
 }

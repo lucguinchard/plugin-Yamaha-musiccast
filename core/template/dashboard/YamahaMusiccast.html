@@ -3,22 +3,22 @@
 	 data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="dashboard" >
 	<link rel="stylesheet" href="plugins/YamahaMusiccast/core/template/css/style.css"/>
 	<center class="widget-name">
-		<a class="btn cmd power pull-left" data-cmd_id="#power_action_id#" onclick="jeedom.cmd.execute({id: #power_action_id#});">
-			<i class="fa fa-power-off power"></i>
+		<a class="cmd pull-left" data-cmd_id="#power_state_id#">
+			<i class="fa fa-power-off"></i>
 		</a>
 		<span class="cmd cmd-status pull-right" style="width : 30px;z-index: 1030;"></span>
 		<a href="#eqLink#" style="#hideEqLogicName#">#name_display#</a>
 	</center>
 	<div>
-		<div class="panelBox sound_config">
-		<a class="cmd pull-right" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .sound_config').css('display', 'none');">
-			<i class="fa fa-times"></i>
-		</a>
-			<h3>Réglages Audio</h3>
-			<h4>Son</h4>
+		<div class="panelBox sound_config" style="background-color: #background-color#">
+			<a class="cmd pull-right" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .sound_config').css('display', 'none');">
+				<i class="fa fa-times"></i>
+			</a>
+			<h3 style="color: #color#;">Réglages Audio</h3>
+			<h4 style="color: #color#;">Son</h4>
 			#sound_program_change_select#
 			#input_change_select#
-			<h4>Égaliseur</h4>
+			<h4 style="color: #color#;">Égaliseur</h4>
 			#equalizer_low_change#
 			#equalizer_mid_change#
 			#equalizer_high_change#
@@ -32,15 +32,20 @@
 			#netusb_play_queue_type#<br/-->
 		</div>
 		<div class="panelBox playlist">
-			<div class="one-line-defile">#netusb_track#</div>
-			<div class="one-line-defile artiste-album">#netusb_artist# - #netusb_album#</div>
-			<div class="visual">
-				<img class="pochette" src="#netusb_albumart_url#?#netusb_albumart_id#"/>
-				<img class="pochette_input" src="#input_icon#"/>
-				<span class="audio_format">#audio_format# - #audio_fs#</span>
+			<div class="panelMusic">
+				<div class="one-line-defile"><strong class="cmd netusb_track" data-cmd_id="#netusb_track_id#"></strong></div>
+				<div class="one-line-defile artiste-album"><strong class="cmd netusb_artist" data-cmd_id="#netusb_artist_id#"></strong> - <strong class="cmd netusb_album" data-cmd_id="#netusb_album_id#"></strong></div>
+				<div class="visual">
+					<span class="cmd" data-cmd_id="#netusb_albumart_url_id#"><img class="pochette"/></span>
+					<img class="pochette_input" data-cmd_id="#input_id#"/>
+					<div class="audio_format_box"><span class="cmd audio_format" data-cmd_id="#audio_format_id#"></span> - <span class="cmd audio_fs" data-cmd_id="#audio_fs_id#"></span></div>
+				</div>
+			</div>
+			<div class="panelIcon">
+				<i></i>
 			</div>
 			<nav class="nav nav_sound">
-				<a class="btn cmd" data-cmd_id="#mute_action_id#" onclick="jeedom.cmd.execute({id: #mute_action_id#});" title="Mute">
+				<a class="btn cmd" data-cmd_id="#mute_state_id#" title="Mute">
 					<i class="icon jeedomapp-audiomute"></i>
 				</a>
 				#volume_change#
@@ -49,12 +54,12 @@
 				</a>
 			</nav>
 			<nav class="nav nav_playlist">
-				<a class="btn cmd action_playlist" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire" style="float: right;">
+				<!--a class="btn cmd action_playlist" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire" style="float: right;">
 					<i class="fa fa-random shuffle"></i>
 				</a>
 				<a class="btn cmd action_playlist" data-cmd_id="#netusb_repeat_id#" onclick="jeedom.cmd.execute({id: #netusb_repeat_id#});" title="Répéter">
 					<i class="fa fa-sync repeat"></i>
-				</a>
+				</a-->
 				<a class="btn cmd action_list" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent" style="float: none;">
 					#netusb_playback_previous_icon#
 				</a>
@@ -79,14 +84,108 @@
 		</div>
 	</div>
 	<script>
-		if ('#power_state#' == 'on') {
-		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .power').click(function() {jeedom.cmd.execute({id: #power_off_id#})});
-		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist').css('display', 'block');
-		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'none');
-		} else {
-		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .power').click(function() {jeedom.cmd.execute({id: #power_on_id#})});
-		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist').css('display', 'none');
-		$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'block');
+		jeedom.cmd.update['#power_state_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			if (_options.display_value == 'on') {
+				uid.find('.playlist').css('display', 'block');
+				uid.find('.displayoff').css('display', 'none');
+				uid.find('a[data-cmd_id=#power_state_id#]').off('click').on('click', function () {
+					jeedom.cmd.execute({id: #power_off_id#});
+				});
+			} else {
+				uid.find('.playlist').css('display', 'none');
+				uid.find('.displayoff').css('display', 'block');
+				uid.find('a[data-cmd_id=#power_state_id#]').off('click').on('click', function () {
+					jeedom.cmd.execute({id: #power_on_id#});
+				});
+			}
 		}
+		jeedom.cmd.update['#power_state_id#']({display_value:'#power_state#'});
+		jeedom.cmd.update['#mute_state_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			if (_options.display_value == '1') {
+				uid.find('a[data-cmd_id=#mute_state_id#]').off('click').on('click', function () {
+					jeedom.cmd.execute({id: #mute_off_id#});
+				});
+			} else {
+				uid.find('a[data-cmd_id=#mute_state_id#]').off('click').on('click', function () {
+					jeedom.cmd.execute({id: #mute_on_id#});
+				});
+			}
+		}
+		jeedom.cmd.update['#mute_state_id#']({display_value:'#mute_state#'});
+		jeedom.cmd.update['#netusb_albumart_url_id#'] = function(_options){
+		var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.pochette').attr('src', _options.display_value);
+		}
+		jeedom.cmd.update['#netusb_albumart_url_id#']({display_value:'#netusb_albumart_url#'});
+		jeedom.cmd.update['#netusb_track_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.netusb_track').empty().append(_options.display_value)
+		}
+		jeedom.cmd.update['#netusb_track_id#']({display_value:'#netusb_track#'});
+		jeedom.cmd.update['#netusb_artist_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.netusb_artist').empty().append(_options.display_value)
+		}
+		jeedom.cmd.update['#netusb_artist_id#']({display_value:'#netusb_artist#'});
+		jeedom.cmd.update['#netusb_album_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.netusb_album').empty().append(_options.display_value)
+		}
+		jeedom.cmd.update['#netusb_album_id#']({display_value:'#netusb_album#'});
+		jeedom.cmd.update['#audio_format_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.audio_format').empty().append(_options.display_value)
+		}
+		jeedom.cmd.update['#audio_format_id#']({display_value:'#audio_format#'});
+		jeedom.cmd.update['#audio_fs_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.audio_fs').empty().append(_options.display_value)
+		}
+		jeedom.cmd.update['#audio_fs_id#']({display_value:'#audio_fs#'});
+		$(".cmd[data-cmd_uid=#uid#] .selectCmd").on('change', function () {
+			jeedom.cmd.execute({id: '#id#', value: {select: $(this).value()}});
+		});
+		jeedom.cmd.update['#input_id#'] = function(_options) {
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			var panelMusic = uid.find('.panelMusic');
+			var panelIcon = uid.find('.panelIcon');
+			var nav_playlist = uid.find('.nav_playlist');
+			if (_options.display_value === 'tv' || _options.display_value.startsWith('hdmi')) {
+				panelMusic.hide();
+				panelIcon.empty().append('<i class="icon techno-tv fa-10x"></i>');
+				nav_playlist.hide();
+				panelIcon.show();
+			} else if (_options.display_value === 'bluetooth') {
+				panelMusic.hide();
+				panelIcon.empty().append('<i class="icon techno-bluetooth3 icon_blue fa-10x"></i>');
+				nav_playlist.show();
+				panelIcon.show();
+				// todo: $(".musiccast[data-eqLogic_uid=#uid#] .action_playlist").hide();
+			} else if (_options.display_value === 'net_radio') {
+				panelIcon.hide();
+				panelMusic.show();
+				nav_playlist.show();
+				uid.find('.pochette_input').hide();
+			} else if ('#input#' == 'spotify' || '#input#' == 'napster' || '#input#' == 'pandora' || '#input#' == 'siriusxm' || '#input#' == 'juke' || '#input#' == 'radiko' || '#input#' == 'qobuz' || '#input#' == 'tidal' || '#input#' == 'deezer') {
+				panelIcon.hide();
+				panelMusic.show();
+				nav_playlist.show();
+				var url = '/plugins/YamahaMusiccast/ressources/input/' + _options.display_value + '.png';
+				uid.find('.pochette_input').attr('src', url);
+				$.get(url).fail(function() {
+					url = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+					uid.find('.pochette_input').attr('src', url);
+				})
+				uid.find('.pochette_input').attr('src', url);
+			} else {
+				panelIcon.hide();
+				panelMusic.show();
+				nav_playlist.show();
+			}
+		}
+
+		jeedom.cmd.update['#input_id#']({display_value:'#input#'});
 	</script>
 </div>

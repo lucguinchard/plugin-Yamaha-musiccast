@@ -78,4 +78,4 @@ echo '</div>';
 ?>
 </div>
 </div>
-<?php include_file('desktop', 'panel', 'js', 'YamahaMusiccast'); ?>
+<?php include_file('desktop', 'panel', 'js', 'YamahaMusiccast');

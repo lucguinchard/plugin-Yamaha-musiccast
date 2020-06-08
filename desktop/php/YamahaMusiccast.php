@@ -63,7 +63,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<br>
 				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Recherche auto}}</span>
 			</div>
-			<div class="cursor eqLogicAction" data-action="addIP" title="{{Cette opération est utitile quand les appareils ne se trouve pas sur le même réseau (ex: Docker ou VM en mode bridge)}}"
+			<div class="cursor eqLogicAction" data-action="addIP" title="{{Cette opération est utile quand les appareils ne se trouve pas sur le même réseau (ex: Docker ou VM en mode bridge)}}"
 				 style="text-align: center; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
 				<i class="fa fa-plus-circle" style="font-size : 6em;"></i>
 				<br>

@@ -157,9 +157,28 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#sound_program_change_select#'] = '';
 		}
 
+		$netusb_recall_preset = $this->getCmd(null, 'netusb_recall_preset');
+		if (!empty($netusb_recall_preset) && $netusb_recall_preset->getConfiguration('listValue', '') != '') {
+			$replace['#netusb_recall_preset#'] = $netusb_recall_preset->toHtml();
+			$replace['#netusb_recall_preset_change_list#'] = $netusb_recall_preset->getConfiguration('listValue', '');
+		} else {
+			$replace['#netusb_recall_preset#'] = '';
+			$replace['#netusb_recall_preset_change_list#'] = '';
+		}
+
+		$netusb_recall_recent = $this->getCmd(null, 'netusb_recall_recent');
+		if (!empty($netusb_recall_recent) && $netusb_recall_recent->getConfiguration('listValue', '') != '') {
+			$replace['#netusb_recall_recent#'] = $netusb_recall_recent->toHtml();
+			$replace['#netusb_recall_recent_change_list#'] = $netusb_recall_recent->getConfiguration('listValue', '');
+		} else {
+			$replace['#netusb_recall_recent#'] = '';
+			$replace['#netusb_recall_recent_change_list#'] = '';
+		}
+
 		$input_select = $this->getCmd(null, 'input_change');
 		if (!empty($input_select) && $input_select->getConfiguration('listValue', '') != '') {
 			$replace['#input_change_select#'] = $input_select->toHtml();
+			$replace['#input_change_list#'] = $input_select->getConfiguration('listValue', '');
 		} else {
 			$replace['#input_change_select#'] = '';
 		}
@@ -496,24 +515,14 @@ class YamahaMusiccast extends eqLogic {
 					$volume = $device->createCmd('volume_change', 'action', 'slider', false, 'SET_VOLUME', $config_volume_change)->setValue($volume_state->getId())->save();
 					$device->createCmd('max_volume')->save();
 				}
-				$getNameText = YamahaMusiccast::CallAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getNameText");
 				if(in_array("mute", $fonc_list_zone)) {
 					$device->createCmd('mute_on', 'action', 'other')->save();
 					$device->createCmd('mute_off', 'action', 'other')->save();
 					$device->createCmd('mute_state')->save();
 				}
 				if(in_array("sound_program", $fonc_list_zone)) {
-					$sound_program_list_string = "";
-					if (!empty($getNameText->sound_program_list)) {
-						$sound_program_list = $getNameText->sound_program_list;
-						foreach ($sound_program_list as $sound_program) {
-							$sound_program_list_string .= $sound_program->id . "|".$sound_program->text . ";";
-						}
-					}
-					
 					$sound_program_state = $device->createCmd('sound_program_state');
 					$sound_program_state->save();
-					$config_sound_program_change['listValue'] = substr($sound_program_list_string, 0, -1);
 					$sound_program_change = $device->createCmd('sound_program_change', 'action', 'select', false , null, $config_sound_program_change)->setValue($sound_program_state->getId())->save();
 				}
 				if(in_array("surround_3d", $fonc_list_zone)) {
@@ -650,18 +659,14 @@ class YamahaMusiccast extends eqLogic {
 				$cmdInput = $device->createCmd('input');
 				$cmdInput->save();
 				$input_change_string = "";
-				if (!empty($getNameText->input_list)) {
-					$input_list = $getNameText->input_list;
-					foreach ($input_list as $input) {
-						$input_change_string .= $input->id . "|".$input->text . ";";
-					}
-				}
-				$config_input_change['listValue'] = substr($input_change_string, 0, -1);
-				$device->createCmd('input_change', 'action', 'select', false , null, $config_input_change)->setValue($cmdInput->getId())->save();
+				$device->createCmd('input_change', 'action', 'select', false , null)->setValue($cmdInput->getId())->save();
 
 				$device->createCmd('audio_error')->save();
 				$device->createCmd('audio_format')->save();
 				$device->createCmd('audio_fs')->save();
+				
+				$device->createCmd('netusb_recall_recent_list')->save();
+				$device->createCmd('netusb_recall_preset_list')->save();
 
 
 				$device->createCmd('netusb_playback_play', 'action', 'other', '<i class="fas fa-play"></i>', 'MEDIA_RESUME')->save();
@@ -713,6 +718,8 @@ class YamahaMusiccast extends eqLogic {
 				$device->save();
 				YamahaMusiccast::callZoneGetStatus($device, $zoneName);
 				YamahaMusiccast::callGetPresetInfoNetusb($device);
+				YamahaMusiccast::callGetNetusbRecentInfo($device);
+				YamahaMusiccast::callSystemNameText($device);
 			}
 		}
 		return $deviceZoneList;
@@ -827,8 +834,7 @@ class YamahaMusiccast extends eqLogic {
 						YamahaMusiccast::callGetLocationInfo($eqLogic);
 					}
 					if (!empty($system->name_text_updated)) {
-						$name_text_updated = $system->name_text_updated;
-						log::add(__CLASS__, 'info', 'TODO: $name_text_updated - pull renewed info using /system/getNameText ' . print_r($name_text_updated, true));
+						YamahaMusiccast::callSystemNameText($eqLogic);
 					}
 					if (!empty($system->speaker_settings_updated)) {
 						$speaker_settings_updated = $system->speaker_settings_updated;
@@ -1035,6 +1041,9 @@ class YamahaMusiccast extends eqLogic {
 		}
 		if (!empty($result->artist)) {
 			$eqLogic->checkAndUpdateCmd('netusb_artist', str_replace("'", "’", $result->artist));
+			// Lorsque la radio Web est allumé, seul `artist` est renseigné.
+			$eqLogic->checkAndUpdateCmd('netusb_album', '');
+			$eqLogic->checkAndUpdateCmd('netusb_track', '');
 		}
 		if (!empty($result->album)) {
 			$eqLogic->checkAndUpdateCmd('netusb_album', str_replace("'", "’", $result->album));
@@ -1129,7 +1138,25 @@ class YamahaMusiccast extends eqLogic {
 	static function callGetPresetInfoNetusb($eqLogic) {
 		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/netusb/getPresetInfo");
 		if (!empty($result->preset_info)) {
-			log::add(__CLASS__, 'info', 'TODO: Gestion de preset_info ' . print_r($result->preset_info, true));
+			$netusb_recall_preset_list = "";
+			$int = 0;
+			foreach ($result->preset_info as $preset_info) {
+				++$int;
+				$input = $preset_info->input;
+				$text = $preset_info->text;
+				$attribute = $preset_info->attribute;
+				if ($input !== "unknown") {
+					$netusb_recall_preset_list .= $int . "|". $input . "|" . $text . ";";
+				}
+			}
+			if(!empty($netusb_recall_preset_list)) {
+				$config_netusb_recall_preset['listValue'] = substr($netusb_recall_preset_list, 0, -1);
+			} else {
+				$config_netusb_recall_preset['listValue'] = $netusb_recall_preset_list;
+			}
+			$netusb_recall_preset = $eqLogic->createCmd('netusb_recall_preset', 'action', 'select', false , null, $config_netusb_recall_preset)
+					->setValue(null)->save();
+			$eqLogic->checkAndUpdateCmd('netusb_recall_preset_list',$config_netusb_recall_preset['listValue']);
 		}
 		if (!empty($result->func_list)) {
 			log::add(__CLASS__, 'info', 'TODO: Gestion de func_list ' . print_r($result->func_list, true));
@@ -1225,17 +1252,59 @@ class YamahaMusiccast extends eqLogic {
 	static function callGetNetusbRecentInfo($eqLogic) {
 		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/netusb/getRecentInfo");
 		if (!empty($result->recent_info)) {
-			log::add(__CLASS__, 'info', 'TODO: Gestion de la méthode');
+			$recent_info_list = "";
+			$int = 0;
 			foreach ($result->recent_info as $recent_info) {
+				++$int;
 				$input = $recent_info->input;
 				$text = $recent_info->text;
 				$albumart_url = $recent_info->albumart_url;
 				$play_count = $recent_info->play_count;
 				$attribute = $recent_info->attribute;
 				if ($input !== "unknown") {
-					
+					$recent_info_list .= $int . "|" . $input . "|" . $text. "|" . $albumart_url. "|" . $play_count . ";";
 				}
 			}
+			if(!empty($recent_info_list)) {
+				$config_netusb_recall_recent['listValue'] = substr($recent_info_list, 0, -1);
+			} else {
+				$config_netusb_recall_recent['listValue'] = $recent_info_list;
+			}
+			$netusb_recall_recent = $eqLogic->createCmd('netusb_recall_recent', 'action', 'select', false , null, $config_netusb_recall_recent)
+					->setValue($eqLogic->getCmd(null, 'netusb_track')->getId())->save();
+			$eqLogic->checkAndUpdateCmd('netusb_recall_recent_list',$config_netusb_recall_recent['listValue']);
+		}
+	}
+	static function callSystemNameText($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/system/getNameText");
+		log::add(__CLASS__, 'info', 'TODO: callSystemNameText ' . print_r($result, true));
+
+		if (!empty($result->input_list)) {
+			$input_change_string = "";
+			foreach ($result->input_list as $input) {
+				$input_change_string .= $input->id . "|".$input->text . ";";
+			}
+			$config_input_change['listValue'] = substr($input_change_string, 0, -1);
+			
+			$cmd = $eqLogic->getCmd(null, 'input_change');
+			foreach ($config_input_change as $key => $value){
+				$cmd->setConfiguration($key, $value);
+			}
+			$cmd->save();
+		}
+
+		if (!empty($result->sound_program_list)) {
+			$sound_program_list_string = "";
+			foreach ($result->sound_program_list as $sound_program) {
+				$sound_program_list_string .= $sound_program->id . "|".$sound_program->text . ";";
+			}
+			$config_sound_program_change['listValue'] = substr($sound_program_list_string, 0, -1);
+		
+			$cmd = $eqLogic->getCmd(null, 'sound_program_change');
+			foreach ($config_sound_program_change as $key => $value){
+				$cmd->setConfiguration($key, $value);
+			}
+			$cmd->save();
 		}
 	}
 

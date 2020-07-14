@@ -182,7 +182,13 @@ class YamahaMusiccastCmd extends cmd {
 				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=false");
 				break;
 			case "input_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select']);
+				if(!empty($_options['select'])) {
+					$power_state_cmd = $device->getCmd(null, 'power_state');
+					if($power_state_cmd->execCmd() !== 'on') {
+						YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+					}
+					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select']);
+				}
 				break;
 			case "input_change_mode":
 				/**
@@ -251,7 +257,7 @@ class YamahaMusiccastCmd extends cmd {
 			//getPlayInfo
 			//setBand
 			//setFreq
-			//recallPreset
+			//case 'recallPreset':
 			//switchPreset
 			//storePreset
 			//clearPreset
@@ -330,14 +336,31 @@ class YamahaMusiccastCmd extends cmd {
 			//getListInfo
 			//setListControl
 			//setSearchString
-			//recallPreset
+			case 'netusb_recall_preset':
+				if(!empty($_options['select'])) {
+					$power_state_cmd = $device->getCmd(null, 'power_state');
+					if($power_state_cmd->execCmd() !== 'on') {
+						YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+					}
+					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/recallPreset?zone=" . $zone . "&num=" . $_options['select']);
+				}
+				break;
 			//storePreset
 			//clearPreset
 			//movePreset
 			//getSettings
 			//setQuality
 			//getRecentInfo
-			//recallRecentItem
+			case 'netusb_recall_recent':
+				if(!empty($_options['select'])) {
+					$power_state_cmd = $device->getCmd(null, 'power_state');
+					if($power_state_cmd->execCmd() !== 'on') {
+						YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+					}
+					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/recallRecentItem?zone=" . $zone . "&num=" . $_options['select']);
+					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");
+				}
+				break;
 			//clearRecentInfo
 			//managePlay
 			//manageList

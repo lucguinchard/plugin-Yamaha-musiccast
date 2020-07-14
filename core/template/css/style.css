@@ -21,7 +21,7 @@
 	position: relative;
 	height: inherit;
 	overflow: auto;
-	padding: 0px 10px;
+	padding: 5px 10px;
 }
 
 .YamahaMusiccast .playlist {
@@ -33,9 +33,9 @@
 }
 
 .YamahaMusiccast .playlist .pochette {
-	width: 80%;
+	height: 170px;
 	margin: 5px;
-	border-radius: 10%;
+	/*border-radius: 10%;*/
 }
 
 .YamahaMusiccast .playlist .pochette_input, .YamahaMusiccast .audio_format_box {
@@ -44,9 +44,9 @@
 
 }
 .YamahaMusiccast .playlist .pochette_input {
-	left: 85%;
+	left: 82%;
 	height: 20px;
-	border-radius: 5%;
+	max-width: 35px;
 }
 
 .YamahaMusiccast .audio_format_box {
@@ -65,15 +65,6 @@
 .YamahaMusiccast .panelIcon {
 	height: 247.5px;
 	padding-top: 50px;
-}
-
-.YamahaMusiccast .sound_config {
-	background-color: white;
-	display: none;
-	position: absolute;
-	z-index: 5;
-	border: 2px solid;
-	margin:0 5px;
 }
 
 .YamahaMusiccast .name {
@@ -102,6 +93,10 @@
 	transition: opacity .2s;
 }
 
+.YamahaMusiccast .slider.ui-slider.ui-corner-all.ui-slider-horizontal.ui-widget.ui-widget-content {
+	width: 115px;
+}
+
 .YamahaMusiccast .volume_range:hover {
 	opacity: 1;
 }
@@ -115,23 +110,210 @@
 }
 
 .YamahaMusiccast .one-line-defile {
+	overflow: hidden;
+}
+
+.YamahaMusiccast .netusb_track, .YamahaMusiccast .netusb_artist, .YamahaMusiccast .inputSpan {
+	overflow: hidden;
 	white-space: nowrap;
-	-webkit-animation:linear marqueelike 20s infinite ;
-	-moz-animation:linear marqueelike 20s infinite ;
-	-o-animation:linear marqueelike 20s infinite ;
-	-ms-animation:linear marqueelike 20s infinite ;
-	animation:linear marqueelike 20s infinite ;
 }
 
 .YamahaMusiccast .artiste-album {
 	font-size :0.9em;
 }
 
-.YamahaMusiccast .one-line-defile {
-	overflow: hidden;
+.YamahaMusiccast .displayoff .tab-content,
+.YamahaMusiccast .playlist .tab-content {
+	margin-bottom: 5px;
 }
 
-.YamahaMusiccast .one-line-defile div,
-.YamahaMusiccast .audio_format div {
-	display: inline !important;
+.YamahaMusiccast .playlist .tab-content {
+	height: 260px;
+}
+
+.YamahaMusiccast .displayoff .tab-content {
+	height: 210px;
+}
+
+.YamahaMusiccast a.nav-item.nav-link {
+	border: black solid 1px !important;
+	padding: 5px 3px 1px 3px;
+	margin: 1px;
+	display: inline-block;
+	width: 45px;
+	text-align: center;
+	font-weight: 600;
+	height: 45px;
+	max-height: 45px;
+}
+
+.YamahaMusiccast .nav>li>a {
+	padding: 10px 5px;
+}
+
+.YamahaMusiccast .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+	color: #fff !important;
+}
+
+.YamahaMusiccast nav.nav.nav-tabs {
+	height: 50px;
+	padding: 0px 8px;
+}
+
+.YamahaMusiccast .nav-item span {
+	display: block;
+	font-size: 8px;
+}
+.YamahaMusiccast .nav-item i {
+	font-size: 1.5em;
+}
+
+.YamahaMusiccast .displayoff .go-playlist {
+	float: left;
+	width: 200px;
+	max-height: 45px;
+	height: 45px;
+	border: black solid 1px !important;
+	padding: 2px;
+	margin: 1px;
+}
+
+.YamahaMusiccast .displayoff .panelMusic img.pochette {
+	height: 40px;
+	float: left;
+}
+
+.YamahaMusiccast .displayoff .panelMusic img.pochette_input {
+	float: left;
+	display: block;
+	height: 10px;
+	margin: 29px 0px 0px -10px;
+	max-width: 22px;
+}
+.YamahaMusiccast .displayoff .panelMusic a.nav-item.nav-link {
+	float: right;
+}
+
+.YamahaMusiccast .displayoff .one-line-defile {
+	width: 140px;
+	float: right;
+	text-align: left;
+	display: block;
+}
+
+.YamahaMusiccast h3,.YamahaMusiccast h4 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.YamahaMusiccast .playlist .panelMusic .divInputIcon {
+	padding-top: 20px;
+}
+
+.YamahaMusiccast .playlist .panelMusic .divInputIcon i {
+	font-size: 10em;
+}
+
+.YamahaMusiccast .playlist .panelMusic .divInputIcon span.fa-stack {
+	font-size: 3em;
+	margin: 0 auto 50px auto;
+}
+
+.YamahaMusiccast .playlist .panelMusic .divInputIcon span.fa-stack i {
+	font-size: 3em;
+}
+
+.YamahaMusiccast .playlist .panelMusic .divInputIcon span {
+	display: block;
+	font-size: 1em;
+}
+
+.YamahaMusiccast .displayoff .panelMusic .divInputIcon {
+	float: left;
+	width: 40px;
+}
+
+.YamahaMusiccast .displayoff .panelMusic .divInputIcon i {
+	font-size: 2em;
+	display: block;
+	padding: 0 2px;
+	margin: 3px 0 0 0;
+}
+
+.YamahaMusiccast .displayoff .panelMusic .divInputIcon span.fa-stack {
+	font-size: 12px;
+	margin: 3px 5px 0 5px;
+}
+
+.YamahaMusiccast .displayoff .panelMusic .divInputIcon span {
+	display: block;
+	font-size: 8px;
+}
+
+.YamahaMusiccast .displayoff .tab-content {
+	overflow: auto
+}
+
+.YamahaMusiccast .displayoff .tab-content img {
+	max-width: 70%;
+	max-height: 70%;
+}
+
+.YamahaMusiccast .displayoff .tab-content a.nav-item.nav-link.cmd.btn {
+	width: 75px;
+	min-height: 55px;
+	height: 55px;
+	margin: 3px;
+}
+
+.YamahaMusiccast .displayoff .tab-content a.nav-item.nav-link.cmd.btn i {
+	font-size: 2.5em;
+}
+
+.YamahaMusiccast .displayoff .tab-content a.nav-item.nav-link.cmd.btn .fa-stack {
+	font-size: 1em;
+	margin: 0px auto 10px auto;
+	display: block;
+}
+
+.YamahaMusiccast .tab-content ul {
+	padding: 0;
+}
+
+.YamahaMusiccast .tab-content li {
+	list-style: none;
+}
+
+.YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn {
+	display: block;
+	overflow: hidden;
+	width: 240px !important;
+	text-align: left;
+	height: 40px !important;
+	min-height: 40px !important;
+}
+
+.YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn img,.YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn i {
+	display: inline;
+}
+.YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn i {
+	font-size: 2em;
+}
+.YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn img {
+	max-width: 90%;
+	max-height: 90%;
+}
+
+.YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn img, .YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn i {
+	margin: 0 10px 0 10px !important;
+}
+
+.YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn span {
+	font-size: 12px;
+	white-space: normal;
+	display: inline-block;
+}
+
+a.nav-item.nav-link.btn.active i, a.nav-item.nav-link.btn.active span {
+	color: darkslateblue;
 }

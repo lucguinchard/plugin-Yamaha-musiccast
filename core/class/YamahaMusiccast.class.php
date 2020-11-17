@@ -93,7 +93,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function preRemove() {
-		rrmdir(__DIR__ . '/../../../../plugins/YamahaMusiccast/ressources/' . $this->getId());
+		rrmdir(__DIR__ . '/../../../../plugins/' . __CLASS__ . '/ressources/' . $this->getId());
 	}
 
 	// When the directory is not empty:
@@ -211,15 +211,26 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#volume_change#'] = '';
 		}
 
-		$img = '/plugins/YamahaMusiccast/ressources/input/' . $replace['#input#'] . '.png';
+		$img = '/plugins/' . __CLASS__ . '/ressources/input/' . $replace['#input#'] . '.png';
 		if (file_exists(__DIR__ . '/../../../..' . $img)) {
 			$replace['#input_icon#'] = $img;
 		} else {
-			$replace['#input_icon#'] = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+			$replace['#input_icon#'] = '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '.png';
 		}
 		/* ------------ N'ajouter plus de code apres ici------------ */
 
 		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, __CLASS__, __CLASS__)));
+	}
+
+	public function getImage() {
+		$type = $this->getConfiguration('model_name');
+		if(isset($type)) {
+			$url = "plugins/" . __CLASS__ . "/core/img/" . $type .".jpg";
+			if (file_exists($url)) {
+				return $url;
+			}
+		}
+		return parent::getImage();
 	}
 
 	/*
@@ -377,7 +388,7 @@ class YamahaMusiccast extends eqLogic {
 
 				$getStatusZone = YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zoneName/getStatus");
 
-				$deviceDir = __DIR__ . '/../../../../plugins/YamahaMusiccast/ressources/' . $device->getId() . '/';
+				$deviceDir = __DIR__ . '/../../../../plugins/' . __CLASS__ . '/ressources/' . $device->getId() . '/';
 				if (!file_exists($deviceDir)) {
 					mkdir($deviceDir, 0700);
 				}
@@ -1051,17 +1062,17 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->track)) {
 			$eqLogic->checkAndUpdateCmd('netusb_track', str_replace("'", "’", $result->track));
 		}
-		$fileAlbumARTUrl = '/plugins/YamahaMusiccast/ressources/' . $eqLogic->getId() . '/AlbumART.jpg';
+		$fileAlbumARTUrl = '/plugins/' . __CLASS__ . '/ressources/' . $eqLogic->getId() . '/AlbumART.jpg';
 		$fileAlbumART = __DIR__ . '/../../../..' . $fileAlbumARTUrl;
 		if (!empty($result->albumart_url)) {
 			$url = "http://" . $eqLogic->getConfiguration('ip') . $result->albumart_url;
 			if(file_put_contents($fileAlbumART, file_get_contents($url))) {
 				$eqLogic->checkAndUpdateCmd('netusb_albumart_url', $fileAlbumARTUrl . '?' . $result->albumart_id);
 			} else {
-				$eqLogic->checkAndUpdateCmd('netusb_albumart_url', '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png');
+				$eqLogic->checkAndUpdateCmd('netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
 			}
 		} else {
-			$eqLogic->checkAndUpdateCmd('netusb_albumart_url', '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png');
+			$eqLogic->checkAndUpdateCmd('netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
 			if (file_exists($fileAlbumART)) {
 				unlink($fileAlbumART);
 			}

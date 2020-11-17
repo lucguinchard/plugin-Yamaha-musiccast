@@ -65,14 +65,14 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 		type: "POST",
 		url: "plugins/YamahaMusiccast/core/ajax/YamahaMusiccast.ajax.php",
 		data: {
-			action: "searchMusiccast",
+			action: "searchMusiccast"
 		},
 		dataType: 'json',
 		error: function (request, status, error) {
 			handleAjaxError(request, status, error);
 		},
 		success: function (data) {
-			if (data.state != 'ok') {
+			if (data.state !== 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			} else {
@@ -82,7 +82,7 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 			var vars = getUrlVars();
 			var url = 'index.php?';
 			for (var i in vars) {
-				if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
+				if (i !== 'id' && i !== 'saveSuccessFull' && i !== 'removeSuccessFull') {
 					url += i + '=' + vars[i].replace('#', '') + '&';
 				}
 			}
@@ -91,46 +91,6 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 				url += '#' + document.location.toString().split('#')[1];
 			}
 			loadPage(url);
-		}
-	})
-});
-
-$('.eqLogicAction[data-action=addIP]').on('click', function () {
-	bootbox.prompt("{{Quel est l’IP de votre nouvel appareil Musiccast ?}}", function (result) {
-		if (result !== null) {
-			$.ajax({
-				type: "POST",
-				url: "plugins/YamahaMusiccast/core/ajax/YamahaMusiccast.ajax.php",
-				data: {
-					action: "saveIP",
-					ip: result,
-				},
-				dataType: 'json',
-				error: function (request, status, error) {
-					handleAjaxError(request, status, error);
-				},
-				success: function (data) {
-					if (data.state != 'ok') {
-						$('#div_alert').showAlert({message: data.result, level: 'danger'});
-						return;
-					} else {
-						$('#div_alert').showAlert({message: data.result, level: 'success'});
-					}
-					modifyWithoutSave = false;
-					var vars = getUrlVars();
-					var url = 'index.php?';
-					for (var i in vars) {
-						if (i != 'id' && i != 'saveSuccessFull' && i != 'removeSuccessFull') {
-							url += i + '=' + vars[i].replace('#', '') + '&';
-						}
-					}
-					url += 'id=' + data.id + '&saveSuccessFull=1';
-					if (document.location.toString().match('#')) {
-						url += '#' + document.location.toString().split('#')[1];
-					}
-					loadPage(url);
-				}
-			})
 		}
 	});
 });

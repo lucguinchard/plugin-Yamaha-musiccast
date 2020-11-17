@@ -1,7 +1,26 @@
 <?php
+/*
+ * This file is part of the NextDom software (https://github.com/NextDom or http://nextdom.github.io).
+ * Copyright (c) 2018 NextDom.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 if (!isConnect()) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
+
+$pluginName = init('m');
 
 if (init('object_id') == '') {
 	$object = jeeObject::byId($_SESSION['user']->getOptions('defaultDashboardObject'));
@@ -10,72 +29,77 @@ if (init('object_id') == '') {
 }
 if (!is_object($object)) {
 	$object = jeeObject::rootObject();
-}
-if (!is_object($object)) {
-	throw new Exception('{{Aucun objet racine trouvé. Pour en créer un, allez dans Général -> Objet.<br/> Si vous ne savez pas quoi faire ou que c\'est la premiere fois que vous utilisez Jeedom n\'hésitez pas a consulter cette <a href="http://jeedom.fr/premier_pas.php" target="_blank">page</a>}}');
+	if (!is_object($object)) {
+		throw new Exception('{{Aucun objet racine trouvé. Pour en créer un, allez dans Général -> Objet.<br/> Si vous ne savez pas quoi faire ou que c’est la premiere fois que vous utilisez Jeedom n’hésitez pas a consulter cette <a href="https://doc.jeedom.com/fr_FR/premiers-pas/" target="_blank">page</a>}}');
+	}
 }
 $child_object = jeeObject::buildTree($object);
 $parentNumber = array();
+
+$jeeObjectAll = jeeObject::buildTree(null, true);
+
+if ($_SESSION['user']->getOptions('displayObjetByDefault') == 1 && init('report') != 1) {
+	$clazz = "col-lg-10 col-md-9 col-sm-8";
+	$style = "";
+} else {
+	$clazz = "col-lg-12 col-md-12 col-sm-12";
+	$style = 'style="display:none;"';
+}
 ?>
 
 <div class="row row-overflow">
-	<?php
-	if ($_SESSION['user']->getOptions('displayObjetByDefault') == 1 && init('report') != 1) {
-		echo '<div class="col-lg-2 col-md-3 col-sm-4" id="div_displayObjectList">';
-	} else {
-		echo '<div class="col-lg-2 col-md-3 col-sm-4" style="display:none;" id="div_displayObjectList">';
-	}
-	?>
-	<div class="bs-sidebar">
-		<ul id="ul_object" class="nav nav-list bs-sidenav">
-			<li class="nav-header">{{Liste objets}} </li>
-			<li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
+	<div class="col-lg-2 col-md-3 col-sm-4" <?= $style ?> id="div_displayObjectList">
+		<div class="bs-sidebar">
+			<ul id="ul_object" class="nav nav-list bs-sidenav">
+				<li class="nav-header">{{Liste objets}} </li>
+				<li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
+				<?php
+				foreach ($jeeObjectAll as $jeeObject) {
+					$margin = 5 * $jeeObject->getConfiguration('parentNumber');
+					if ($jeeObject->getId() == $object->getId()) {
+						$active = "active";
+					} else {
+						$active = "";
+					} ?>
+					<li class="cursor li_object <?= $active ?>">
+						<a data-object_id="<?= $jeeObject->getId() ?>" href="index.php?v=d&p=panel&m=<?= $pluginName ?>&object_id=<?= $jeeObject->getId() ?>" style="padding: 2px 0px;">
+							<span style="position:relative;left:<?= $margin ?>px;"><?= $jeeObject->getHumanName(true) ?></span>
+							<span style="font-size : 0.65em;float:right;position:relative;top:7px;"><?= $jeeObject->getHtmlSummary() ?></span>
+						</a>
+					</li>
+				<?php } ?>
+			</ul>
+		</div>
+	</div>
+
+	<div class="<?= $clazz ?>" id="div_displayObject">
+		<i class="fa fa-picture-o cursor pull-left reportModeHidden" id="bt_displayObject" data-display="<?= $_SESSION['user']->getOptions('displayObjetByDefault') ?>" title="Afficher/Masquer les objets"></i>
+		<br/>
+		<div class="div_displayEquipement" style="width: 100%;">
 			<?php
-			$allObject = jeeObject::buildTree(null, true);
-			foreach ($allObject as $object_li) {
-				$margin = 5 * $object_li->getConfiguration('parentNumber');
-				if ($object_li->getId() == $object->getId()) {
-					echo '<li class="cursor li_object active" ><a data-object_id="' . $object_li->getId() . '" href="index.php?v=d&p=panel&m=YamahaMusiccast&object_id=' . $object_li->getId() . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true) . '</span><span style="font-size : 0.65em;float:right;position:relative;top:7px;">' . $object_li->getHtmlSummary() . '</span></a></li>';
-				} else {
-					echo '<li class="cursor li_object" ><a data-object_id="' . $object_li->getId() . '" href="index.php?v=d&p=panel&m=YamahaMusiccast&object_id=' . $object_li->getId() . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true) . '</span><span style="font-size : 0.65em;float:right;position:relative;top:7px;">' . $object_li->getHtmlSummary() . '</span></a></li>';
+			if (init('object_id') == '') {
+				foreach ($jeeObjectAll as $object) {
+					foreach ($object->getEqLogic(true, false, $pluginName) as $mcast) {
+						echo $mcast->toHtml('dview');
+					}
+				}
+			} else {
+				foreach ($object->getEqLogic(true, false, $pluginName) as $mcast) {
+					echo $mcast->toHtml('dview');
+				}
+				foreach ($child_object as $child) {
+					$mcasts = $child->getEqLogic(true, false, $pluginName);
+					if (count($mcasts) > 0) {
+						foreach ($mcasts as $mcast) {
+							echo $mcast->toHtml('dview');
+						}
+					}
 				}
 			}
 			?>
-		</ul>
+		</div>
 	</div>
 </div>
+
 <?php
-if ($_SESSION['user']->getOptions('displayObjetByDefault') == 1 && init('report') != 1) {
-	echo '<div class="col-lg-10 col-md-9 col-sm-8" id="div_displayObject">';
-} else {
-	echo '<div class="col-lg-12 col-md-12 col-sm-12" id="div_displayObject">';
-}
-?>
-<i class='fa fa-picture-o cursor pull-left reportModeHidden' id='bt_displayObject' data-display='<?php echo $_SESSION['user']->getOptions('displayObjetByDefault') ?>' title="Afficher/Masquer les objets"></i>
-<br/>
-<?php
-echo '<div class="div_displayEquipement" style="width: 100%;">';
-if (init('object_id') == '') {
-	foreach ($allObject as $object) {
-		foreach ($object->getEqLogic(true, false, 'YamahaMusiccast') as $mcast) {
-			echo $mcast->toHtml('dview');
-		}
-	}
-} else {
-	foreach ($object->getEqLogic(true, false, 'YamahaMusiccast') as $mcast) {
-		echo $mcast->toHtml('dview');
-	}
-	foreach ($child_object as $child) {
-		$mcasts = $child->getEqLogic(true, false, 'YamahaMusiccast');
-		if (count($mcasts) > 0) {
-			foreach ($mcasts as $mcast) {
-				echo $mcast->toHtml('dview');
-			}
-		}
-	}
-}
-echo '</div>';
-?>
-</div>
-</div>
-<?php include_file('desktop', 'panel', 'js', 'YamahaMusiccast');
+include_file('desktop', 'panel', 'js', $pluginName);

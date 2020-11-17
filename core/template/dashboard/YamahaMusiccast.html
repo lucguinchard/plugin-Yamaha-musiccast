@@ -278,7 +278,7 @@
 		jeedom.cmd.update['#netusb_album_id#']({display_value:'#netusb_album#'});
 		jeedom.cmd.update['#audio_format_id#'] = function(_options){
 			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
-			uid.find('.audio_format').empty().append(_options.display_value)
+			uid.find('.audio_format').empty().append(_options.display_value);
 		}
 		jeedom.cmd.update['#audio_format_id#']({display_value:'#audio_format#'});
 		jeedom.cmd.update['#audio_fs_id#'] = function(_options){

@@ -2,7 +2,7 @@
   "id": "YamahaMusiccast",
   "name": "Yamaha musiccast manager",
   "description": "Plugin permettant la gestion des appareils Yamaha compatible Musiccast",
-  "licence": "AGPL",
+  "licence": "GNU GPLv2",
   "author": "Luc Guinchard",
   "require": "3.0",
   "category": "multimedia",

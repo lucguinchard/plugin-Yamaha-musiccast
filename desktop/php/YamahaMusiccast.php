@@ -19,70 +19,49 @@
 if (!isConnect('admin')) {
 	throw new \Exception('{{401 - Accès non autorisé}}');
 }
-$plugin = plugin::byId('YamahaMusiccast');
+
+$pluginName = init('m');
+$plugin = plugin::byId($pluginName);
 sendVarToJS('eqType', $plugin->getId());
-$eqLogics = eqLogic::byType($plugin->getId());
+$eqLogicList = eqLogic::byType($plugin->getId());
 ?>
 
 <div class="row row-overflow">
-	<div class="col-lg-2 col-md-3 col-sm-4">
-		<div class="bs-sidebar">
-			<ul id="ul_eqLogic" class="nav nav-list bs-sidenav">
-				<a class="btn btn-default eqLogicAction" data-action="searchMusiccast" style="width : 100%;margin-top : 5px;margin-bottom: 5px;">
-					<i class="fa fa-search-plus"></i> {{Recherche des appareils Musiccast}}
-				</a>
-				<a class="btn btn-default eqLogicAction" data-action="addIP" style="width : 100%;margin-top : 5px;margin-bottom: 5px;">
-					<i class="fa fa-plus-circle"></i> {{Recherche un appareil avec une IP}}
-				</a>
-				<li class="filter" style="margin-bottom: 5px;">
-					<input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/>
-				</li>
-				<?php
-				foreach ($eqLogics as $eqLogic) {
-					$opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
-					echo '<li class="cursor li_eqLogic" data-eqLogic_id="' . $eqLogic->getId() . '" style="' . $opacity . '"><a>' . $eqLogic->getHumanName(true) . '</a></li>';
-				}
-				?>
-			</ul>
-		</div>
-	</div>
-
-	<div class="col-lg-10 col-md-9 col-sm-8 eqLogicThumbnailDisplay"
-		 style="border-left: solid 1px #EEE; padding-left: 25px;">
+	<div class="col-xs-12 eqLogicThumbnailDisplay">
 		<legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
 		<div class="eqLogicThumbnailContainer">
-			<div class="cursor eqLogicAction" data-action="gotoPluginConf"
-				 style="text-align: center; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-				<i class="fa fa-wrench" style="font-size : 6em;"></i>
+			<div class="cursor eqLogicAction logoPrimary" data-action="gotoPluginConf">
+				<i class="fa fa-wrench"></i>
 				<br>
-				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Configuration}}</span>
+				<span>{{Configuration}}</span>
 			</div>
-			<div class="cursor eqLogicAction" data-action="searchMusiccast"
-				 style="text-align: center; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-				<i class="fa fa-search-plus" style="font-size : 6em;"></i>
+			<div class="cursor eqLogicAction" data-action="searchMusiccast">
+				<i class="fa fa-sync"></i>
 				<br>
-				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Recherche auto}}</span>
-			</div>
-			<div class="cursor eqLogicAction" data-action="addIP" title="{{Cette opération est utitile quand les appareils ne se trouve pas sur le même réseau (ex: Docker ou VM en mode bridge)}}"
-				 style="text-align: center; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-				<i class="fa fa-plus-circle" style="font-size : 6em;"></i>
-				<br>
-				<span style="font-size : 1.1em;position:relative; top : 15px;">{{Rechercher IP}}</span>
+				<span>{{Synchroniser}}</span>
 			</div>
 		</div>
-		<legend><i class="fa fa-table"></i> {{Mes appareils Musiccast}}</legend>
-		<div class="eqLogicThumbnailContainer">
-			<?php
-			foreach ($eqLogics as $eqLogic) {
-				$opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
-				echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="text-align: center; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
-				echo '<img src="' . $plugin->getPathImgIcon() . '" height="105" width="95" />';
-				echo "<br>";
-				echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;">' . $eqLogic->getHumanName(true, true) . '</span>';
-				echo '</div>';
-			}
-			?>
-		</div>
+		<legend><img style="width:40px" src="<?= $plugin->getPathImgIcon() ?>"/> {{Mes appareils}}</legend>
+		<?php if (count($eqLogicList) == 0) { ?>
+			<center>
+				<span style='color:#767676;font-size:1.2em;font-weight: bold;'>{{Vous n’avez pas encore d’appareil, cliquez sur configuration et cliquez sur synchroniser pour commencer}}</span>
+			</center>
+		<?php } else { ?>
+			<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
+			<div class="eqLogicThumbnailContainer">
+				<?php
+				foreach ($eqLogicList as $eqLogic) {
+					$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard'; ?>
+					<div class="eqLogicDisplayCard cursor <?= $opacity ?>" data-eqLogic_id="<?= $eqLogic->getId() ?>">
+					<img src="<?= $eqLogic->getImage() ?>" />
+					<br/>
+					<span class="name"><?= $eqLogic->getHumanName(true, true) ?></span>
+					</div>
+				<?php
+				}
+				?>
+			</div>
+		<?php } ?>
 	</div>
 
 	<div class="col-lg-10 col-md-9 col-sm-8 eqLogic"
@@ -117,12 +96,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<form class="form-horizontal">
 					<fieldset>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="name">{{Nom de l'équipement Musiccast}}</label>
+							<label class="col-sm-3 control-label" for="name">{{Nom de l’équipement Musiccast}}</label>
 							<div class="col-sm-3">
 								<input type="text" class="eqLogicAttr form-control" data-l1key="id"
-									   style="display : none;"/>
+										style="display : none;"/>
 								<input type="text" class="eqLogicAttr form-control" data-l1key="name" id="name"
-									   placeholder="{{Nom de l'équipement Musiccast}}"/>
+										placeholder="{{Nom de l’équipement Musiccast}}"/>
 							</div>
 						</div>
 						<div class="form-group">
@@ -130,11 +109,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<div class="col-sm-3">
 								<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
 									<option value="">{{Aucun}}</option>
-									<?php
-									foreach (jeeObject::all() as $object) {
-										echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
-									}
-									?>
+									<?php foreach (jeeObject::all() as $object) { ?>
+									<option value="<?= $object->getId() ?>"><?= $object->getName() ?></option>';
+									<?php } ?>
 								</select>
 							</div>
 						</div>
@@ -143,12 +120,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<div class="col-sm-9">
 								<label class="checkbox-inline" for="is-enable">
 									<input type="checkbox" class="eqLogicAttr" data-l1key="isEnable"
-										   checked="checked" id="is-enable"/>
+											checked="checked" id="is-enable"/>
 									{{Activer}}
 								</label>
 								<label class="checkbox-inline" for="is-visible">
 									<input type="checkbox" class="eqLogicAttr" data-l1key="isVisible"
-										   checked="checked" id="is-visible"/>
+											checked="checked" id="is-visible"/>
 									{{Visible}}
 								</label>
 							</div>
@@ -157,46 +134,42 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<label class="col-sm-3 control-label" for="Musiccast-model">{{Model}}</label>
 							<div class="col-sm-3">
 								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-model"
-									   data-l1key="configuration" data-l2key="model_name"/>
+										data-l1key="configuration" data-l2key="model_name"/>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="Musiccast-ip">{{ip}}</label>
 							<div class="col-sm-3">
 								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-ip"
-									   data-l1key="configuration" data-l2key="ip"/>
+										data-l1key="configuration" data-l2key="ip"/>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="Musiccast-zone">{{zone}}</label>
 							<div class="col-sm-3">
 								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-zone"
-									   data-l1key="configuration" data-l2key="zone"/>
+										data-l1key="configuration" data-l2key="zone"/>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="Musiccast-lastCommunication">{{lastCommunication}}</label>
 							<div class="col-sm-3">
 								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCommunication"
-									   data-l1key="status" data-l2key="lastCommunication"/>
+										data-l1key="status" data-l2key="lastCommunication"/>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="Musiccast-lastCallAPI">{{lastCallAPI}}</label>
 							<div class="col-sm-3">
 								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCallAPI"
-									   data-l1key="status" data-l2key="lastCallAPI"/>
+										data-l1key="status" data-l2key="lastCallAPI"/>
 							</div>
 						</div>
 					</fieldset>
 				</form>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="commandtab">
-				<a class="btn btn-success btn-sm cmdAction pull-right" data-action="add" style="margin-top:5px;">
-					<i class="fa fa-plus-circle"></i> {{Commandes}}
-				</a>
-				<br/>
-				<br/>
+				<legend><i class="fa fa-list-alt"></i>{{Commandes}}</legend>
 				<table id="table_cmd" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
@@ -214,6 +187,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 	</div>
 </div>
 
-<?php
-include_file('desktop', 'YamahaMusiccast', 'js', 'YamahaMusiccast');
+<?php 
+include_file('desktop', $pluginName, 'js', $pluginName);
 include_file('core', 'plugin.template', 'js');

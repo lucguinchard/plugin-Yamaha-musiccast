@@ -57,9 +57,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<br/>
 					<span class="name"><?= $eqLogic->getHumanName(true, true) ?></span>
 					</div>
-				<?php
-				}
-				?>
+				<?php } ?>
 			</div>
 		<?php } ?>
 	</div>

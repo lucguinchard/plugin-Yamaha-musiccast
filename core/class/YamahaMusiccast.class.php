@@ -936,7 +936,32 @@ class YamahaMusiccast extends eqLogic {
 					}
 					if (!empty($netusb->preset_control)) {
 						$preset_control = $netusb->preset_control;
-						log::add(__CLASS__, 'info', 'TODO:  Results of Preset operations. ' . print_r($preset_control, true));
+						switch ($preset_control->type) {
+							case "recall":
+								switch ($preset_control->result) {
+									case "success":
+										break;
+									case "not_found":
+										log::add(__CLASS__, 'warning', 'Le Favoris n°' . $preset_control->num . ' est non disponible.');
+										break;
+									default:
+										log::add(__CLASS__, 'warning', 'TODO:  Ajouter le `result` de `preset_control=recall`. ' . print_r($preset_control, true));
+										break;
+								}
+							break;
+							case "store":
+								switch ($preset_control->result) {
+									case "success":
+										break;
+									default:
+										log::add(__CLASS__, 'warning', 'TODO:  Ajouter le `result` de `preset_control=store`. ' . print_r($preset_control, true));
+										break;
+								}
+							break;
+							default:
+								log::add(__CLASS__, 'warning', 'TODO:  Ajouter le `type` de `preset_control`. ' . print_r($preset_control, true));
+								break;
+						}
 					}
 					if (!empty($netusb->trial_status)) {
 						$trial_status = $netusb->trial_status;
@@ -1071,11 +1096,6 @@ class YamahaMusiccast extends eqLogic {
 			} else {
 				$eqLogic->checkAndUpdateCmd('netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
 			}
-		} else {
-			$eqLogic->checkAndUpdateCmd('netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
-			if (file_exists($fileAlbumART)) {
-				unlink($fileAlbumART);
-			}
 		}
 		if (!empty($result->albumart_id)) {
 			$eqLogic->checkAndUpdateCmd('netusb_albumart_id', $result->albumart_id);
@@ -1170,7 +1190,9 @@ class YamahaMusiccast extends eqLogic {
 			$eqLogic->checkAndUpdateCmd('netusb_recall_preset_list',$config_netusb_recall_preset['listValue']);
 		}
 		if (!empty($result->func_list)) {
-			log::add(__CLASS__, 'info', 'TODO: Gestion de func_list ' . print_r($result->func_list, true));
+			// Returns a list of valid functions for Preset. (Recall/Store functions are always valid without specifically listed here)
+			// Values: "clear" / "move"
+			log::add(__CLASS__, 'debug', 'TODO: Gestion de func_list ' . print_r($result->func_list, true));
 		}
 	}
 
@@ -1248,7 +1270,7 @@ class YamahaMusiccast extends eqLogic {
 	static function callGetNetusbAccountStatus($eqLogic) {
 		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/netusb/getAccountStatus");
 		if (!empty($result->service_list)) {
-			log::add(__CLASS__, 'info', 'TODO: Gestion de la méthode netusb getAccountStatus');
+			log::add(__CLASS__, 'debug', 'TODO: Gestion de la méthode netusb getAccountStatus');
 			foreach ($result->service_list as $service) {
 				$id = $service->id;
 				$registered = $service->registered;
@@ -1302,6 +1324,7 @@ class YamahaMusiccast extends eqLogic {
 				$cmd->setConfiguration($key, $value);
 			}
 			$cmd->save();
+			//$eqLogic->refreshWidget();
 		}
 
 		if (!empty($result->sound_program_list)) {

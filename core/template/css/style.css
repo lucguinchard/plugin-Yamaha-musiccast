@@ -314,6 +314,6 @@
 	display: inline-block;
 }
 
-a.nav-item.nav-link.btn.active i, a.nav-item.nav-link.btn.active span {
+.YamahaMusiccast a.nav-item.nav-link.btn.active i,.YamahaMusiccast  a.nav-item.nav-link.btn.active span {
 	color: darkslateblue;
 }

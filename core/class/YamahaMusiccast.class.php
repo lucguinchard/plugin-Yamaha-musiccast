@@ -866,12 +866,10 @@ class YamahaMusiccast extends eqLogic {
 				if (!empty($result->tuner)) {
 					$tuner = $result->tuner;
 					if (!empty($tuner->play_info_updated)) {
-						$play_info_updated = $tuner->play_info_updated;
-						log::add(__CLASS__, 'info', 'TODO: Mise à jour du isPlayInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPlayInf' . print_r($play_info_updated, true));
+						YamahaMusiccast::callTunerGetPlayInfo($eqLogic);
 					}
 					if (!empty($tuner->preset_info_updated)) {
-						$preset_info_updated = $tuner->preset_info_updated;
-						log::add(__CLASS__, 'info', 'TODO: Mise à jour du isPresetInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPresetInfo' . print_r($preset_info_updated, true));
+						YamahaMusiccast::callTunerGetPresetInfo($eqLogic);
 					}
 				}
 				if (!empty($result->netusb)) {
@@ -1021,6 +1019,16 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($zone->signal_info_updated)) {
 			YamahaMusiccast::callZoneGetSignalInfo($eqLogic, $zoneName);
 		}
+	}
+
+	static function callTunerGetPlayInfo($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/tuner/getPlayInfo");
+		log::add(__CLASS__, 'info', 'TODO: Call getPlayInf ' . print_r($result, true));
+	}
+
+	static function callTunerGetPresetInfo($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/tuner/getPresetInfo?band=fm");//TODO change fm to band.
+		log::add(__CLASS__, 'info', 'TODO: Call getPresetInfo ' . print_r($result, true));
 	}
 
 	static function callZoneGetSignalInfo($eqLogic, $zoneName) {

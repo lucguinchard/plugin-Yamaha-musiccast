@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the NextDom software (https://github.com/NextDom or http://nextdom.github.io).
  * Copyright (c) 2018 NextDom.
@@ -18,13 +19,11 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-function YamahaMusiccast_install()
-{
+function YamahaMusiccast_install() {
 	YamahaMusiccast_update();
 }
 
-function YamahaMusiccast_update()
-{
+function YamahaMusiccast_update() {
 	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
 	if (!is_object($cron)) {
 		$cron = new cron();
@@ -38,11 +37,11 @@ function YamahaMusiccast_update()
 		$cron->save();
 	}
 	$port = config::byKey('socket.port', 'YamahaMusiccast');
-	if(empty($port)) {
+	if (empty($port)) {
 		config::save('socket.port', 9999, 'YamahaMusiccast');
 	}
 	$name = config::byKey('socket.name', 'YamahaMusiccast');
-	if(empty($name)) {
+	if (empty($name)) {
 		config::save('socket.name', 'musiccastDom', 'YamahaMusiccast');
 	}
 	foreach (YamahaMusiccast::byType('YamahaMusiccast') as $device) {
@@ -50,9 +49,7 @@ function YamahaMusiccast_update()
 	}
 }
 
-
-function YamahaMusiccast_remove()
-{
+function YamahaMusiccast_remove() {
 	$cron = cron::byClassAndFunction('YamahaMusiccast', 'socket_start');
 	if (is_object($cron)) {
 		$cron->remove();

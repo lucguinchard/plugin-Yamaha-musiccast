@@ -621,31 +621,59 @@ class YamahaMusiccast extends eqLogic {
 				}
 				if (!empty($getFeatures->tuner)) {
 					$tuner = $getFeatures->tuner;
+					$device->createCmd('tuner_band')->save();
+					$device->createCmd('tuner_auto_scan', 'info', 'binary')->save();
+					$device->createCmd('tuner_auto_preset', 'info', 'binary')->save();
 					if(!empty($tuner->func_list)){
 						$fonc_list_tuner = $tuner->func_list;
 						if(in_array("am", $fonc_list_tuner)) {
-
+							$device->createCmd('tuner_am_preset', 'info', 'binary')->save();
+							$device->createCmd('tuner_am_freq', 'info', 'numeric')->save();
+							$device->createCmd('tuner_am_tuned', 'info', 'numeric')->save();
 						}
 						if(in_array("fm", $fonc_list_tuner)) {
-
+							$device->createCmd('tuner_fm_preset', 'info', 'numeric')->save();
+							$device->createCmd('tuner_fm_freq', 'info', 'numeric')->save();
+							$device->createCmd('tuner_fm_tuned', 'info', 'binary')->save();
+							$device->createCmd('tuner_fm_audio_mode')->save();
 						}
 						if(in_array("rds", $fonc_list_tuner)) {
-
+							$device->createCmd('tuner_rds_program_type')->save();
+							$device->createCmd('tuner_rds_program_service')->save();
+							$device->createCmd('tuner_rds_radio_text_a')->save();
+							$device->createCmd('tuner_rds_radio_text_b')->save();
 						}
 						if(in_array("dab", $fonc_list_tuner)) {
-
+							$device->createCmd('tuner_dab_preset', 'info', 'numeric')->save();
+							$device->createCmd('tuner_dab_id', 'info', 'numeric')->save();
+							$device->createCmd('tuner_dab_status')->save();
+							$device->createCmd('tuner_dab_freq', 'info', 'numeric')->save();
+							$device->createCmd('tuner_dab_category')->save();
+							$device->createCmd('tuner_dab_audio_mode')->save();
+							$device->createCmd('tuner_dab_bit_rate', 'info', 'numeric')->save();
+							$device->createCmd('tuner_dab_quality', 'info', 'numeric')->save();
+							$device->createCmd('tuner_dab_tune_aid', 'info', 'numeric')->save();
+							$device->createCmd('tuner_dab_off_air', 'info', 'binary')->save();
+							$device->createCmd('tuner_dab_dab_plus', 'info', 'binary')->save();
+							$device->createCmd('tuner_dab_program_type')->save();
+							$device->createCmd('tuner_dab_ch_label')->save();
+							$device->createCmd('tuner_dab_service_label')->save();
+							$device->createCmd('tuner_dab_dls')->save();
+							$device->createCmd('tuner_dab_ensemble_label')->save();
 						}
 						if(in_array("hd_radio", $fonc_list_tuner)) {
-
+							//$device->createCmd('tuner_hd_radio')->save();
 						}
 						if(in_array("fm_auto_preset", $fonc_list_tuner)) {
-
+							$device->createCmd('fm_auto_preset_start', 'action', 'other')->save();
+							$device->createCmd('fm_auto_preset_stop', 'action', 'other')->save();
 						}
 						if(in_array("dab_initial_scan", $fonc_list_tuner)) {
-
+							$device->createCmd('tuner_dab_initial_scan_progress', 'info', 'numeric')->save();
+							$device->createCmd('tuner_dab_total_station_num', 'info', 'numeric')->save();
 						}
 						if(in_array("dab_tune_aid", $fonc_list_tuner)) {
-
+							$device->createCmd('tuner_dab_tune_aid_set', 'action', 'other')->save();
 						}
 					}
 				}
@@ -704,15 +732,15 @@ class YamahaMusiccast extends eqLogic {
 				$device->createCmd('netusb_playback')->save();
 				$device->createCmd('netusb_repeat')->save();
 				$device->createCmd('netusb_shuffle')->save();
-				$device->createCmd('netusb_play_time')->save();
-				$device->createCmd('netusb_total_time')->save();
+				$device->createCmd('netusb_play_time', 'info', 'numeric')->save();
+				$device->createCmd('netusb_total_time', 'info', 'numeric')->save();
 				$device->createCmd('netusb_artist')->save();
 				$device->createCmd('netusb_album')->save();
 				$device->createCmd('netusb_track')->save();
 				$device->createCmd('netusb_albumart_url')->save();
 				$device->createCmd('netusb_albumart_id')->save();
 				$device->createCmd('netusb_usb_devicetype')->save();
-				$device->createCmd('netusb_usb_auto_stopped')->save();
+				$device->createCmd('netusb_usb_auto_stopped', 'info', 'binary')->save();
 				$device->createCmd('netusb_attribute')->save();
 				$device->createCmd('netusb_repeat_available')->save();
 				$device->createCmd('netusb_shuffle_available')->save();
@@ -866,12 +894,10 @@ class YamahaMusiccast extends eqLogic {
 				if (!empty($result->tuner)) {
 					$tuner = $result->tuner;
 					if (!empty($tuner->play_info_updated)) {
-						$play_info_updated = $tuner->play_info_updated;
-						log::add(__CLASS__, 'info', 'TODO: Mise à jour du isPlayInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPlayInf' . print_r($play_info_updated, true));
+						YamahaMusiccast::callTunerGetPlayInfo($eqLogic);
 					}
 					if (!empty($tuner->preset_info_updated)) {
-						$preset_info_updated = $tuner->preset_info_updated;
-						log::add(__CLASS__, 'info', 'TODO: Mise à jour du isPresetInfoUpdated Main - Note: If so, pull renewed info using /tuner/getPresetInfo' . print_r($preset_info_updated, true));
+						YamahaMusiccast::callTunerGetPresetInfo($eqLogic);
 					}
 				}
 				if (!empty($result->netusb)) {
@@ -1021,6 +1047,127 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($zone->signal_info_updated)) {
 			YamahaMusiccast::callZoneGetSignalInfo($eqLogic, $zoneName);
 		}
+	}
+
+	static function callTunerGetPlayInfo($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/tuner/getPlayInfo");
+		if (!empty($result->band)) {
+			$eqLogic->checkAndUpdateCmd('tuner_band', $result->band);
+		}
+		if (!empty($result->auto_scan)) {
+			$eqLogic->checkAndUpdateCmd('tuner_auto_scan', $result->auto_scan);
+		}
+		if (!empty($result->auto_preset)) {
+			$eqLogic->checkAndUpdateCmd('tuner_auto_preset', $result->auto_preset);
+		}
+		if (!empty($result->am)) {
+			$am = $result->am;
+			if (!empty($am->preset)) {
+				$eqLogic->checkAndUpdateCmd('tuner_am_preset', $am->preset);
+			}
+			if (!empty($am->freq)) {
+				$eqLogic->checkAndUpdateCmd('tuner_am_freq', $am->freq);
+			}
+			if (!empty($am->tuned)) {
+				$eqLogic->checkAndUpdateCmd('tuner_am_tuned', $am->tuned);
+			}
+		}
+		if (!empty($result->fm)) {
+			$fm = $result->fm;
+			if (!empty($fm->preset)) {
+				$eqLogic->checkAndUpdateCmd('tuner_fm_preset', $fm->preset);
+			}
+			if (!empty($fm->freq)) {
+				$eqLogic->checkAndUpdateCmd('tuner_fm_freq', $fm->freq);
+			}
+			if (!empty($fm->tuned)) {
+				$eqLogic->checkAndUpdateCmd('tuner_fm_tuned', $fm->tuned);
+			}
+			if (!empty($fm->audio_mode)) {
+				$eqLogic->checkAndUpdateCmd('tuner_fm_audio_mode', $fm->audio_mode);
+			}
+		}
+		if (!empty($result->rds)) {
+			$rds = $result->rds;
+			if (!empty($rds->program_type)) {
+				$eqLogic->checkAndUpdateCmd('tuner_rds_program_type', $rds->program_type);
+			}
+			if (!empty($rds->program_service)) {
+				$eqLogic->checkAndUpdateCmd('tuner_rds_program_service', $rds->program_service);
+			}
+			if (!empty($rds->radio_text_a)) {
+				$eqLogic->checkAndUpdateCmd('tuner_rds_radio_text_a', $rds->radio_text_a);
+			}
+			if (!empty($rds->radio_text_b)) {
+				$eqLogic->checkAndUpdateCmd('tuner_rds_radio_text_b', $rds->radio_text_b);
+			}
+		}
+		if (!empty($result->dab)) {
+			$dab = $result->dab;
+			if (!empty($dab->preset)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_preset', $dab->preset);
+			}
+			if (!empty($dab->id)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_id', $dab->id);
+			}
+			if (!empty($dab->status)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_status', $dab->status);
+			}
+			if (!empty($dab->freq)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_freq', $dab->freq);
+			}
+			if (!empty($dab->category)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_category', $dab->category);
+			}
+			if (!empty($dab->audio_mode)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_audio_mode', $dab->audio_mode);
+			}
+			if (!empty($dab->bit_rate)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_bit_rate', $dab->bit_rate);
+			}
+			if (!empty($dab->quality)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_quality', $dab->quality);
+			}
+			if (!empty($dab->tune_aid)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_tune_aid', $dab->tune_aid);
+			}
+			if (!empty($dab->off_air)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_off_air', $dab->off_air);
+			}
+			if (!empty($dab->dab_plus)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_dab_plus', $dab->dab_plus);
+			}
+			if (!empty($dab->program_type)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_program_type', $dab->program_type);
+			}
+			if (!empty($dab->ch_label)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_ch_label', $dab->ch_label);
+			}
+			if (!empty($dab->service_label)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_service_label', $dab->service_label);
+			}
+			if (!empty($dab->dls)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_dls', $dab->dls);
+			}
+			if (!empty($dab->ensemble_label)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_ensemble_label', $dab->ensemble_label);
+			}
+			if (!empty($dab->initial_scan_progress)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_initial_scan_progress', $dab->initial_scan_progress);
+			}
+			if (!empty($dab->total_station_num)) {
+				$eqLogic->checkAndUpdateCmd('tuner_dab_total_station_num', $dab->total_station_num);
+			}
+		}
+		if (!empty($result->hd_radio)) {
+			log::add(__CLASS__, 'info', 'TODO: tuner hd_radio.' . print_r($result->hd_radio, true));
+			//$eqLogic->checkAndUpdateCmd('tuner_hd_radio', $result->hd_radio);
+		}
+	}
+
+	static function callTunerGetPresetInfo($eqLogic) {
+		$result = YamahaMusiccast::CallAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/tuner/getPresetInfo?band=fm");//TODO change fm to band.
+		log::add(__CLASS__, 'info', 'TODO: Call getPresetInfo ' . print_r($result, true));
 	}
 
 	static function callZoneGetSignalInfo($eqLogic, $zoneName) {

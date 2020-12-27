@@ -28,16 +28,16 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 
 <div class="row row-overflow">
 	<div class="col-xs-12 eqLogicThumbnailDisplay">
-		<legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
+		<legend><i class="fas fa-cog"></i> {{Gestion}}</legend>
 		<div class="eqLogicThumbnailContainer">
 			<div class="cursor eqLogicAction logoPrimary" data-action="gotoPluginConf">
-				<i class="fa fa-wrench"></i>
-				<br>
+				<i class="fas fa-wrench"></i>
+				<br/>
 				<span>{{Configuration}}</span>
 			</div>
 			<div class="cursor eqLogicAction" data-action="searchMusiccast">
-				<i class="fa fa-sync"></i>
-				<br>
+				<i class="fas fa-sync"></i>
+				<br/>
 				<span>{{Synchroniser}}</span>
 			</div>
 		</div>
@@ -62,8 +62,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 		<?php } ?>
 	</div>
 
-	<div class="col-lg-10 col-md-9 col-sm-8 eqLogic"
-		 style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
+	<div class="col-xs-12 eqLogic" style="display: none;">
 		<a class="btn btn-success eqLogicAction pull-right" data-action="save">
 			<i class="fa fa-check-circle"></i> {{Sauvegarder}}
 		</a>
@@ -181,7 +180,6 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 				</table>
 			</div>
 		</div>
-
 	</div>
 </div>
 

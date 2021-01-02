@@ -148,12 +148,12 @@
 				var list = _options.display_list.split(";");
 				var bottonList = '';
 				for(i = 0; i < list.length; i++){
-					var inputArray = list[i].split("|");
+					var inputArray = list[i].split(/(?:→|\|)+/);
 					var icon;
 					if(inputIconMap.has(inputArray[0])) {
 						icon = inputIconMap.get(inputArray[0])[4];
 					} else {
-						icon = '<img src="/plugins/YamahaMusiccast/ressources/input/' + inputArray[0] + '.png"/>'
+						icon = '<img src="/plugins/YamahaMusiccast/ressources/input/' + inputArray[0] + '.png"/>';
 					}
 					bottonList += '<a class="nav-item nav-link cmd btn" onclick="jeedom.cmd.execute({id: \'#input_change_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[1] + '</span></a>'
 				}
@@ -169,8 +169,8 @@
 				var list = _options.display_value.split(";");
 				var bottonList = '<ul>';
 				for(i = 0; i < list.length; i++){
-					var inputArray = list[i].split("|");
-					var icon = '<img src="' + inputArray[3].replace('http://', 'https://').replace(':80/', '/') + '"/>'
+					var inputArray = list[i].split(/(?:→|\|)+/);
+					var icon = '<img src="' + inputArray[3].replace('http://', 'https://').replace(':80/', '/') + '"/>';
 					bottonList += '<li><a class="nav-item nav-link cmd btn" onclick="jeedom.cmd.execute({id: \'#netusb_recall_recent_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'
 				}
 				bottonList += '</ul>';
@@ -188,12 +188,13 @@
 				var list = _options.display_value.split(";");
 				var bottonList = '<ul>';
 				for(i = 0; i < list.length; i++){
-					var inputArray = list[i].split("|");
+					var inputArray = list[i].split(/(?:→|\|)+/);
 					var icon;
 					if(inputIconMap.has(inputArray[1])) {
 						icon = inputIconMap.get(inputArray[1])[4];
 					} else {
-						icon = '<img src="/plugins/YamahaMusiccast/ressources/input/' + inputArray[1] + '.png"/>'
+						var url = '/plugins/YamahaMusiccast/ressources/input/' + inputArray[1] + '.png';
+						icon = '<img src="' + url + '"/>';
 					}
 					bottonList += '<li><a class="nav-item nav-link cmd btn" onclick="jeedom.cmd.execute({id: \'#netusb_recall_preset_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'
 				}

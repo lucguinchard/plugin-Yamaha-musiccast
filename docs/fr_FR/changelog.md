@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 0.4 : (**09 Janvier 2021**)
+
+* Optimistation des appels vers les apparails Yamaha-Musiccast.
+* Optimisation des templates d’affichages `panel` + `gestion de Musiccast`.
+* Gestion dynamique de la barre de navigation.
+
 ### Version 0.3 : (**14 juillet 2020**)
 
 * Modification du template d’affichage.
@@ -8,7 +14,7 @@
 
 ### Version 0.2 : (**4 février 2020**)
 
-* Mise en place de la page de configuration avec le mode recherche automatique et la recherche par ip
+* Mise en place de la page de configuration avec le mode recherche automatique et la recherche par ip.
 * Mise en place d’un template d’affichage minimal.
 
 ### Version 0.1 : (**11 janvier 2020**)

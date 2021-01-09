@@ -836,6 +836,7 @@ class YamahaMusiccast extends eqLogic {
 				//array_push($device, $eqLogic);
 			}
 		}
+		YamahaMusiccast::callGetDistributionInfo($device, $ip);
 		YamahaMusiccast::callGetPresetInfoNetusb($device, $ip);
 		YamahaMusiccast::callGetNetusbRecentInfo($device, $ip);
 		YamahaMusiccast::callSystemNameText($device, $ip);
@@ -1453,7 +1454,6 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function callGetDistributionInfo($device, $ip) {
 		$result = YamahaMusiccast::callAPI("GET", $ip, "/YamahaExtendedControl/v1/dist/getDistributionInfo");
-		log::add(__CLASS__, 'debug', 'TODO: Gestion de GetDistributionInfo ' . print_r($result, true));
 		if (!empty($result->status)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->status, "getDistributionInfo status");
 			// working

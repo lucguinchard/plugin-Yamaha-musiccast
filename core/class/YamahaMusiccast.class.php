@@ -465,6 +465,8 @@ class YamahaMusiccast extends eqLogic {
 					mkdir($deviceDir, 0700);
 				}
 
+				$eqLogic->createCmd('group_name')->save();
+
 				if (in_array("wired_lan", $fonc_list_features)) {
 					$eqLogic->createCmd('set_wired_lan', 'action', 'other')->save();
 				}
@@ -1452,36 +1454,35 @@ class YamahaMusiccast extends eqLogic {
 	public static function callGetDistributionInfo($device, $ip) {
 		$result = YamahaMusiccast::callAPI("GET", $ip, "/YamahaExtendedControl/v1/dist/getDistributionInfo");
 		log::add(__CLASS__, 'debug', 'TODO: Gestion de GetDistributionInfo ' . print_r($result, true));
-		if (!empty($result->group_id)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->group_id, "getDistributionInfo group_id");
-		}
-		if (!empty($result->group_name)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->group_name, "getDistributionInfo group_name");
-		}
-		if (!empty($result->role)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->role, "getDistributionInfo role");
-		}
 		if (!empty($result->status)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->status, "getDistributionInfo status");
+			// working
 		}
 		if (!empty($result->server_zone)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->server_zone, "getDistributionInfo server_zone");
-		}
-		if (!empty($result->role)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->role, "getDistributionInfo role");
-		}
-		if (!empty($result->role)) {
-			$dist_role = $result->role;
-			switch ($dist_role) {
-				case "server" : break;
-				case "client" : break;
-				case "none" : break;
+			$eqLogic = $device[$result->server_zone];
+			if (!empty($result->group_id)) {
+				if($result->group_id === "00000000000000000000000000000000") {
+					$groupName = $eqLogic->getName();
+				} else {
+					if (!empty($result->role) && !empty($result->server_zone)) {
+						$dist_role = $result->role;
+						switch ($dist_role) {
+							case "server" :
+								$groupName = $result->group_name;
+								break;
+							case "client" :
+								$groupName = str_replace("(Linked)", '<i class="fas fa-link"></i>',$result->group_name);
+								break;
+							case "none" :
+								break;
+						}
+					}
+				}
 			}
+			YamahaMusiccast::checkAndUpdateDeviceCmd(array($eqLogic), "group_name", $groupName);
 		}
 		if (!empty($result->client_list)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->client_list, "getDistributionInfo client_list");
-		}
-		if (!empty($result->client_list)) {
 			$client_list = $result->client_list;
 			if (!empty($client_list->ip_address)) {
 				
@@ -1492,8 +1493,6 @@ class YamahaMusiccast extends eqLogic {
 		}
 		if (!empty($result->build_disable)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->build_disable, "getDistributionInfo build_disable");
-		}
-		if (!empty($result->build_disable)) {
 			$build_disable = $result->build_disable;
 			if (!empty($build_disable->ip_address)) {
 				

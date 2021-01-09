@@ -6,6 +6,100 @@ function elementShowOrHide(element, show) {
 	}
 }
 
+function navigateButton(uid_value) {
+	var play_stop = $("#" + uid_value + "_play_stop").val();
+	var input = $("#" + uid_value + "_input").val();
+	if(input === '') return;
+	if(play_stop === '') return;
+
+	var uid = $('.YamahaMusiccast[data-eqLogic_uid=' + uid_value +']');
+
+	var onelinedefile = uid.find('.one-line-defile');
+	var divInputPochette = uid.find('.divInputPochette');
+	var nav_playlist = uid.find('.nav_playlist');
+	var divInputIcon = uid.find('.panelMusic .divInputIcon');
+	var pochette_input = uid.find('.panelMusic .pochette_input');
+	var inputIconMap = getInputIconMap();
+
+	if(inputIconMap.has(input)) {
+		var icon = inputIconMap.get(input);
+		elementShowOrHide(onelinedefile, icon[0]);
+		elementShowOrHide(divInputPochette, icon[1]);
+		elementShowOrHide(divInputIcon, !icon[1]);
+		elementShowOrHide(nav_playlist, icon[2] !== false);
+		switch (icon[2]) {
+			case 'stop':
+				uid.find('.pause').css('display', 'none');
+				uid.find('.action_list').css('display', 'none');
+				if (play_stop === 'play') {
+					uid.find('.play').css('display', 'none');
+					uid.find('.stop').css('display', 'inline-block');
+				} else if (play_stop === 'pause' || play_stop === 'stop') {
+					uid.find('.stop').css('display', 'none');
+					uid.find('.play').css('display', 'inline-block');
+				}
+			break;
+			case 'play_pause':
+				uid.find('.action_list').css('display', 'inline-block');
+				uid.find('.stop').css('display', 'none');
+				if (play_stop === 'play') {
+					uid.find('.play').css('display', 'none');
+					uid.find('.pause').css('display', 'inline-block');
+				} else if (play_stop === 'pause' || play_stop === 'stop') {
+					uid.find('.pause').css('display', 'none');
+					uid.find('.play').css('display', 'inline-block');
+				}
+			break;
+		}
+		divInputIcon.empty().append(icon[4]).append("<span>" + input + "</span>");
+/*		if (input === 'mc_link') {
+			var url = '/plugins/YamahaMusiccast/ressources/input/' + input + '.png';
+			pochette_input.attr('src', url);
+			$.get(url).fail(function() {
+				url = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+				pochette_input.attr('src', url);
+			});
+			pochette_input.show();
+		} else {
+			pochette_input.hide();
+		}*/
+	} else {
+		onelinedefile.show();
+		nav_playlist.show();
+		var url = '/plugins/YamahaMusiccast/ressources/input/' + input + '.png';
+		pochette_input.attr('src', url);
+		$.get(url).fail(function() {
+			url = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+			pochette_input.attr('src', url);
+		});
+		pochette_input.show();
+		divInputPochette.show();
+		divInputIcon.hide();
+		uid.find('.stop').css('display', 'none');
+		uid.find('.action_list').css('display', 'inline-block');
+		if (play_stop === 'play') {
+			uid.find('.play').css('display', 'none');
+			uid.find('.pause').css('display', 'inline-block');
+		} else if (play_stop === 'pause' || play_stop === 'stop') {
+			uid.find('.pause').css('display', 'none');
+			uid.find('.play').css('display', 'inline-block');
+		}
+	}
+/*
+	if (play_stop === 'play') {
+		uid.find('.play').css('display', 'none');
+		uid.find('.pause').css('display', 'inline-block');
+	} else if (play_stop === 'pause' || play_stop === 'stop') {
+		uid.find('.pause').css('display', 'none');
+		uid.find('.stop').css('display', 'none');
+		uid.find('.play').css('display', 'inline-block');
+	} else {
+		uid.find('.pause').css('display', 'none');
+		uid.find('.play').css('display', 'none');
+	}
+*/
+}
+
 function getInputIconMap() {
 	const inputIconMap = new Map();
 	/**
@@ -17,7 +111,7 @@ function getInputIconMap() {
 	*/
 	inputIconMap.set('airplay', [true, false, false, true, '<span class="fa-stack fa-lg"><i class="fas fa-mobile-alt fa-stack-2x"></i><i class="fas fa-music fa-stack-1x" style="font-size:0.5em"></i></span>']);
 	inputIconMap.set('cd', [true, false, false, true, '<i class="fas fa-compact-disc"></i>']);
-	inputIconMap.set('tuner', [true, false, false, true, '<i class="fas fa-music"></i>']);
+	inputIconMap.set('tuner', [false, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('multi_ch', [true, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('phono', [false, false, false, true, '<i class="fas fa-record-vinyl"></i>']);
 	inputIconMap.set('hdmi', [false, false, false, true, '<i class="fas fa-desktop"></i>']);
@@ -65,10 +159,10 @@ function getInputIconMap() {
 	inputIconMap.set('bd_dvd', [false, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('usb_dac', [true, false, false, true, '<i class="icon techno-memory"></i>']);
 	inputIconMap.set('usb', [true, false, false, true, '<i class="fas fa-music"></i>']);
-	inputIconMap.set('bluetooth', [true, false, true, true, '<i class="fab fa-bluetooth icon_blue"></i>']);
+	inputIconMap.set('bluetooth', [true, false, "play_pause", true, '<i class="fab fa-bluetooth icon_blue"></i>']);
 	inputIconMap.set('server', [true, false, false, true, '<i class="fas fa-hdd"></i>']);
-	inputIconMap.set('net_radio', [true, true, true, false, '<i class="fas fa-music"></i>']);
-	inputIconMap.set('mc_link', [true, true, false, false, '<i class="fas fa-link"></i>']);
+	inputIconMap.set('net_radio', [true, true, "stop", false, '<i class="fas fa-music"></i>']);
+	inputIconMap.set('mc_link', [true, false, false, false, '<i class="fas fa-link"></i>']);
 	inputIconMap.set('main_sync', [false, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('none', [false, false, false, true, '<i class="fas fa-music"></i>']);
 	return inputIconMap;

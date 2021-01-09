@@ -75,28 +75,28 @@ class YamahaMusiccastCmd extends cmd {
 				log::add('YamahaMusiccast', 'info', 'TODO:Créer la command ' . $this->getLogicalId() . '  → Page31');
 				break;
 			case 'auto_power_standby_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPowerStandby?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPowerStandby?enable=true");
 				break;
 			case 'auto_power_standby_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPowerStandby?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPowerStandby?enable=false");
 				break;
 			case 'ir_sensor_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setIrSensor?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setIrSensor?enable=true");
 				break;
 			case 'ir_sensor_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setIrSensor?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setIrSensor?enable=false");
 				break;
 			case 'speaker_a_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerA?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerA?enable=true");
 				break;
 			case 'speaker_a_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerA?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerA?enable=false");
 				break;
 			case 'speaker_b_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerB?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerB?enable=true");
 				break;
 			case 'speaker_b_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerB?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setSpeakerB?enable=false");
 				break;
 			case 'dimmer' :
 				/**
@@ -107,35 +107,35 @@ class YamahaMusiccastCmd extends cmd {
 				  Value Range: calculated by minimum/maximum/step values gotten
 				  via /system/getFeatures
 				 */
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setDimmer?value=" . $_options['slider']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setDimmer?value=" . $_options['slider']);
 				break;
 			case 'zone_b_volume_sync_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setZoneBVolumeSync?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setZoneBVolumeSync?enable=true");
 				break;
 			case 'zone_b_volume_sync_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setZoneBVolumeSync?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setZoneBVolumeSync?enable=false");
 				break;
 			case 'hdmi_out_1_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut1?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut1?enable=true");
 				break;
 			case 'hdmi_out_1_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut1?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut1?enable=false");
 				break;
 			case 'hdmi_out_2_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut2?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut2?enable=true");
 				break;
 			case 'hdmi_out_2_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut2?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut2?enable=false");
 				break;
 			case 'hdmi_out_3_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut3?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut3?enable=true");
 				break;
 			case 'hdmi_out_3_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut3?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setHdmiOut3?enable=false");
 				break;
 			case 'set_name_text' :
 				$data = '{"id":"' . $_options['id'] . '","text":"' . $_options['text'] . '"}';
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setNameText", $data);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setNameText", $data);
 				break;
 			//getLocationInfo
 			//getStereoPairInfo
@@ -145,49 +145,49 @@ class YamahaMusiccastCmd extends cmd {
 			//requestSystemReboot
 			//getAdvancedFeatures
 			case 'auto_play_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPlay?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPlay?enable=true");
 				break;
 			case 'auto_play_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPlay?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPlay?enable=false");
 				break;
 			//setSpeakerPattern
 			case 'party_mode_on' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setPartyMode?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setPartyMode?enable=true");
 				break;
 			case 'party_mode_off' :
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/system/setPartyMode?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setPartyMode?enable=false");
 				break;
 			//getSoundProgramList
 			case "power_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
 				break;
 			case "power_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=standby");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=standby");
 				break;
 			case "power_toggle":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=toggle");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=toggle");
 				break;
 			//setSleep
 			case "volume_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['slider']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['slider']);
 				break;
 			case "volume_change_step":
 				//volume = up or down
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['volume'] . "&step=" . $_options['step']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setVolume?volume=" . $_options['volume'] . "&step=" . $_options['step']);
 				break;
 			case "mute_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=true");
 				break;
 			case "mute_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setMute?enable=false");
 				break;
 			case "input_change":
 				if(!empty($_options['select'])) {
 					$power_state_cmd = $device->getCmd(null, 'power_state');
 					if($power_state_cmd->execCmd() !== 'on') {
-						YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+						YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
 					}
-					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select']);
+					YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select']);
 				}
 				break;
 			case "input_change_mode":
@@ -197,45 +197,45 @@ class YamahaMusiccastCmd extends cmd {
 				  Value: "autoplay_disabled" (Restricts Auto Play of Net/USB
 				  related Inputs). Available on and after API Version
 				 */
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select'] . "&mode=" . $_options['mode']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setInput?input=" . $_options['select'] . "&mode=" . $_options['mode']);
 				break;
 			case "sound_program_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?program=" . $_options['select']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?program=" . $_options['select']);
 				break;
 			case "3d_surround_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=true");
 				break;
 			case "3d_surround_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=false");
 				break;
 			case "direct_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setDirect?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setDirect?enable=true");
 				break;
 			case "direct_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setDirect?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setDirect?enable=false");
 				break;
 			case "pure_direct_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPureDirect?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPureDirect?enable=true");
 				break;
 			case "pure_direct_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPureDirect?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPureDirect?enable=false");
 				break;
 			case "enchancer_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEnhancer?enable=true");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEnhancer?enable=true");
 				break;
 			case "enchancer_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEnhancer?enable=false");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEnhancer?enable=false");
 				break;
 			//setToneControl
 			//setEqualizer
 			case "equalizer_low_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&low=" . $_options['slider']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&low=" . $_options['slider']);
 				break;
 			case "equalizer_mid_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&mid=" . $_options['slider']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&mid=" . $_options['slider']);
 				break;
 			case "equalizer_high_change":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&high=" . $_options['slider']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setEqualizer?mode=manual&high=" . $_options['slider']);
 				break;
 			//setBalance
 			//setDialogueLevel
@@ -272,66 +272,66 @@ class YamahaMusiccastCmd extends cmd {
 			//getPresetInfo
 			//getPlayInfo
 			case "netusb_playback_play":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");
 				break;
 			case "netusb_playback_stop":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=stop");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=stop");
 				break;
 			case "netusb_playback_pause":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=pause");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=pause");
 				break;
 			case "netusb_playback_play_pause":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play_pause");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play_pause");
 				break;
 			case "netusb_playback_previous":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=previous");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=previous");
 				break;
 			case "netusb_playback_next":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=next");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=next");
 				break;
 			case "netusb_playback_fast_reverse_start":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_reverse_start");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_reverse_start");
 				break;
 			case "netusb_playback_fast_reverse_end":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_reverse_end");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_reverse_end");
 				break;
 			case "netusb_playback_fast_forward_start":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_forward_start");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_forward_start");
 				break;
 			case "netusb_playback_fast_forward_end":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_forward_end");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=fast_forward_end");
 				break;
 			//setPlayPosition
 			case "netusb_play_position_change":
 				//For setting track play position. This API is available only when input is Server.
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayPosition?position=" . $_options['position']);
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayPosition?position=" . $_options['position']);
 				break;
 			case "netusb_repeat_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=off");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=off");
 				break;
 			case "netusb_repeat_one":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=one");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=one");
 				break;
 			case "netusb_repeat_all":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=all");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setRepeat?mode=all");
 				break;
 			case "netusb_shuffle_off":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=off");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=off");
 				break;
 			case "netusb_shuffle_on":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=on");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=on");
 				break;
 			case "netusb_shuffle_songs":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=songs");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=songs");
 				break;
 			case "netusb_shuffle_albums":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=albums");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setShuffle?mode=albums");
 				break;
 			case "netusb_toggle_repeat":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/toggleRepeat");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/toggleRepeat");
 				break;
 			case "netusb_toggle_shuffle":
-				YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/toggleShuffle");
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/toggleShuffle");
 				break;
 			//getListInfo
 			//setListControl
@@ -340,9 +340,9 @@ class YamahaMusiccastCmd extends cmd {
 				if(!empty($_options['select'])) {
 					$power_state_cmd = $device->getCmd(null, 'power_state');
 					if($power_state_cmd->execCmd() !== 'on') {
-						YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+						YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
 					}
-					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/recallPreset?zone=" . $zone . "&num=" . $_options['select']);
+					YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/recallPreset?zone=" . $zone . "&num=" . $_options['select']);
 				}
 				break;
 			//storePreset
@@ -355,10 +355,10 @@ class YamahaMusiccastCmd extends cmd {
 				if(!empty($_options['select'])) {
 					$power_state_cmd = $device->getCmd(null, 'power_state');
 					if($power_state_cmd->execCmd() !== 'on') {
-						YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+						YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
 					}
-					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/recallRecentItem?zone=" . $zone . "&num=" . $_options['select']);
-					YamahaMusiccast::CallAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");
+					YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/recallRecentItem?zone=" . $zone . "&num=" . $_options['select']);
+					YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");
 				}
 				break;
 			//clearRecentInfo

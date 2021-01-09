@@ -41,15 +41,13 @@ try {
 			$return = YamahaMusiccast::searchAndSaveDeviceList();
 			$nb = count($return);
 			if($nb === 0) {
-				ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.'). ' ' . __('Pour plus d’information consulter la ') . ' <a href="https://lucguinchard.github.io/plugin-Yamaha-musiccast/fr_FR/#tocAnchor-1-5">' . __('FAQ') . '</a>');
+				ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.', __FILE__). ' ' . __('Pour plus d’information consulter la ', __FILE__) . ' <a href="https://lucguinchard.github.io/plugin-Yamaha-musiccast/fr_FR/#tocAnchor-1-5">' . __('FAQ', __FILE__) . '</a>');
 			} else {
 				$deviceList = "";
 				foreach ($return as $device){
-					foreach ($device as $zone){
-						$deviceList .= $zone['name'] . '-' . $zone['zone'] . ', ';
-					}
+					$deviceList .= $device . ', ';
 				}
-				ajax::error('La recherche a trouvé ' . $nb . ' zone(s) compatible(s) : ' . substr($deviceList, 0, -2) . '');
+				ajax::error('La recherche a trouvé ' . $nb . ' zone(s) compatible(s) : ' . substr($deviceList, 0, -2) . '.', __FILE__);
 			}
 			break;
 		case 'saveIP':
@@ -57,13 +55,13 @@ try {
 			$return = YamahaMusiccast::saveDeviceIp($ip);
 			$nb = count($return);
 			if($nb === 0) {
-				ajax::error(__('La recherche n’a pas trouvé d’appareil compatible pour : ' . $ip));
+				ajax::error(__('La recherche n’a pas trouvé d’appareil compatible pour : ' . $ip, __FILE__));
 			} else {
 				$deviceList = "";
 				foreach ($return as $zone){
 					$deviceList .= $zone['name'] . '-' . $zone['zone'] . ', ';
 				}
-				ajax::error('La recherche a trouvé un appareil compatible avec la(es) zone(s) suivante(s) : ' . substr($deviceList, 0, -2));
+				ajax::error('La recherche a trouvé un appareil compatible avec la(es) zone(s) suivante(s) : ' . substr($deviceList, 0, -2), __FILE__);
 			}
 			break;
 	}

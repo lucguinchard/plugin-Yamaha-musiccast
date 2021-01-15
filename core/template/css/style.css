@@ -128,11 +128,11 @@
 }
 
 .YamahaMusiccast .playlist .tab-content {
-	height: 260px;
+	height: 263px !important;
 }
 
 .YamahaMusiccast .displayoff .tab-content {
-	height: 210px;
+	height: 210px !important;
 }
 
 .YamahaMusiccast a.nav-item.nav-link {

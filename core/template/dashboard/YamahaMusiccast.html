@@ -128,18 +128,20 @@
 						<div class="one-line-defile"><strong class="cmd netusb_track" data-cmd_id="#netusb_track_id#"></strong></div>
 						<div class="one-line-defile artiste-album"><strong class="cmd netusb_artist" data-cmd_id="#netusb_artist_id#"></strong><strong class="cmd netusb_album" data-cmd_id="#netusb_album_id#"></strong></div>
 					</div>
-					<a class="nav-item nav-link btn cmd stop" data-cmd_id="#netusb_playback_stop_id#"
-						onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});">
-						#netusb_playback_stop_icon#<span>Stop</span>
-					</a>
-					<a class="nav-item nav-link btn cmd pause play_pause" data-cmd_id="#netusb_playback_id#"
-						onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});">
-						#netusb_playback_pause_icon#<span>Pause</span>
-					</a>
-					<a class="nav-item nav-link btn cmd play play_pause" data-cmd_id="#netusb_playback_id#"
-						onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
-						style="display: none;">#netusb_playback_play_icon#<span>Lecture</span>
-					</a>
+					<nav class="nav nav_playlist">
+						<a class="nav-item nav-link btn cmd stop" data-cmd_id="#netusb_playback_stop_id#"
+							onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});">
+							#netusb_playback_stop_icon#<span>Stop</span>
+						</a>
+						<a class="nav-item nav-link btn cmd pause play_pause" data-cmd_id="#netusb_playback_id#"
+							onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});">
+							#netusb_playback_pause_icon#<span>Pause</span>
+						</a>
+						<a class="nav-item nav-link btn cmd play play_pause" data-cmd_id="#netusb_playback_id#"
+							onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
+							style="display: none;">#netusb_playback_play_icon#<span>Lecture</span>
+						</a>
+					</nav>
 				</div>
 			</div>
 		</div>

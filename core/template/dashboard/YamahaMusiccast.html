@@ -27,28 +27,28 @@
 						<div class="audio_format_box"><span class="cmd audio_format" data-cmd_id="#audio_format_id#"></span><span class="cmd audio_fs" data-cmd_id="#audio_fs_id#"></span></div>
 					</div>
 					<nav class="nav nav_playlist">
-						<!--a class="btn cmd action_playlist" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire" style="float: right;">
+						<!--a class="btn cmd cmd-widget action_playlist" data-type="action" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire" style="float: right;">
 							<i class="fa fa-random shuffle"></i>
 						</a>
-						<a class="btn cmd action_playlist" data-cmd_id="#netusb_repeat_id#" onclick="jeedom.cmd.execute({id: #netusb_repeat_id#});" title="Répéter">
+						<a class="btn cmd cmd-widget action_playlist" data-type="action" data-cmd_id="#netusb_repeat_id#" onclick="jeedom.cmd.execute({id: #netusb_repeat_id#});" title="Répéter">
 							<i class="fa fa-sync repeat"></i>
 						</a-->
-						<a class="btn cmd action_list" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent" style="float: none;">
+						<a class="btn cmd cmd-widget action_list" data-type="action" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent" style="float: none;">
 							#netusb_playback_previous_icon#
 						</a>
-						<a class="btn cmd stop" data-cmd_id="#netusb_playback_stop_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});"
+						<a class="btn cmd cmd-widget stop" data-type="action" data-cmd_id="#netusb_playback_stop_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});"
 							title="Stop" style="float: none; display:none;">
 							#netusb_playback_stop_icon#
 						</a>
-						<a class="btn cmd play play_pause" data-cmd_id="#netusb_playback_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
+						<a class="btn cmd cmd-widget play play_pause" data-type="action" data-cmd_id="#netusb_playback_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
 							title="Lecture" style="float: none; display:none;">
 							#netusb_playback_play_icon#
 						</a>
-						<a class="btn cmd pause play_pause" data-cmd_id="#netusb_playback_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
+						<a class="btn cmd cmd-widget pause play_pause" data-type="action" data-cmd_id="#netusb_playback_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
 							title="Pause" style="float: none;">
 							#netusb_playback_pause_icon#
 						</a>
-						<a class="btn cmd action_list" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant" style="float: none;">
+						<a class="btn cmd cmd-widget action_list" data-type="action" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant" style="float: none;">
 							#netusb_playback_next_icon#
 						</a>
 					</nav>
@@ -129,15 +129,15 @@
 						<div class="one-line-defile artiste-album"><strong class="cmd netusb_artist" data-cmd_id="#netusb_artist_id#"></strong><strong class="cmd netusb_album" data-cmd_id="#netusb_album_id#"></strong></div>
 					</div>
 					<nav class="nav nav_playlist">
-						<a class="nav-item nav-link btn cmd stop" data-cmd_id="#netusb_playback_stop_id#"
+						<a class="nav-item nav-link btn cmd cmd-widget stop" data-type="action" data-cmd_id="#netusb_playback_stop_id#"
 							onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});">
 							#netusb_playback_stop_icon#<span>Stop</span>
 						</a>
-						<a class="nav-item nav-link btn cmd pause play_pause" data-cmd_id="#netusb_playback_id#"
+						<a class="nav-item nav-link btn cmd cmd-widget pause play_pause" data-type="action" data-cmd_id="#netusb_playback_id#"
 							onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});">
 							#netusb_playback_pause_icon#<span>Pause</span>
 						</a>
-						<a class="nav-item nav-link btn cmd play play_pause" data-cmd_id="#netusb_playback_id#"
+						<a class="nav-item nav-link btn cmd cmd-widget play play_pause" data-type="action" data-cmd_id="#netusb_playback_id#"
 							onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
 							style="display: none;">#netusb_playback_play_icon#<span>Lecture</span>
 						</a>
@@ -167,7 +167,7 @@
 					} else {
 						icon = '<img src="/plugins/YamahaMusiccast/ressources/input/' + inputArray[0] + '.png"/>';
 					}
-					bottonList += '<a class="nav-item nav-link cmd btn" onclick="jeedom.cmd.execute({id: \'#input_change_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[1] + '</span></a>'
+					bottonList += '<a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#input_change_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[1] + '</span></a>'
 				}
 				uid.find('##id#input').empty().append(bottonList);
 			}
@@ -183,7 +183,7 @@
 				for(i = 0; i < list.length; i++){
 					var inputArray = list[i].split(/(?:→|\|)+/);
 					var icon = '<img src="' + inputArray[3].replace('http://', 'https://').replace(':80/', '/') + '"/>';
-					bottonList += '<li><a class="nav-item nav-link cmd btn" onclick="jeedom.cmd.execute({id: \'#netusb_recall_recent_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'
+					bottonList += '<li><a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#netusb_recall_recent_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'
 				}
 				bottonList += '</ul>';
 				uid.find('##id#recent').empty().append(bottonList);
@@ -208,7 +208,7 @@
 						var url = '/plugins/YamahaMusiccast/ressources/input/' + inputArray[1] + '.png';
 						icon = '<img src="' + url + '"/>';
 					}
-					bottonList += '<li><a class="nav-item nav-link cmd btn" onclick="jeedom.cmd.execute({id: \'#netusb_recall_preset_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'
+					bottonList += '<li><a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#netusb_recall_preset_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'
 				}
 				bottonList += '</ul>';
 				uid.find('##id#preset').empty().append(bottonList);

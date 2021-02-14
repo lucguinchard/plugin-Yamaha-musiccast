@@ -104,9 +104,9 @@ function getInputIconMap() {
 	const inputIconMap = new Map();
 	/**
 	* ['onelinedefile'] : permet d’afficher le titre en cours.
-	* ['divInputPochette'] Permet d'afficher la pochette.
-	* ['nav_playlist']
-	* ['divInputIcon'] Permet d'afficher l’icone en grand (quand il y a pas de pochette).
+	* ['divInputPochette'] Permet d’afficher la pochette.
+	* ['nav_playlist'] Permet de savoir qu’elle est le type de barre de navigation à afficher.
+	* ['divInputIcon'] Permet d’afficher l’icone en grand (quand il y a pas de pochette).
 	* ['icon']
 	*/
 	inputIconMap.set('airplay', [true, false, "play_pause", true, '<span class="fa-stack fa-lg"><i class="fas fa-mobile-alt fa-stack-2x"></i><i class="fas fa-music fa-stack-1x" style="font-size:0.5em"></i></span>']);

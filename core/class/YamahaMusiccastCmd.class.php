@@ -252,11 +252,53 @@ class YamahaMusiccastCmd extends cmd {
 			//setActualVolume
 			//setAudioSelect
 			//setSurroundDecoderType
-			//						TUNER
-			//getPresetInfo
-			//getPlayInfo
-			//setBand
-			//setFreq
+			//*******************************************/
+			//					TUNER					*/
+			//*******************************************/
+			case "tuner_set_band":
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setBand?band=" . $_options['band']);
+				break;
+			case "tuner_set_band_am":
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setBand?band=am");
+				break;
+			case "tuner_set_band_fm":
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setBand?band=fm");
+				break;
+			case "tuner_set_band_dab":
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setBand?band=dab");
+				break;
+			case "tuner_set_frequency_up":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=up");
+				break;
+			case "tuner_set_frequency_down":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=down");
+				break;
+			case "tuner_set_frequency_cancel":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=cancel");
+				break;
+			case "tuner_set_frequency_auto_up":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=auto_up");
+				break;
+			case "tuner_set_frequency_auto_down":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=auto_down");
+				break;
+			case "tuner_set_frequency_tp_up":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=tp_up");
+				break;
+			case "tuner_set_frequency_tp_down":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=tp_down");
+				break;
+			case "tuner_set_frequency_direct":
+				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=direct&num=" . $_options['num']);
+				break;
 			//case 'recallPreset':
 			//switchPreset
 			//storePreset
@@ -268,9 +310,9 @@ class YamahaMusiccastCmd extends cmd {
 			//cancelDabInitialScan
 			//setDabTuneAid
 			//setDabService
-			//						Network/USB
-			//getPresetInfo
-			//getPlayInfo
+			//*******************************************/
+			//				Network/USB					*/
+			//*******************************************/
 			case "netusb_playback_play":
 				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/netusb/setPlayback?playback=play");
 				break;
@@ -368,7 +410,9 @@ class YamahaMusiccastCmd extends cmd {
 			//setListSortOption
 			//getAccountStatus
 			//getServiceInfo
-			//						CD
+			//*******************************************/
+			//					CD						*/
+			//*******************************************/
 			//getPlayInfo
 			//setPlayback
 			//toggleTray
@@ -376,14 +420,16 @@ class YamahaMusiccastCmd extends cmd {
 			//setShuffle
 			//toggleRepeat
 			//toggleShuffle
-			//						Clock
+			//*******************************************/
+			//					Clock					*/
+			//*******************************************/
 			//getSettings
 			//setAutoSync
 			//setDateAndTime
 			//setClockFormat
 			//setAlarmSettings
 			default :
-				log::add('YamahaMusiccast', 'info', 'TODO:Créer la commande ' . $this->getLogicalId());
+				log::add(__CLASS__, 'info', 'TODO: Créer la commande ' . $this->getLogicalId() . ' - ' . print_r($_options, true));
 		}
 	}
 

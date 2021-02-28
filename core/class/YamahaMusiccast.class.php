@@ -703,14 +703,27 @@ class YamahaMusiccast extends eqLogic {
 					$eqLogic->createCmd('tuner_band')->save();
 					$eqLogic->createCmd('tuner_auto_scan', 'info', 'binary')->save();
 					$eqLogic->createCmd('tuner_auto_preset', 'info', 'binary')->save();
+					$eqLogic->createCmd('tuner_set_band', 'action', 'other')->save();
+					$eqLogic->createCmd('tuner_set_frequency_up', 'action', 'other')->save();
+					$eqLogic->createCmd('tuner_set_frequency_down', 'action', 'other')->save();
+					$eqLogic->createCmd('tuner_set_frequency_cancel', 'action', 'other')->save();
+					$eqLogic->createCmd('tuner_set_frequency_auto_up', 'action', 'other')->save();
+					$eqLogic->createCmd('tuner_set_frequency_auto_down', 'action', 'other')->save();
+					$eqLogic->createCmd('tuner_set_frequency_direct', 'action', 'other')->save();
 					if (!empty($tuner->func_list)) {
 						$fonc_list_tuner = $tuner->func_list;
+						$band_list = "";
+						$netusb_recall_recent = $eqLogic->createCmd('netusb_recall_recent', 'action', 'select', false, null, $config_netusb_recall_recent)
+										->setValue($eqLogic->getCmd(null, 'netusb_track')->getId())->save();
+						$eqLogic->checkAndUpdateCmd('netusb_recall_recent_list', $config_netusb_recall_recent['listValue']);
 						if (in_array("am", $fonc_list_tuner)) {
+							$eqLogic->createCmd('tuner_set_band_am', 'action', 'other')->save();
 							$eqLogic->createCmd('tuner_am_preset', 'info', 'binary')->save();
 							$eqLogic->createCmd('tuner_am_freq', 'info', 'numeric')->save();
 							$eqLogic->createCmd('tuner_am_tuned', 'info', 'numeric')->save();
 						}
 						if (in_array("fm", $fonc_list_tuner)) {
+							$eqLogic->createCmd('tuner_set_band_fm', 'action', 'other')->save();
 							$eqLogic->createCmd('tuner_fm_preset', 'info', 'numeric')->save();
 							$eqLogic->createCmd('tuner_fm_freq', 'info', 'numeric')->save();
 							$eqLogic->createCmd('tuner_fm_tuned', 'info', 'binary')->save();
@@ -721,8 +734,11 @@ class YamahaMusiccast extends eqLogic {
 							$eqLogic->createCmd('tuner_rds_program_service')->save();
 							$eqLogic->createCmd('tuner_rds_radio_text_a')->save();
 							$eqLogic->createCmd('tuner_rds_radio_text_b')->save();
+							$eqLogic->createCmd('tuner_set_frequency_tp_up', 'action', 'other')->save();
+							$eqLogic->createCmd('tuner_set_frequency_tp_down', 'action', 'other')->save();
 						}
 						if (in_array("dab", $fonc_list_tuner)) {
+							$eqLogic->createCmd('tuner_set_band_dab', 'action', 'other')->save();
 							$eqLogic->createCmd('tuner_dab_preset', 'info', 'numeric')->save();
 							$eqLogic->createCmd('tuner_dab_id', 'info', 'numeric')->save();
 							$eqLogic->createCmd('tuner_dab_status')->save();

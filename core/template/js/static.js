@@ -103,14 +103,14 @@ function navigateButton(uid_value) {
 function getInputIconMap() {
 	const inputIconMap = new Map();
 	/**
-	* ['onelinedefile'] : permet d'afficher le titre en cours.
-	* ['divInputPochette'] Permet d'afficher la pochette
-	* ['nav_playlist']
-	* ['divInputIcon'] Permet d'afficher l'icone en grand (quand il y a pas de pochette)
+	* ['onelinedefile'] : permet d’afficher le titre en cours.
+	* ['divInputPochette'] Permet d’afficher la pochette.
+	* ['nav_playlist'] Permet de savoir qu’elle est le type de barre de navigation à afficher.
+	* ['divInputIcon'] Permet d’afficher l’icone en grand (quand il y a pas de pochette).
 	* ['icon']
 	*/
-	inputIconMap.set('airplay', [true, false, false, true, '<span class="fa-stack fa-lg"><i class="fas fa-mobile-alt fa-stack-2x"></i><i class="fas fa-music fa-stack-1x" style="font-size:0.5em"></i></span>']);
-	inputIconMap.set('cd', [true, false, false, true, '<i class="fas fa-compact-disc"></i>']);
+	inputIconMap.set('airplay', [true, false, "play_pause", true, '<span class="fa-stack fa-lg"><i class="fas fa-mobile-alt fa-stack-2x"></i><i class="fas fa-music fa-stack-1x" style="font-size:0.5em"></i></span>']);
+	inputIconMap.set('cd', [true, false, "play_pause", true, '<i class="fas fa-compact-disc"></i>']);
 	inputIconMap.set('tuner', [false, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('multi_ch', [true, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('phono', [false, false, false, true, '<i class="fas fa-record-vinyl"></i>']);
@@ -156,11 +156,11 @@ function getInputIconMap() {
 	inputIconMap.set('line_cd', [false, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('analog', [false, false, false, true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('tv', [false, false, false, true, '<i class="icon techno-television4"></i>']);
-	inputIconMap.set('bd_dvd', [false, false, false, true, '<i class="fas fa-music"></i>']);
+	inputIconMap.set('bd_dvd', [false, false, "play_pause", true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('usb_dac', [true, false, false, true, '<i class="icon techno-memory"></i>']);
-	inputIconMap.set('usb', [true, false, false, true, '<i class="fas fa-music"></i>']);
+	inputIconMap.set('usb', [true, false, "play_pause", true, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('bluetooth', [true, false, "play_pause", true, '<i class="fab fa-bluetooth icon_blue"></i>']);
-	inputIconMap.set('server', [true, false, false, true, '<i class="fas fa-hdd"></i>']);
+	inputIconMap.set('server', [true, false, "play_pause", true, '<i class="fas fa-hdd"></i>']);
 	inputIconMap.set('net_radio', [true, true, "stop", false, '<i class="fas fa-music"></i>']);
 	inputIconMap.set('mc_link', [true, false, false, false, '<i class="fas fa-link"></i>']);
 	inputIconMap.set('main_sync', [false, false, false, true, '<i class="fas fa-music"></i>']);

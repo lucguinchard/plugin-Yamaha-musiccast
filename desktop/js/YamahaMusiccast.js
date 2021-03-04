@@ -52,12 +52,30 @@ function addCmdToTable(_cmd) {
 	tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i>';
 	tr += '</td>';
 	tr += '</tr>';
-	$('#table_cmd tbody').append(tr);
-	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
-	if (isset(_cmd.type)) {
-		$('#table_cmd tbody tr:last .cmdAttr[data-l1key=type]').value(init(_cmd.type));
+
+	let type = init(_cmd.configuration.type);
+	let table;
+	if (type === 'netusb') {
+		table = "#table_netusb";
+	} else if(type === 'tuner') {
+		table = "#table_tuner";
+	} else if(type === 'cd') {
+		table = "#table_cd";
+	} else if(type === 'clock') {
+		table = "#table_clock";
+	} else if(type === 'bluetooth') {
+		table = "#table_bluetooth";
+	} else {
+		table = "#table_system";
 	}
-	jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
+
+	$(table + ' tbody').append(tr);
+	$(table + ' tbody tr:last').setValues(_cmd, '.cmdAttr');
+
+	if (isset(_cmd.type)) {
+		$(table + ' tbody tr:last .cmdAttr[data-l1key=type]').value(init(_cmd.type));
+	}
+	jeedom.cmd.changeType($(table + ' tbody tr:last'), init(_cmd.subType));
 }
 
 $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {

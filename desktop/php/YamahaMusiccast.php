@@ -83,8 +83,23 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<i class="fas fa-tachometer-alt"></i> {{Equipement}}
 				</a>
 			</li>
-			<li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab">
-					<i class="fa fa-list-alt"></i> {{Commandes}}</a>
+			<li role="presentation"><a href="#systemtab" aria-controls="profile" role="tab" data-toggle="tab">
+					<i class="fa fa-list-alt"></i> {{Système}}</a>
+			</li>
+			<li role="presentation"><a href="#netusbtab" aria-controls="profile" role="tab" data-toggle="tab">
+					<i class="fas fa-ethernet"></i> {{Net/Usb}}</a>
+			</li>
+			<li role="presentation"><a href="#tunertab" aria-controls="profile" role="tab" data-toggle="tab">
+					<i class="fas fa-broadcast-tower"></i> {{Tuner}}</a>
+			</li>
+			<li role="presentation"><a href="#cdtab" aria-controls="profile" role="tab" data-toggle="tab">
+					<i class="fas fa-compact-disc"></i> {{Cd}}</a>
+			</li>
+			<li role="presentation"><a href="#bluetoothtab" aria-controls="profile" role="tab" data-toggle="tab">
+					<i class="fab fa-bluetooth"></i> {{Bluetooth}}</a>
+			</li>
+			<li role="presentation"><a href="#clocktab" aria-controls="profile" role="tab" data-toggle="tab">
+					<i class="fas fa-clock"></i> {{Clock}}</a>
 			</li>
 		</ul>
 		<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
@@ -165,9 +180,79 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					</fieldset>
 				</form>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="commandtab">
-				<legend><i class="fa fa-list-alt"></i>{{Commandes}}</legend>
-				<table id="table_cmd" class="table table-bordered table-condensed">
+			<div id="systemtab" role="tabpanel" class="tab-pane">
+				<legend><i class="fa fa-list-alt"></i>{{Système}}</legend>
+				<table id="table_system" class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>{{Nom}}</th>
+							<th>{{Type}}</th>
+							<th>{{Action}}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="netusbtab" role="tabpanel" class="tab-pane">
+				<legend><i class="fas fa-ethernet"></i></i>{{Net/Usb}}</legend>
+				<table id="table_netusb" class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>{{Nom}}</th>
+							<th>{{Type}}</th>
+							<th>{{Action}}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="tunertab" role="tabpanel" class="tab-pane">
+				<legend><i class="fas fa-broadcast-tower"></i>{{Tuner}}</legend>
+				<table id="table_tuner" class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>{{Nom}}</th>
+							<th>{{Type}}</th>
+							<th>{{Action}}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="cdtab" role="tabpanel" class="tab-pane">
+				<legend><i class="fas fa-compact-disc"></i>{{Cd}}</legend>
+				<table id="table_cd" class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>{{Nom}}</th>
+							<th>{{Type}}</th>
+							<th>{{Action}}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="bluetoothtab"role="tabpanel" class="tab-pane">
+				<legend><i class="fab fa-bluetooth"></i>{{Bluetooth}}</legend>
+				<table id="table_bluetooth" class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>{{Nom}}</th>
+							<th>{{Type}}</th>
+							<th>{{Action}}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="clocktab" role="tabpanel" class="tab-pane">
+				<legend><i class="fas fa-clock"></i>{{Clock}}</legend>
+				<table id="table_clock" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>{{Nom}}</th>

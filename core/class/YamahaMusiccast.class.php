@@ -237,13 +237,13 @@ class YamahaMusiccast extends eqLogic {
 		$result = YamahaMusiccast::callAPI("GET", $this, "/YamahaExtendedControl/v1/$zoneName/getSignalInfo");
 		if (!empty($result->audio)) {
 			$audio = $result->audio;
-			if (!empty($result->error)) {
+			if (!empty($audio->error)) {
 				$this->checkAndUpdateZoneCmd('audio_error', $audio->error);
 			}
-			if (!empty($result->format)) {
+			if (!empty($audio->format)) {
 				$this->checkAndUpdateZoneCmd('audio_format', $audio->format);
 			}
-			if (!empty($result->fs)) {
+			if (!empty($audio->fs)) {
 				$this->checkAndUpdateZoneCmd('audio_fs', $audio->fs);
 			}
 		}
@@ -253,6 +253,9 @@ class YamahaMusiccast extends eqLogic {
 		$result = YamahaMusiccast::callAPI("GET", $this, "/YamahaExtendedControl/v1/$zoneName/getStatus");
 		if (!empty($result->power)) {
 			$this->checkAndUpdateZoneCmd('power_state', $result->power);
+		}
+		if (!empty($result->sleep)) {
+			$this->checkAndUpdateZoneCmd('sleep', $result->sleep);
 		}
 		if (!empty($result->max_volume)) {
 			$this->checkAndUpdateZoneCmd('max_volume', $result->max_volume);
@@ -266,17 +269,41 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->input)) {
 			$this->checkAndUpdateZoneCmd('input', $result->input);
 		}
+		if (!empty($result->input_text)) {
+			$this->checkAndUpdateZoneCmd(null, $result->input_text, true);
+		}
+		if (!empty($result->distribution_enable)) {
+			$this->checkAndUpdateZoneCmd(null, $result->distribution_enable, true);
+		}
 		if (!empty($result->sound_program)) {
 			$this->checkAndUpdateZoneCmd('sound_program_state', $result->sound_program);
 		}
-		if (!empty($result->link_audio_quality)) {
-			$this->checkAndUpdateZoneCmd('link_audio_quality_state', $result->link_audio_quality);
+		if (!empty($result->surr_decoder_type)) {
+			$this->checkAndUpdateZoneCmd(null, $result->surr_decoder_type, true);
 		}
-		if (!empty($result->link_audio_delay)) {
-			$this->checkAndUpdateZoneCmd('link_audio_delay_state', $result->link_audio_delay);
+		if (!empty($result->surround_3d)) {
+			$this->checkAndUpdateZoneCmd('surround_3d', $result->surround_3d);
 		}
-		if (!empty($result->link_control)) {
-			$this->checkAndUpdateZoneCmd('link_control_state', $result->link_control);
+		if (!empty($result->direct)) {
+			$this->checkAndUpdateZoneCmd('direct', $result->surround_3d);
+		}
+		if (!empty($result->pure_direct)) {
+			$this->checkAndUpdateZoneCmd('pure_direct', $result->pure_direct);
+		}
+		if (!empty($result->enhancer)) {
+			$this->checkAndUpdateZoneCmd('enhancer', $result->enhancer);
+		}
+		if (!empty($result->tone_control)) {
+			$tone_control = $result->tone_control;
+			if (!empty($tone_control->mode)) {
+				$this->checkAndUpdateZoneCmd(null, $tone_control->mode, true);
+			}
+			if (!empty($tone_control->bass)) {
+				$this->checkAndUpdateZoneCmd(null, $tone_control->low, true);
+			}
+			if (!empty($tone_control->treble)) {
+				$this->checkAndUpdateZoneCmd(null, $tone_control->mid, true);
+			}
 		}
 		if (!empty($result->equalizer)) {
 			$equalizer = $result->equalizer;
@@ -292,6 +319,57 @@ class YamahaMusiccast extends eqLogic {
 			if (!empty($equalizer->high)) {
 				$this->checkAndUpdateZoneCmd('equalizer_high', $equalizer->high);
 			}
+		}
+		if (!empty($result->balance)) {
+			$this->checkAndUpdateZoneCmd('balance', $result->balance);
+		}
+		if (!empty($result->dialogue_level)) {
+			$this->checkAndUpdateZoneCmd('dialogue_level', $result->dialogue_level);
+		}
+		if (!empty($result->dialogue_lift)) {
+			$this->checkAndUpdateZoneCmd('dialogue_lift', $result->dialogue_lift);
+		}
+		if (!empty($result->clear_voice)) {
+			$this->checkAndUpdateZoneCmd('clear_voice', $result->clear_voice);
+		}
+		if (!empty($result->subwoofer_volume)) {
+			$this->checkAndUpdateZoneCmd('subwoofer_volume', $result->subwoofer_volume);
+		}
+		if (!empty($result->bass_extension)) {
+			$this->checkAndUpdateZoneCmd('bass_extension', $result->bass_extension);
+		}
+		if (!empty($result->link_control)) {
+			$this->checkAndUpdateZoneCmd('link_control', $result->link_control);
+		}
+		if (!empty($result->link_audio_delay)) {
+			$this->checkAndUpdateZoneCmd('link_audio_delay', $result->link_audio_delay);
+		}
+		if (!empty($result->link_audio_quality)) {
+			$this->checkAndUpdateZoneCmd('link_audio_quality', $result->link_audio_quality);
+		}
+		if (!empty($result->disable_flags)) {
+			$this->checkAndUpdateZoneCmd('disable_flags', $result->disable_flags);
+		}
+		if (!empty($result->contents_display)) {
+			$this->checkAndUpdateZoneCmd('contents_display', $result->contents_display);
+		}
+		if (!empty($result->actual_volume)) {
+			$actualvolume = $result->actual_volume;
+			if (!empty($actualvolume->mode)) {
+				$this->checkAndUpdateZoneCmd('actual_volume_mode', $actualvolume->mode);
+			}
+			if (!empty($actualvolume->value)) {
+				$this->checkAndUpdateZoneCmd('actual_volume_value', $actualvolume->value);
+			}
+			if (!empty($actualvolume->unit)) {
+				$this->checkAndUpdateZoneCmd('actual_volume_unit', $actualvolume->unit);
+			}
+		}
+		if (!empty($result->audio_select)) {
+			$this->checkAndUpdateZoneCmd('audio_select', $result->audio_select);
+		}
+		if (!empty($result->party_enable)) {
+			$this->checkAndUpdateZoneCmd('party_mode_state', $result->party_enable);
 		}
 	}
 
@@ -581,7 +659,13 @@ class YamahaMusiccast extends eqLogic {
 					$eqLogic->createCmd('speaker_pattern_state_state')->save();
 				}
 				if (in_array("party_mode", $fonc_list_features)) {
-					$eqLogic->createCmd('party_mode_state')->save();
+					/**
+					 * TODO: setPartyMode
+					 * For setting Party Mode.
+					 */
+					$eqLogic->createCmd('party_mode_on', 'action', 'other')->save();
+					$eqLogic->createCmd('party_mode_off', 'action', 'other')->save();
+					$eqLogic->createCmd('party_mode_state', 'info', 'binary')->save();
 				}
 				$fonc_list_zone = $zone->func_list;
 				if (in_array("power", $fonc_list_zone)) {
@@ -651,55 +735,108 @@ class YamahaMusiccast extends eqLogic {
 					$eqLogic->createCmd('balance_change', 'action', 'slider', false, null, $config_volume_change)->setValue($balance->getId())->save();
 				}
 				if (in_array("dialogue_level", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('dialogue_level', 'info', 'numeric')->save();
 				}
 				if (in_array("dialogue_lift", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('dialogue_lift', 'info', 'numeric')->save();
 				}
 				if (in_array("bass_extension", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('bass_extension', 'info', 'binary')->save();
 				}
 				if (in_array("clear_voice", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('clear_voice', 'info', 'binary')->save();
 				}
 				if (in_array("signal_info", $fonc_list_zone)) {
 					
 				}
 				if (in_array("subwoofer_volume", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('subwoofer_volume', 'info', 'numeric')->save();
 				}
 				if (in_array("prepare_input_change", $fonc_list_zone)) {
+					/**
+					 * TODO: prepareInputChange
+					 * Let a Device do necessary process before changing input in a specific zone. This is valid only
+					 *	when “prepare_input_change” exists in “func_list” found in /system/getFuncStatus.
+					 *	MusicCast CONTROLLER executes this API when an input icon is selected in a Room, right
+					 *	before sending various APIs (of retrieving list information etc.) regarding selecting input
+					 */
 					
 				}
 				if (in_array("link_control", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('link_control', 'info', 'string')->save();
 				}
 				if (in_array("link_audio_delay", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('link_audio_delay', 'info', 'string')->save();
 				}
 				if (in_array("link_audio_quality", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('link_audio_quality', 'info', 'string')->save();
+				}
+				if (in_array("disable_flags", $fonc_list_zone)) {
+					$eqLogic->createCmd('disable_flags', 'info', 'numeric')->save();
 				}
 				if (in_array("scene", $fonc_list_zone)) {
-					
 				}
 				if (in_array("contents_display", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('contents_display', 'info', 'binary')->save();
 				}
 				if (in_array("cursor", $fonc_list_zone)) {
-					
+					/**
+					 * TODO: controlCursor
+					 * Operate the cursor keys on the remote control.
+					 */
 				}
 				if (in_array("menu", $fonc_list_zone)) {
-					
+					/**
+					 * TODO: controlMenu
+					 * Operate the cursor keys on the remote control.
+					 */
 				}
 				if (in_array("actual_volume", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('actual_volume_mode', 'info', 'string')->save();
+					$eqLogic->createCmd('actual_volume_value', 'info', 'numeric')->save();
+					$eqLogic->createCmd('actual_volume_unit', 'info', 'string')->save();
+					/**
+					 * TODO: setActualVolume
+					 * Set the volume of each Zone with the value to display.
+					 */
 				}
 				if (in_array("audio_select", $fonc_list_zone)) {
-					
+					$eqLogic->createCmd('audio_select', 'info', 'string')->save();
+					/**
+					 * TODO: setAudioSelect
+					 * Set the audio input selection.
+					 * In the value of audio_select_list obtained by /system/getFeatures, it is possible to specify
+					 * something other than unavailable. If current audio_select (gotten with getStatus) is unavailable,
+					 * it can not be set.
+					 */
 				}
 				if (in_array("surr_decoder_type", $fonc_list_zone)) {
+					$eqLogic->createCmd('surr_decoder_type', 'info', 'string')->save();
+					$eqLogic->createCmd('surr_decoder_type_list', 'info', 'string')->save();
 					
+					/**
+					 * TODO: setSurroundDecoderType
+					 * Set the Sound Program : Decoder Type to be used with Surround Decoder.
+					 */
+					
+					
+//					if (!empty($zone->surr_decoder_type_list)) {
+//						$surr_decoder_type_list = "";
+//						$int = 0;
+//						foreach ($zone->surr_decoder_type_list as $$surr_decoder_type_listsurr_decoder_type) {
+//							++$int;
+//							$surr_decoder_type .= $surr_decoder_type . "|" . $surr_decoder_type . ";";
+//						}
+//						if (!empty($surr_decoder_type_list)) {
+//							$config_surr_decoder_type['listValue'] = substr($surr_decoder_type_list, 0, -1);
+//						} else {
+//							$config_surr_decoder_type['listValue'] = $surr_decoder_type;
+//						}
+//							$netusb_recall_recent = $eqLogic->createCmd('surr_decoder_type', 'action', 'select', false, null, $config_surr_decoder_type)
+//											->setValue($eqLogic->getCmd(null, 'netusb_track')->getId())->save();
+//							$eqLogic->checkAndUpdateCmd('surr_decoder_type_list', $config_surr_decoder_type['listValue']);
+//					}
+
 				}
 				if (!empty($getFeatures->tuner)) {
 					$tuner = $getFeatures->tuner;
@@ -716,7 +853,7 @@ class YamahaMusiccast extends eqLogic {
 					if (!empty($tuner->func_list)) {
 						$fonc_list_tuner = $tuner->func_list;
 						$band_list = "";
-						$eqLogic->checkAndUpdateCmd('netusb_recall_recent_list', $config_netusb_recall_recent['listValue']);
+						$eqLogic->checkAndUpdateCmd('netusb_recall_recent_list', $config_surr_decoder_type['listValue']);
 						if (in_array("am", $fonc_list_tuner)) {
 							$band_list .= "am|am;";
 							$eqLogic->createCmd('tuner_set_band_am', 'action', 'other', false, null, $configurationTuner)->save();
@@ -806,7 +943,7 @@ class YamahaMusiccast extends eqLogic {
 					$input_change_string = "";
 					$eqLogic->createCmd('input_change', 'action', 'select', false, null)->setValue($cmdInput->getId())->save();
 
-					$eqLogic->createCmd('audio_error')->save();
+					$eqLogic->createCmd('audio_error', 'info', 'numeric')->save();
 					$eqLogic->createCmd('audio_format')->save();
 					$eqLogic->createCmd('audio_fs')->save();
 

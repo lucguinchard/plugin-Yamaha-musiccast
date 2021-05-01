@@ -143,6 +143,7 @@ class YamahaMusiccast extends eqLogic {
 
 		foreach ($this->getCmd('action') as $cmd) {
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			$replace['#' . $cmd->getLogicalId() . '_html#'] = $cmd->toHtml();
 			if (!empty($cmd->getDisplay('icon'))) {
 				$replace['#' . $cmd->getLogicalId() . '_icon#'] = $cmd->getDisplay('icon');
 			} else {
@@ -150,65 +151,32 @@ class YamahaMusiccast extends eqLogic {
 			}
 		}
 
-		$program_select = $this->getCmd(null, 'sound_program_change');
-		if (!empty($program_select) && $program_select->getConfiguration('listValue', '') != '') {
-			$replace['#sound_program_change_select#'] = $program_select->toHtml();
-		} else {
-			$replace['#sound_program_change_select#'] = '';
-		}
+		if (empty($replace['#sound_program_change_html#'])) {$replace['#sound_program_change_html#'] = "";}
+		if (empty($replace['#input_change_select_html#'])) {$replace['#input_change_select_html#'] = "";}
+		if (empty($replace['#netusb_recall_preset_html#'])) {$replace['#netusb_recall_preset_html#'] = "";}
+		if (empty($replace['#equalizer_high_change_html#'])) {$replace['#equalizer_high_change_html#'] = "";}
+		if (empty($replace['#equalizer_mid_change_html#'])) {$replace['#equalizer_mid_change_html#'] = "";}
+		if (empty($replace['#equalizer_low_change_html#'])) {$replace['#equalizer_low_change_html#'] = "";}
+		if (empty($replace['#volume_change_html#'])) {$replace['#volume_change_html#'] = "";}
+		if (empty($replace['#link_control_list_html#'])) {$replace['#link_control_list_html#'] = "";}
+		if (empty($replace['#link_audio_quality_list_html#'])) {$replace['#link_audio_quality_list_html#'] = "";}
+		if (empty($replace['#link_audio_delay_list_html#'])) {$replace['#link_audio_delay_list_html#'] = "";}
+		if (empty($replace['#system_reboot_html#'])) {$replace['#system_reboot_html#'] = "";}
+		if (empty($replace['#network_reboot_html#'])) {$replace['#network_reboot_html#'] = "";}
 
 		$netusb_recall_preset = $this->getCmd(null, 'netusb_recall_preset');
 		if (!empty($netusb_recall_preset) && $netusb_recall_preset->getConfiguration('listValue', '') != '') {
-			$replace['#netusb_recall_preset#'] = $netusb_recall_preset->toHtml();
 			$replace['#netusb_recall_preset_change_list#'] = $netusb_recall_preset->getConfiguration('listValue', '');
-		} else {
-			$replace['#netusb_recall_preset#'] = '';
-			$replace['#netusb_recall_preset_change_list#'] = '';
 		}
 
 		$netusb_recall_recent = $this->getCmd(null, 'netusb_recall_recent');
 		if (!empty($netusb_recall_recent) && $netusb_recall_recent->getConfiguration('listValue', '') != '') {
-			$replace['#netusb_recall_recent#'] = $netusb_recall_recent->toHtml();
 			$replace['#netusb_recall_recent_change_list#'] = $netusb_recall_recent->getConfiguration('listValue', '');
-		} else {
-			$replace['#netusb_recall_recent#'] = '';
-			$replace['#netusb_recall_recent_change_list#'] = '';
 		}
 
 		$input_select = $this->getCmd(null, 'input_change');
 		if (!empty($input_select) && $input_select->getConfiguration('listValue', '') != '') {
-			$replace['#input_change_select#'] = $input_select->toHtml();
 			$replace['#input_change_list#'] = $input_select->getConfiguration('listValue', '');
-		} else {
-			$replace['#input_change_select#'] = '';
-		}
-
-		$equalizer_low_change = $this->getCmd(null, 'equalizer_low_change');
-		if (!empty($equalizer_low_change)) {
-			$replace['#equalizer_low_change#'] = $equalizer_low_change->toHtml();
-		} else {
-			$replace['#equalizer_low_change#'] = '';
-		}
-
-		$equalizer_mid_change = $this->getCmd(null, 'equalizer_mid_change');
-		if (!empty($equalizer_mid_change)) {
-			$replace['#equalizer_mid_change#'] = $equalizer_mid_change->toHtml();
-		} else {
-			$replace['#equalizer_mid_change#'] = '';
-		}
-
-		$equalizer_high_change = $this->getCmd(null, 'equalizer_high_change');
-		if (!empty($equalizer_high_change)) {
-			$replace['#equalizer_high_change#'] = $equalizer_high_change->toHtml();
-		} else {
-			$replace['#equalizer_high_change#'] = '';
-		}
-
-		$volume_change = $this->getCmd(null, 'volume_change');
-		if (!empty($volume_change)) {
-			$replace['#volume_change#'] = $volume_change->toHtml();
-		} else {
-			$replace['#volume_change#'] = '';
 		}
 
 		$img = '/plugins/' . __CLASS__ . '/ressources/input/' . $replace['#input#'] . '.png';
@@ -641,14 +609,17 @@ class YamahaMusiccast extends eqLogic {
 				if (in_array("background_download", $fonc_list_features)) {
 					
 				}
-				if (in_array("remote_info", $fonc_list_features)) {
-					
+				if (in_array("getRemoteInfo", $fonc_list_features)) {
+					/**
+					 * TODO: requestNetworkReboot
+					 * For retrieving remote monitor information.
+					 */
 				}
 				if (in_array("network_reboot", $fonc_list_features)) {
-					
+					$eqLogic->createCmd('network_reboot', 'action', 'other')->save();
 				}
 				if (in_array("system_reboot", $fonc_list_features)) {
-					
+					$eqLogic->createCmd('system_reboot', 'action', 'other')->save();
 				}
 				if (in_array("auto_play", $fonc_list_features)) {
 					$eqLogic->createCmd('auto_play_state')->save();
@@ -763,13 +734,48 @@ class YamahaMusiccast extends eqLogic {
 					
 				}
 				if (in_array("link_control", $fonc_list_zone)) {
-					$eqLogic->createCmd('link_control', 'info', 'string')->save();
+					$link_controlCmd = $eqLogic->createCmd('link_control');
+					$link_controlCmd->save();
+					if (!empty($zone->link_control_list)) {
+						$link_control_list_string = "";
+						foreach ($zone->link_control_list as $link_control) {
+							$link_control_list_string .= $link_control . "|" . $link_control . ";";
+						}
+						$config_link_control_list['listValue'] = substr($link_control_list_string, 0, -1);
+						$link_control_list = $eqLogic->createCmd('link_control_list', 'action', 'select', false, null, $config_link_control_list);
+						$link_control_list->setValue($link_controlCmd->getId());
+						$link_control_list->save();
+					}
+
 				}
 				if (in_array("link_audio_delay", $fonc_list_zone)) {
 					$eqLogic->createCmd('link_audio_delay', 'info', 'string')->save();
+					$link_audio_delayCmd = $eqLogic->createCmd('link_audio_delay');
+					$link_audio_delayCmd->save();
+					if (!empty($zone->link_audio_delay_list)) {
+						$link_audio_delay_list_string = "";
+						foreach ($zone->link_audio_delay_list as $link_audio_delay) {
+							$link_audio_delay_list_string .= $link_audio_delay . "|" . $link_audio_delay . ";";
+						}
+						$config_link_audio_delay_list['listValue'] = substr($link_audio_delay_list_string, 0, -1);
+						$link_audio_delay_list = $eqLogic->createCmd('link_audio_delay_list', 'action', 'select', false, null, $config_link_audio_delay_list);
+						$link_audio_delay_list->setValue($link_audio_delayCmd->getId());
+						$link_audio_delay_list->save();
+					}
 				}
 				if (in_array("link_audio_quality", $fonc_list_zone)) {
-					$eqLogic->createCmd('link_audio_quality', 'info', 'string')->save();
+					$link_audio_qualityCmd = $eqLogic->createCmd('link_audio_quality');
+					$link_audio_qualityCmd->save();
+					if (!empty($zone->link_audio_quality_list)) {
+						$link_audio_quality_list_string = "";
+						foreach ($zone->link_audio_quality_list as $link_audio_quality) {
+							$link_audio_quality_list_string .= $link_audio_quality . "|" . $link_audio_quality . ";";
+						}
+						$config_link_audio_quality_list['listValue'] = substr($link_audio_quality_list_string, 0, -1);
+						$link_audio_quality_list = $eqLogic->createCmd('link_audio_quality_list', 'action', 'select', false, null, $config_link_audio_quality_list);
+						$link_audio_quality_list->setValue($link_audio_qualityCmd->getId());
+						$link_audio_quality_list->save();
+					}
 				}
 				if (in_array("disable_flags", $fonc_list_zone)) {
 					$eqLogic->createCmd('disable_flags', 'info', 'numeric')->save();

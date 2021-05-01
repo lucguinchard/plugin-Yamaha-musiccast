@@ -141,8 +141,12 @@ class YamahaMusiccastCmd extends cmd {
 			//getStereoPairInfo
 			//sendIrCode
 			//getRemoteInfo
-			//requestNetworkReboot
-			//requestSystemReboot
+			case 'network_reboot' :
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/requestNetworkReboot");
+				break;
+			case 'system_reboot' :
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/requestSystemReboot");
+				break;
 			//getAdvancedFeatures
 			case 'auto_play_on' :
 				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/system/setAutoPlay?enable=true");
@@ -201,6 +205,15 @@ class YamahaMusiccastCmd extends cmd {
 				break;
 			case "sound_program_change":
 				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setSoundProgram?program=" . $_options['select']);
+				break;
+			case "link_control_list":
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setLinkControl?control=" . $_options['select']);
+				break;
+			case "link_audio_delay_list":
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setLinkAudioDelay?delay=" . $_options['select']);
+				break;
+			case "link_audio_quality_list":
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setLinkAudioQuality?mode=" . $_options['select']);
 				break;
 			case "3d_surround_on":
 				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/set3dSurround?enable=true");

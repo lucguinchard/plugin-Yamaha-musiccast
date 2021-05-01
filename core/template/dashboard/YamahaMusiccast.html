@@ -56,11 +56,11 @@
 				<div class="tab-pane sound_config" id="#id#pp2">
 					<h3 style="color: #color#;">Réglages Audio</h3>
 					<h4 style="color: #color#;">Son</h4>
-					#sound_program_change_select#
+					#sound_program_change_html#
 					<h4 style="color: #color#;">Égaliseur</h4>
-					#equalizer_low_change#
-					#equalizer_mid_change#
-					#equalizer_high_change#
+					#equalizer_low_change_html#
+					#equalizer_mid_change_html#
+					#equalizer_high_change_html#
 					<!--h4>Veille</h4>
 					<h4>Information</h4>
 					<h4>Bluetooth</h4>
@@ -76,7 +76,7 @@
 					<i class="fas fa-arrow-left"></i>
 					<span>Retour</span>
 				</a>
-				#volume_change#
+				#volume_change_html#
 				<a class="nav-item nav-link btn cmd btn-audio" href="##id#pp2" data-toggle="tab" style="float: right"
 				   onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .btn-audio').css('display', 'none');$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .btn-back').css('display', 'block');">
 					<i class="fas fa-sliders-h"></i>
@@ -104,7 +104,7 @@
 					<a class="nav-link" id="pills-recent-tab-#id#" data-toggle="pill" href="##id#recent" role="tab" aria-controls="pills-recent" aria-selected="false"><i class="far fa-clock"></i><span>Récent</span></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" id="pills-hdd-tab-#id#" data-toggle="pill" href="##id#hdd" role="tab" aria-controls="pills-hdd" aria-selected="false"><i class="fas fa-hdd"></i><span>Parcourir</span></a>
+					<a class="nav-link" id="pills-cogs-tab-#id#" data-toggle="pill" href="##id#cogs" role="tab" aria-controls="pills-cogs" aria-selected="false"><i class="fas fa-cogs"></i><span>Config</span></a>
 				</li>
 			</ul>
 			<div class="tab-content">
@@ -114,7 +114,17 @@
 				</div>
 				<div class="tab-pane cmd active" id="#id#preset" data-cmd_id="#netusb_recall_preset_list_id#">#netusb_recall_preset#</div>
 				<div class="tab-pane cmd" id="#id#recent" data-cmd_id="#netusb_recall_recent_list_id#">#netusb_recall_recent#</div>
-				<div class="tab-pane" id="#id#hdd">Cette partie permettra d’écouter les musique du disque local.</div>
+				<div class="tab-pane" id="#id#cogs">
+					<h4>Apparence</h4>
+					<p>Nom de la pièce : #name_display#</p>
+					<h4>Link</h4>
+					#link_control_list_html#
+					#link_audio_quality_list_html#
+					#link_audio_delay_list_html#
+					<h4>Appareil</h4>
+					#system_reboot_html#
+					#network_reboot_html#
+				</div>
 			</div>
 			<div class="panelBotton">
 				<div class="panelMusic" style="display: none;">

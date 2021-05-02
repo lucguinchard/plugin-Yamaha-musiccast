@@ -465,6 +465,23 @@ class YamahaMusiccast extends eqLogic {
 		return $return;
 	}
 
+	public static function createValueAndActionList($eqLogic, $fonc_list_zone, $fonc, $list) {
+		if (in_array($fonc, $fonc_list_zone)) {
+			$valueCmd = $eqLogic->createCmd($fonc);
+			$valueCmd->save();
+			if (!empty($list)) {
+				$list_string = "";
+				foreach ($list as $string) {
+					$list_string .= $string . "|" . $string . ";";
+				}
+				$config_list['listValue'] = substr($list_string, 0, -1);
+				$listCmd = $eqLogic->createCmd($fonc.'_list', 'action', 'select', false, null, $config_list);
+				$listCmd->setValue($valueCmd->getId());
+				$listCmd->save();
+			}
+		}
+	}
+
 	public static function saveDeviceIp($ip) {
 		$deviceZoneList = array();
 		$device = array();
@@ -733,50 +750,9 @@ class YamahaMusiccast extends eqLogic {
 					 */
 					
 				}
-				if (in_array("link_control", $fonc_list_zone)) {
-					$link_controlCmd = $eqLogic->createCmd('link_control');
-					$link_controlCmd->save();
-					if (!empty($zone->link_control_list)) {
-						$link_control_list_string = "";
-						foreach ($zone->link_control_list as $link_control) {
-							$link_control_list_string .= $link_control . "|" . $link_control . ";";
-						}
-						$config_link_control_list['listValue'] = substr($link_control_list_string, 0, -1);
-						$link_control_list = $eqLogic->createCmd('link_control_list', 'action', 'select', false, null, $config_link_control_list);
-						$link_control_list->setValue($link_controlCmd->getId());
-						$link_control_list->save();
-					}
-
-				}
-				if (in_array("link_audio_delay", $fonc_list_zone)) {
-					$eqLogic->createCmd('link_audio_delay', 'info', 'string')->save();
-					$link_audio_delayCmd = $eqLogic->createCmd('link_audio_delay');
-					$link_audio_delayCmd->save();
-					if (!empty($zone->link_audio_delay_list)) {
-						$link_audio_delay_list_string = "";
-						foreach ($zone->link_audio_delay_list as $link_audio_delay) {
-							$link_audio_delay_list_string .= $link_audio_delay . "|" . $link_audio_delay . ";";
-						}
-						$config_link_audio_delay_list['listValue'] = substr($link_audio_delay_list_string, 0, -1);
-						$link_audio_delay_list = $eqLogic->createCmd('link_audio_delay_list', 'action', 'select', false, null, $config_link_audio_delay_list);
-						$link_audio_delay_list->setValue($link_audio_delayCmd->getId());
-						$link_audio_delay_list->save();
-					}
-				}
-				if (in_array("link_audio_quality", $fonc_list_zone)) {
-					$link_audio_qualityCmd = $eqLogic->createCmd('link_audio_quality');
-					$link_audio_qualityCmd->save();
-					if (!empty($zone->link_audio_quality_list)) {
-						$link_audio_quality_list_string = "";
-						foreach ($zone->link_audio_quality_list as $link_audio_quality) {
-							$link_audio_quality_list_string .= $link_audio_quality . "|" . $link_audio_quality . ";";
-						}
-						$config_link_audio_quality_list['listValue'] = substr($link_audio_quality_list_string, 0, -1);
-						$link_audio_quality_list = $eqLogic->createCmd('link_audio_quality_list', 'action', 'select', false, null, $config_link_audio_quality_list);
-						$link_audio_quality_list->setValue($link_audio_qualityCmd->getId());
-						$link_audio_quality_list->save();
-					}
-				}
+				YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_control", $zone->link_control_list);
+				YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_audio_delay", $zone->link_audio_delay_list);
+				YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_audio_quality", $zone->link_audio_quality_list);
 				if (in_array("disable_flags", $fonc_list_zone)) {
 					$eqLogic->createCmd('disable_flags', 'info', 'numeric')->save();
 				}
@@ -816,33 +792,13 @@ class YamahaMusiccast extends eqLogic {
 					 * it can not be set.
 					 */
 				}
+				
+				YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "surr_decoder_type", $zone->surr_decoder_type_list);
 				if (in_array("surr_decoder_type", $fonc_list_zone)) {
-					$eqLogic->createCmd('surr_decoder_type', 'info', 'string')->save();
-					$eqLogic->createCmd('surr_decoder_type_list', 'info', 'string')->save();
-					
 					/**
 					 * TODO: setSurroundDecoderType
 					 * Set the Sound Program : Decoder Type to be used with Surround Decoder.
 					 */
-					
-					
-//					if (!empty($zone->surr_decoder_type_list)) {
-//						$surr_decoder_type_list = "";
-//						$int = 0;
-//						foreach ($zone->surr_decoder_type_list as $$surr_decoder_type_listsurr_decoder_type) {
-//							++$int;
-//							$surr_decoder_type .= $surr_decoder_type . "|" . $surr_decoder_type . ";";
-//						}
-//						if (!empty($surr_decoder_type_list)) {
-//							$config_surr_decoder_type['listValue'] = substr($surr_decoder_type_list, 0, -1);
-//						} else {
-//							$config_surr_decoder_type['listValue'] = $surr_decoder_type;
-//						}
-//							$netusb_recall_recent = $eqLogic->createCmd('surr_decoder_type', 'action', 'select', false, null, $config_surr_decoder_type)
-//											->setValue($eqLogic->getCmd(null, 'netusb_track')->getId())->save();
-//							$eqLogic->checkAndUpdateCmd('surr_decoder_type_list', $config_surr_decoder_type['listValue']);
-//					}
-
 				}
 				if (!empty($getFeatures->tuner)) {
 					$tuner = $getFeatures->tuner;

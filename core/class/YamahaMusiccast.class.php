@@ -247,7 +247,7 @@ class YamahaMusiccast extends eqLogic {
 			$this->checkAndUpdateZoneCmd('sound_program_state', $result->sound_program);
 		}
 		if (!empty($result->surr_decoder_type)) {
-			$this->checkAndUpdateZoneCmd(null, $result->surr_decoder_type, true);
+			$this->checkAndUpdateZoneCmd('surr_decoder_type', $result->surr_decoder_type);
 		}
 		if (!empty($result->surround_3d)) {
 			$this->checkAndUpdateZoneCmd('surround_3d', $result->surround_3d);

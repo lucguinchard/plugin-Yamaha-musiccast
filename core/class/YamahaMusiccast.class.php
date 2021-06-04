@@ -1370,7 +1370,7 @@ class YamahaMusiccast extends eqLogic {
 
 	public static function checkAndUpdateDeviceCmd($device, $cmd, $value, $debug = false) {
 		foreach ($device as $eqLogic) {
-			$eqLogic->checkAndUpdateZoneCmd($cmd, str_replace("'", "’", $value, $debug));
+			$eqLogic->checkAndUpdateZoneCmd($cmd, $value, $debug);
 		}
 	}
 

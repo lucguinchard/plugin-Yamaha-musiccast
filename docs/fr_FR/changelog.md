@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 0.5 : (**05 Juin 2021**)
+* Mise à jour de la documentation.
+* Mise en place d’onglets « type de commandes » dans la configuration de l’appareil.
+* Ajout de nouvelles commandes.
+
 ### Version 0.4 : (**09 Janvier 2021**)
 
 * Optimistation des appels vers les apparails Yamaha-Musiccast.

@@ -161,6 +161,7 @@ class YamahaMusiccast extends eqLogic {
 		if (empty($replace['#link_control_list_html#'])) {$replace['#link_control_list_html#'] = "";}
 		if (empty($replace['#link_audio_quality_list_html#'])) {$replace['#link_audio_quality_list_html#'] = "";}
 		if (empty($replace['#link_audio_delay_list_html#'])) {$replace['#link_audio_delay_list_html#'] = "";}
+		if (empty($replace['#surr_decoder_type_list_html#'])) {$replace['#surr_decoder_type_list_html#'] = "";}
 		if (empty($replace['#system_reboot_html#'])) {$replace['#system_reboot_html#'] = "";}
 		if (empty($replace['#network_reboot_html#'])) {$replace['#network_reboot_html#'] = "";}
 

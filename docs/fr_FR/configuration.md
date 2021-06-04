@@ -9,6 +9,6 @@ La partie configuration du plugin permet le paramétrage du socket pour le dialo
 
 ### Ajout des équipements
 
-Il faut que vos appareils Musiccast soit dans le même réseau que votre (jee|next).
+Il faut que vos appareils Musiccast soit dans le même réseau que votre jeedom.
 
 La `Recherche automatique` permet de céer vos jeeobjects automatiquements.

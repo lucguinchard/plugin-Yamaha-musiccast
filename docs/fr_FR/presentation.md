@@ -14,8 +14,8 @@ Cette API permet pour chaque appareil:
 
 **jeedom** : Dans le menu : Plugins → Gestions des plugins → Cliquer sur « + Plugins »
 
-    - Type de source :  **GitHub**
-    - ID logique du plugin :  **YamahaMusiccast**
-    - Utiliser ou organisation du dépôt :  **lucguinchard**
-    - Nom du dépôt :  **plugin-Yamaha-musiccast**
-    - Branche :  **master**
+ - Type de source :  **GitHub**
+ - ID logique du plugin :  **YamahaMusiccast**
+ - Utiliser ou organisation du dépôt :  **lucguinchard**
+ - Nom du dépôt :  **plugin-Yamaha-musiccast**
+ - Branche :  **master**

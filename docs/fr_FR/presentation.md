@@ -12,8 +12,7 @@ Cette API permet pour chaque appareil:
 
  **Nextdom** : Le projet se trouve dans le Market draft.
 
-**jeedom** :
-- Dans le menu : Plugins → Gestions des plugins → Cliquer sur « + Plugings »
+**jeedom** : Dans le menu : Plugins → Gestions des plugins → Cliquer sur « + Plugins »
     - Type de source :  **GitHub**
     - ID logique du plugin :  **YamahaMusiccast**
     - Utiliser ou organisation du dépôt :  **lucguinchard**

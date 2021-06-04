@@ -1066,7 +1066,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$device = $deviceList[$host];
 		if (empty($device)) {
-			log::add(__CLASS__, 'info', 'L’appareil ' . $host . ' n’existe plus');
+			log::add(__CLASS__, 'info', 'L’appareil ' . $host . ' dialogue sur le port ' . $port . ' avec le message : ' . $json);
 			return;
 		}
 		$result = json_decode($json);

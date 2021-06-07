@@ -488,7 +488,7 @@ class YamahaMusiccast extends eqLogic {
 		$device = array();
 		$getNetworkStatus = YamahaMusiccast::callAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getNetworkStatus");
 		if ($getNetworkStatus === false) {
-			throw new Exception(__('L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable ou n’existant !'), __FILE__);
+			throw new Exception(__('L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joingnable !'), __FILE__);
 		}
 		$getDeviceInfo = YamahaMusiccast::callAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getDeviceInfo");
 		$getFeatures = YamahaMusiccast::callAPI("GET", $ip, "/YamahaExtendedControl/v1/system/getFeatures");

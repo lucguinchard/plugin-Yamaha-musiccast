@@ -1066,7 +1066,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 		$device = $deviceList[$host];
 		if (empty($device)) {
-			log::add(__CLASS__, 'info', 'L’appareil ' . $host . ' n’existe plus');
+			log::add(__CLASS__, 'info', 'L’appareil ' . $host . ' dialogue sur le port ' . $port . ' avec le message : ' . $json);
 			return;
 		}
 		$result = json_decode($json);
@@ -1369,15 +1369,8 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function checkAndUpdateDeviceCmd($device, $cmd, $value, $debug = false) {
-		if (!empty($value)) {
-			if ($cmd !== false) {
-				foreach ($device as $eqLogic) {
-					$eqLogic->checkAndUpdateCmd($cmd, str_replace("'", "’", $value));
-				}
-			}
-			if ($debug !== false) {
-				log::add(__CLASS__, 'info', 'TODO: ' . $debug . " → " . print_r($value, true));
-			}
+		foreach ($device as $eqLogic) {
+			$eqLogic->checkAndUpdateZoneCmd($cmd, $value, $debug);
 		}
 	}
 

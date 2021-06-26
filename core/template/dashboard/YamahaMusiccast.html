@@ -6,6 +6,9 @@
 		<a class="cmd pull-left" data-cmd_id="#power_state_id#">
 			<i class="fa fa-power-off"></i>
 		</a>
+		<a class="cmd pull-right nav-link cmd-link" id="pills-link-tab-#id#" data-toggle="pill" href="##id#link" role="tab" aria-controls="pills-link" aria-selected="false" onclick="linkedClic#id#();">
+			<i class="fa fa-link"></i>
+		</a>
 		<span class="cmd cmd-status pull-right" style="width : 30px;z-index: 1030;"></span>
 		<a href="#eqLink#" class="cmd group_name" data-cmd_id="#group_name_id#" style="line-height: 22.72px;">#name_display#</a>
 	</center>
@@ -73,7 +76,7 @@
 				</div>
 			</div>
 			<div class="panelBotton">
-				<a class="nav-item nav-link btn" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'block'); $('.YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist').css('display', 'none');">
+				<a class="nav-item nav-link btn" onclick="backClic#id#();">
 					<i class="fas fa-arrow-left"></i>
 					<span>Retour</span>
 				</a>
@@ -126,6 +129,10 @@
 					#system_reboot_html#
 					#network_reboot_html#
 				</div>
+				<div class="tab-pane cmd" id="#id#link" data-cmd_id="#linked_list_id#">
+					<h4>Sélectionner les pièces à regrouper.</h4>
+					#linked_list_html#
+				</div>
 			</div>
 			<div class="panelBotton">
 				<div class="panelMusic" style="display: none;">
@@ -163,6 +170,44 @@
 		// Affiche l'onglet favoris à l'affichage du widget.
 		uid.find('#displayoff-menu-#id# li:nth-child(3) a').tab('show');
 
+		function backClic#id#() {
+			$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'block');
+			$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist').css('display', 'none');
+		}
+
+		function linkedClic#id#() {
+			backClic#id#();
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('#displayoff-menu-#id# .nav-item').removeClass('active');
+		}
+
+		function linked_valid#id#() {
+			var valeurs = new Array();
+			$('.YamahaMusiccast[data-eqLogic_uid=#uid#] input:checked[name=linked]').each(function(){
+				var t = $(this).val();
+				valeurs.push(t);
+				console.log(t);
+			})
+			$.ajax({
+				type: "POST",
+				url: "plugins/YamahaMusiccast/core/ajax/YamahaMusiccast.ajax.php",
+				data: {
+					action: "linked",
+					id: '#id#',
+					ipList: valeurs.join(',')
+				},
+				global: false,
+				dataType: 'json',
+				error: function (request, status, error) {
+					handleAjaxError(request, status, error);
+				},
+				success: function (data) {
+					if (data.state != 'ok') {
+						$('#div_alert').showAlert({message: data.result, level: 'danger'});
+					}
+				}
+			});
+		}
 
 		jeedom.cmd.update['#input_change_id#'] = function(_options){
 			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
@@ -204,6 +249,29 @@
 		}
 		jeedom.cmd.update['#netusb_recall_recent_list_id#']({display_value:'#netusb_recall_recent_list#'});
 
+		jeedom.cmd.update['#linked_list_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			if (_options.display_value !== '' && _options.display_value !== undefined) {
+				var inputIconMap = getInputIconMap();
+				var list = _options.display_value.split(";");
+				var bottonList = '<fieldset><legend>Sélectionnez les pièces à grouper</legend>';
+				for(i = 0; i < list.length; i++){
+					var inputArray = list[i].split(/(?:→|\|)+/);
+					var groupOther = "";
+					if(inputArray[2] == "disabled") {
+						groupOther = "  " + inputArray[3];
+					}
+					bottonList += '<div><label><input type="checkbox" '+ inputArray[2] +' name="linked" value="' + inputArray[0] +'">'+ inputArray[1] + groupOther + '</label></div>';
+				}
+				bottonList += '<input type="button" value="Valider" onclick="linked_valid#id#()"/>';
+				bottonList += '</fieldset>';
+				uid.find('##id#link').empty().append(bottonList);
+			} else {
+				uid.find('##id#link').empty().append("Votre liste est vide");
+			}
+		}
+		jeedom.cmd.update['#linked_list_id#']({display_value:'#linked_list#'});
+
 		jeedom.cmd.update['#netusb_recall_preset_list_id#'] = function(_options){
 			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
 			if (_options.display_value !== '' && _options.display_value !== undefined) {
@@ -233,6 +301,7 @@
 		jeedom.cmd.update['#power_state_id#'] = function(_options){
 			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
 			if (_options.display_value == 'on') {
+				uid.find('.cmd-link').css('display', 'block');
 				uid.find('.playlist').css('display', 'block');
 				uid.find('.displayoff .panelMusic').css('display', 'block');
 				uid.find('.displayoff').css('display', 'none');
@@ -240,6 +309,7 @@
 					jeedom.cmd.execute({id: '#power_off_id#'});
 				});
 			} else {
+				uid.find('.cmd-link').css('display', 'none');
 				uid.find('.playlist').css('display', 'none');
 				uid.find('.displayoff').css('display', 'block');
 				uid.find('.displayoff .panelMusic').css('display', 'none');

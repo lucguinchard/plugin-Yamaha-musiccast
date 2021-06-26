@@ -37,6 +37,105 @@ try {
 	ajax::init();
 	$action = init('action');
 	switch($action) {
+		case 'linked':
+			$id = init('id');
+			$ipList = init('ipList');
+			if(!empty($ipList)) {
+				$ipClientList = explode(",", $ipList);
+			} else {
+				$ipClientList = array();
+			}
+			$yamahaMusiccast = YamahaMusiccast::byId($id);
+			$yamahaMusiccastIp = $yamahaMusiccast->getConfiguration("ip");
+			$yamahaMusiccastZone = $yamahaMusiccast->getConfiguration("zone");
+			log::add("YamahaMusiccast", 'info', 'Continuer la méthode Ajax linked ' . $yamahaMusiccastIp . ':' . $yamahaMusiccastZone . ' - ' . $ipList);
+			$yamahaMusiccastRole = $yamahaMusiccast->getCmd('info', 'role')->execCmd();
+			$groupId;
+			$zoneRemote;
+			$linkedAdd;
+			$linkedRemove;
+			log::add("YamahaMusiccast", 'info', 'Role :' . $yamahaMusiccastRole);
+			$yamahaMusiccastClientListString = $yamahaMusiccast->getCmd('info', 'client_list')->execCmd();
+			if($yamahaMusiccastRole === 'server') {
+				$groupId = $yamahaMusiccast->getCmd('info', 'group_id')->execCmd();
+				$zoneRemoteVerif = $yamahaMusiccast->getCmd('info', 'server_zone')->execCmd();
+				if($zoneRemoteVerif !== $yamahaMusiccastZone) {
+					ajax::error('L’appareil ne peux pas diffuser plusieurs flux.' . $zoneRemoteVerif .'!=='. $yamahaMusiccastZone, __FILE__);
+				}
+				$linkedAdd = array();
+				$yamahaMusiccastClientList = explode(";", $yamahaMusiccastClientListString);
+				if(empty($ipClientList)) {
+					if(!empty($yamahaMusiccastClientListString)) {
+						$linkedRemove = $yamahaMusiccastClientList;
+						log::add("YamahaMusiccast", 'info', 'On remove tout:' . print_r($yamahaMusiccastClientList, true));
+					} else {
+						$linkedRemove = array();
+					}
+				} else {
+					$linkedRemove = array();
+					log::add("YamahaMusiccast", 'info', 'Test de :' . print_r($ipClientList, true) . ' => ' . print_r($yamahaMusiccastClientList, true));
+					if(!empty($ipClientList)){
+						foreach ($ipClientList as $ipClient) {
+							if(!in_array($ipClient, $yamahaMusiccastClientList)) {
+								array_push($linkedAdd, $ipClient);
+							}
+						}
+					}
+					if(!empty($yamahaMusiccastClientList)){
+						foreach ($yamahaMusiccastClientList as $ipClient) {
+							if(!in_array($ipClient, $ipClientList)) {
+								array_push($linkedRemove, $ipClient);
+							}
+						}
+					}
+				}
+				if(!empty($linkedRemove)){
+					foreach ($linkedRemove as $ipClient) {
+						if(!empty($ipClient)){
+							log::add("YamahaMusiccast", 'info', 'Remove de:"' . $ipClient . '"');
+							$zoneRemoteList = array("main"); //TODO changer avec la vrai valeur
+							$device = YamahaMusiccast::byIP($ipClient, "main");
+							//TODO: Gérer les multi-clients.
+							$cmd = $device->getCmd('action', 'setClientInfo');
+							$cmd->execCmd(array('groupId' => "", 'zoneRemote' => $zoneRemoteList));
+						}
+					}
+					$cmd = $yamahaMusiccast->getCmd('action', 'setServerInfo');
+					$cmd->execCmd(array('ipClientList' => $linkedRemove, 'groupId' => $groupId, 'zone' => $yamahaMusiccastZone, 'action' => 'remove'));
+				}
+				
+			} else {
+				$groupId = YamahaMusiccastCmd::generateGroupId();
+				$zoneRemote = "main";
+				$linkedAdd = $ipClientList;
+				$linkedRemove = array();
+			}
+
+			foreach ($linkedAdd as $ipClient) {
+				log::add("YamahaMusiccast", 'info', 'Ajout de:' . $ipClient);
+				$zoneRemoteList = array("main"); //TODO changer avec la vrai valeur
+				$device = YamahaMusiccast::byIP($ipClient, "main");
+				//TODO: Gérer les multi-clients.
+				$cmd=$device->getCmd('action', 'setClientInfo');
+				$cmd->execCmd(array('groupId' => $groupId, 'zoneRemote' => $zoneRemoteList));
+			}
+
+			if(empty($ipClientList)) {
+				$cmdSetServerInfo = $yamahaMusiccast->getCmd('action', 'setServerInfo');
+				$cmdSetServerInfo->execCmd(array('ipClientList' => $ipClientList, 'groupId' => '00000000000000000000000000000000'));
+				$cmd = $yamahaMusiccast->getCmd('action', 'stopDistribution');
+			} else {
+				$cmdSetServerInfo = $yamahaMusiccast->getCmd('action', 'setServerInfo');
+				$cmdSetServerInfo->execCmd(array('ipClientList' => $ipClientList, 'groupId' => $groupId, 'zone' => $yamahaMusiccastZone, 'action' => 'add'));
+				$cmd = $yamahaMusiccast->getCmd('action', 'startDistribution');
+			}
+			$cmd->execCmd();
+			sleep(3);
+			foreach ($eqLogicList = eqLogic::byType(__CLASS__) as $eqLogic) {
+				$eqLogic->checkDistribution();
+			}
+			ajax::success();
+			break;
 		case 'searchMusiccast':
 			$return = YamahaMusiccast::searchAndSaveDeviceList();
 			$nb = count($return);

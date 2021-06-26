@@ -52,17 +52,19 @@ function navigateButton(uid_value) {
 			break;
 		}
 		divInputIcon.empty().append(icon[4]).append("<span>" + input + "</span>");
-/*		if (input === 'mc_link') {
-			var url = '/plugins/YamahaMusiccast/ressources/input/' + input + '.png';
-			pochette_input.attr('src', url);
-			$.get(url).fail(function() {
-				url = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
-				pochette_input.attr('src', url);
-			});
-			pochette_input.show();
+		if (input === 'mc_link') {
+			uid.find('.cmd-link').hide();
+			//var url = '/plugins/YamahaMusiccast/ressources/input/' + input + '.png';
+			//pochette_input.attr('src', url);
+			//$.get(url).fail(function() {
+			//	url = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+			//	pochette_input.attr('src', url);
+			//});
+			//pochette_input.show();
 		} else {
-			pochette_input.hide();
-		}*/
+			uid.find('.cmd-link').show();
+			//pochette_input.hide();
+		}
 	} else {
 		onelinedefile.show();
 		nav_playlist.show();

@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 0.6 : (**26 Juin 2021**)
+* Posibiliter de Linker/Caster les appareils.
+* Mise en place de l’onglet « Distribution » dans la configuration de l’appareil.
+* Ajout de nouvelles commandes Distribution.
+
 ### Version 0.5 : (**05 Juin 2021**)
 * Mise à jour de la documentation.
 * Mise en place d’onglets « type de commandes » dans la configuration de l’appareil.

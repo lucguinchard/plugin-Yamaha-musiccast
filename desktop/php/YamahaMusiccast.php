@@ -86,6 +86,9 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 			<li role="presentation"><a href="#systemtab" aria-controls="profile" role="tab" data-toggle="tab">
 					<i class="fa fa-list-alt"></i> {{Système}}</a>
 			</li>
+			<li role="presentation"><a href="#distributiontab" aria-controls="profile" role="tab" data-toggle="tab">
+					<i class="fab fa-hubspot"></i> {{Distribution}}</a>
+			</li>
 			<li role="presentation"><a href="#netusbtab" aria-controls="profile" role="tab" data-toggle="tab">
 					<i class="fas fa-ethernet"></i> {{Net/Usb}}</a>
 			</li>
@@ -197,6 +200,20 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 			<div id="netusbtab" role="tabpanel" class="tab-pane">
 				<legend><i class="fas fa-ethernet"></i></i>{{Net/Usb}}</legend>
 				<table id="table_netusb" class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>{{Nom}}</th>
+							<th>{{Type}}</th>
+							<th>{{Action}}</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="distributiontab" role="tabpanel" class="tab-pane">
+				<legend><i class="fas fa-ethernet"></i></i>{{Distribution}}</legend>
+				<table id="table_distribution" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>{{Nom}}</th>

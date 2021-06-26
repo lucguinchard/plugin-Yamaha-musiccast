@@ -441,9 +441,85 @@ class YamahaMusiccastCmd extends cmd {
 			//setDateAndTime
 			//setClockFormat
 			//setAlarmSettings
+			//*******************************************/
+			//					Distribution					*/
+			//*******************************************/
+			case "setServerInfo":
+				$groupId = "";
+				if(!empty($_options['groupId'])) {
+					$groupId = $_options['groupId'];
+				}
+				$zone = "main";
+				if(!empty($_options['zone'])) {
+					$zone = $_options['zone'];
+				}
+				$action = "add";
+				if(!empty($_options['action'])) {
+					$action = $_options['action'];
+				}
+				$ipClientList = array();
+				if(!empty($_options['ipClientList'])) {
+					$ipClientList = $_options['ipClientList'];
+				}
+				$data = '{
+					"group_id": "'.$groupId.'",
+					"zone":"'.$zone.'",
+					"type":"'.$action.'",
+					"client_list":["'.implode('","', $ipClientList).'"]
+					}';
+				$result = YamahaMusiccast::callAPI("POST", $device, "/YamahaExtendedControl/v1/dist/setServerInfo", $data);
+				break;
+			case "setClientInfo":
+				$groupId = "";
+				if(!empty($_options['groupId'])) {
+					$groupId = $_options['groupId'];
+				}
+				$zoneRemoteList = array();
+				if(!empty($_options['zoneRemote'])) {
+					$zoneRemoteList = $_options['zoneRemote'];
+				} else {
+					array_push($zoneRemoteList, "main");
+				}
+				$data = '{
+					"group_id": "'.$groupId.'",
+					"zone":["'.implode('","', $zoneRemoteList).'"]
+				}';
+				$result = YamahaMusiccast::callAPI("POST", $device, "/YamahaExtendedControl/v1/dist/setClientInfo", $data);
+				break;
+			case "startDistribution":
+				$num = 0;
+				if(!empty($_options['num'])) {
+					$num = $_options['num'];
+				}
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/dist/startDistribution?num=".$num);
+				break;
+			case "stopDistribution":
+				$num = 0;
+				if(!empty($_options['num'])) {
+					$num = $_options['num'];
+				}
+				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/dist/stopDistribution?num=".$num);
+				break;
+			case "setGroupName":
+				if(!empty($_options['groupName'])) {
+					$data = '{"name":"' . $_options['groupName'] . '"}';
+					YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/dist/setGroupName", $data);
+				}
+				break;
 			default :
-				log::add(__CLASS__, 'info', 'TODO: Créer la commande ' . $this->getLogicalId() . ' - ' . print_r($_options, true));
+				log::add("YamahaMusiccast", 'info', 'TODO: Créer la commande ' . $this->getLogicalId() . ' - ' . print_r($_options, true));
 		}
+	}
+
+	public static function generateGroupId($length = 32) {
+		$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $randomString;
+
 	}
 
 	/*	 * **********************Getteur Setteur*************************** */

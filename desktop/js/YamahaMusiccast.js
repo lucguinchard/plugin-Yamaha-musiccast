@@ -65,6 +65,8 @@ function addCmdToTable(_cmd) {
 		table = "#table_clock";
 	} else if(type === 'bluetooth') {
 		table = "#table_bluetooth";
+	} else if(type === 'distribution') {
+		table = "#table_distribution";
 	} else {
 		table = "#table_system";
 	}

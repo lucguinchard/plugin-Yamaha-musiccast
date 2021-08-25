@@ -312,7 +312,20 @@ class YamahaMusiccastCmd extends cmd {
 				$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
 				YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/setFreq?band=" . $tuner_band . "&tuning=direct&num=" . $_options['num']);
 				break;
-			//case 'recallPreset':
+			case 'tuner_recall_preset':
+				if(!empty($_options['select'])) {
+					$power_state_cmd = $device->getCmd(null, 'power_state');
+					if($power_state_cmd->execCmd() !== 'on') {
+						YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/$zone/setPower?power=on");
+					}
+					if(!empty($_options['tuner_band'])) {
+						$tuner_band = $_options['tuner_band'];
+					} else {
+						$tuner_band = $device->getCmd(null, 'tuner_band')->execCmd();
+					}
+					YamahaMusiccast::callAPI("GET", $device, "/YamahaExtendedControl/v1/tuner/recallPreset?zone=" . $zone . "&band=" . $tuner_band . "&num=" . $_options['select']);
+				}
+				break;
 			//switchPreset
 			//storePreset
 			//clearPreset

@@ -211,7 +211,7 @@
 
 		jeedom.cmd.update['#input_change_id#'] = function(_options){
 			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
-			if (_options.display_list !== '') {
+			if (_options.display_list !== '' && _options.display_list !== undefined) {
 				var inputIconMap = getInputIconMap();
 				var list = _options.display_list.split(";");
 				var bottonList = '';

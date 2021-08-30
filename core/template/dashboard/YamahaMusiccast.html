@@ -238,7 +238,12 @@
 				var bottonList = '<ul>';
 				for(i = 0; i < list.length; i++){
 					var inputArray = list[i].split(/(?:→|\|)+/);
-					var icon = '<img src="' + inputArray[3].replace('http://', 'https://').replace(':80/', '/') + '"/>';
+					var icon
+					if(inputArray[4] !== undefined) {
+						icon = '<img src="' + inputArray[3].replace('http://', 'https://').replace(':80/', '/') + '"/>';
+					} else {
+						icon = '<i class="fas fa-music"></i>';
+					}
 					bottonList += '<li><a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#netusb_recall_recent_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'
 				}
 				bottonList += '</ul>';

@@ -1768,10 +1768,12 @@ class YamahaMusiccast extends eqLogic {
 			$config_input_change['listValue'] = substr($input_change_string, 0, -1);
 			foreach ($device as $eqLogic) {
 				$cmd = $eqLogic->getCmd(null, 'input_change');
-				foreach ($config_input_change as $key => $value) {
-					$cmd->setConfiguration($key, $value);
+				if (is_object($cmd)) {
+					foreach ($config_input_change as $key => $value) {
+						$cmd->setConfiguration($key, $value);
+					}
+					$cmd->save();
 				}
-				$cmd->save();
 			}
 		}
 
@@ -1783,10 +1785,12 @@ class YamahaMusiccast extends eqLogic {
 			$config_sound_program_change['listValue'] = substr($sound_program_list_string, 0, -1);
 			foreach ($device as $eqLogic) {
 				$cmd = $eqLogic->getCmd(null, 'sound_program_change');
-				foreach ($config_sound_program_change as $key => $value) {
-					$cmd->setConfiguration($key, $value);
+				if (is_object($cmd)) {
+					foreach ($config_sound_program_change as $key => $value) {
+						$cmd->setConfiguration($key, $value);
+					}
+					$cmd->save();
 				}
-				$cmd->save();
 			}
 		}
 	}

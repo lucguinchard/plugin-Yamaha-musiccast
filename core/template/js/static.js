@@ -52,19 +52,6 @@ function navigateButton(uid_value) {
 			break;
 		}
 		divInputIcon.empty().append(icon[4]).append("<span>" + input + "</span>");
-		if (input === 'mc_link') {
-			uid.find('.cmd-link').hide();
-			//var url = '/plugins/YamahaMusiccast/ressources/input/' + input + '.png';
-			//pochette_input.attr('src', url);
-			//$.get(url).fail(function() {
-			//	url = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
-			//	pochette_input.attr('src', url);
-			//});
-			//pochette_input.show();
-		} else {
-			uid.find('.cmd-link').show();
-			//pochette_input.hide();
-		}
 	} else {
 		onelinedefile.show();
 		nav_playlist.show();
@@ -160,7 +147,7 @@ function getInputIconMap() {
 	inputIconMap.set('tv',			[false,	false,	false,			true,	'<i class="icon techno-television4"></i>']);
 	inputIconMap.set('bd_dvd',		[false,	false,	"play_pause",	true,	'<i class="fas fa-music"></i>']);
 	inputIconMap.set('usb_dac',		[true,	false,	false,			true,	'<i class="icon techno-memory"></i>']);
-	inputIconMap.set('usb',			[true,	false,	"play_pause",	true,	'<i class="fas fa-music"></i>']);
+	inputIconMap.set('usb',			[true,	false,	"play_pause",	true,	'<i class="icon techno-memory"></i>']);
 	inputIconMap.set('bluetooth',	[true,	false,	"play_pause",	true,	'<i class="fab fa-bluetooth icon_blue"></i>']);
 	inputIconMap.set('server',		[true,	false,	"play_pause",	true,	'<i class="fas fa-hdd"></i>']);
 	inputIconMap.set('net_radio',	[true,	true,	"stop",			false,	'<i class="fas fa-music"></i>']);

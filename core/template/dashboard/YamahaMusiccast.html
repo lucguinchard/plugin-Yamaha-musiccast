@@ -6,6 +6,9 @@
 		<a class="cmd pull-left" data-cmd_id="#power_state_id#">
 			<i class="fa fa-power-off"></i>
 		</a>
+		<a class="cmd pull-left unreachable" data-cmd_id="#distribution_enable_id#">
+			<i class="far fa-eye-slash" style="color: red;"></i>
+		</a>
 		<a class="cmd pull-right nav-link cmd-link" id="pills-link-tab-#id#" data-toggle="pill" href="##id#link" role="tab" aria-controls="pills-link" aria-selected="false" onclick="linkedClic#id#();">
 			<i class="fa fa-link"></i>
 		</a>
@@ -15,6 +18,11 @@
 	<div>
 		<input id="#uid#_input" name="#id#_input" type="hidden" value="">
 		<input id="#uid#_play_stop" name="#id#_play_stop" type="hidden" value="">
+		<div class="panelBox unreachable">
+			<p>Je suis injoingnable depuis</p>
+			<center>#lastCallAPI#</center>
+			<p><i class="far fa-eye-slash" style="color: red;font-size:5em;"></i></p>
+		</div>
 		<div class="panelBox playlist">
 			<div class="tab-content">
 				<div class="tab-pane panelMusic active" id="#id#pp1">
@@ -303,24 +311,45 @@
 		jeedom.cmd.update['#netusb_recall_preset_list_id#']({display_value:'#netusb_recall_preset_list#'});
 
 
+		jeedom.cmd.update['#distribution_enable_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			if(_options.display_value === '1') {
+				uid.find('.cmd-link i').css('display', 'block');
+			} else {
+				uid.find('.cmd-link i').css('display', 'none');
+			}
+		}
+		jeedom.cmd.update['#distribution_enable_id#']({display_value:'#distribution_enable#'});
+
 		jeedom.cmd.update['#power_state_id#'] = function(_options){
 			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
-			if (_options.display_value == 'on') {
-				uid.find('.cmd-link').css('display', 'block');
-				uid.find('.playlist').css('display', 'block');
-				uid.find('.displayoff .panelMusic').css('display', 'block');
-				uid.find('.displayoff').css('display', 'none');
-				uid.find('a[data-cmd_id=#power_state_id#]').off('click').on('click', function () {
-					jeedom.cmd.execute({id: '#power_off_id#'});
-				});
-			} else {
+			if (_options.display_value === 'unreachable') {
+				uid.find('.unreachable').css('display', 'block');
+				uid.find('a[data-cmd_id=#power_state_id#]').css('display', 'none');
 				uid.find('.cmd-link').css('display', 'none');
 				uid.find('.playlist').css('display', 'none');
-				uid.find('.displayoff').css('display', 'block');
+				uid.find('.displayoff').css('display', 'none');
 				uid.find('.displayoff .panelMusic').css('display', 'none');
-				uid.find('a[data-cmd_id=#power_state_id#]').off('click').on('click', function () {
-					jeedom.cmd.execute({id: '#power_on_id#'});
-				});
+			} else {
+				uid.find('a[data-cmd_id=#power_state_id#]').css('display', 'block');
+				if (_options.display_value === 'on') {
+					uid.find('.cmd-link').css('display', 'block');
+					uid.find('.playlist').css('display', 'block');
+					uid.find('.displayoff .panelMusic').css('display', 'block');
+					uid.find('a[data-cmd_id=#power_state_id#]').off('click').on('click', function () {
+						jeedom.cmd.execute({id: '#power_off_id#'});
+					});
+					uid.find('.displayoff').css('display', 'none');
+				} else {
+					uid.find('.displayoff').css('display', 'block');
+					uid.find('a[data-cmd_id=#power_state_id#]').off('click').on('click', function () {
+						jeedom.cmd.execute({id: '#power_on_id#'});
+					});
+					uid.find('.displayoff .panelMusic').css('display', 'none');
+					uid.find('.cmd-link').css('display', 'none');
+					uid.find('.playlist').css('display', 'none');
+				}
+				uid.find('.unreachable').css('display', 'none');
 			}
 		}
 		jeedom.cmd.update['#power_state_id#']({display_value:'#power_state#'});

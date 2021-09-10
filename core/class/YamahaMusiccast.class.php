@@ -1285,7 +1285,7 @@ class YamahaMusiccast extends eqLogic {
 	public function callZone($zone) {
 		if (!empty($zone->power)) {
 			$refresh = false;
-			$power_state = $device[$zoneName]->getCmd('info', 'power_state');
+			$power_state = $this->getCmd('info', 'power_state');
 			if(is_object($power_state) && $power_state->execCmd() === 'unreachable') {
 				$refresh = true;
 			}

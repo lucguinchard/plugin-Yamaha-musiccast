@@ -24,6 +24,7 @@ require_once 'YamahaMusiccastSocket.class.php';
 
 class YamahaMusiccast extends eqLogic {
 	/*	 * *************************Attributs****************************** */
+	const main = "main";
 
 
 	/*	 * ***********************Methode static*************************** */
@@ -63,7 +64,7 @@ class YamahaMusiccast extends eqLogic {
 		
 	}
 
-	public function createCmd($name, $type = 'info', $subtype = 'string', $icon = false, $generic_type = null, $configurationList = [], $placeholderList = []) {
+	public function createCmd($name, $type = 'info', $subtype = 'string', $icon = false, $generic_type = null, $configurationList = [], $displayList = []) {
 		$cmd = $this->getCmd(null, $name);
 		if (!is_object($cmd)) {
 			$cmd = new YamahaMusiccastCmd();
@@ -79,8 +80,8 @@ class YamahaMusiccast extends eqLogic {
 		foreach ($configurationList as $key => $value) {
 			$cmd->setConfiguration($key, $value);
 		}
-		foreach ($placeholderList as $value) {
-			$cmd->setDisplay($value . '_placeholder', __('placeholder.' . $value, __FILE__));
+		foreach ($displayList as $key => $value) {
+			$cmd->setDisplay($key, $value);
 		}
 		$cmd->setEqLogic_id($this->getId());
 		return $cmd;
@@ -493,7 +494,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 	}
 
-	public static function byIP($_ip, $_zone = "main") {
+	public static function byIP($_ip, $_zone = YamahaMusiccast::main) {
 		$devices = self::byType(__CLASS__);
 		foreach ($devices as $device) {
 			if ($device->getConfiguration('ip') === $_ip && $device->getConfiguration('zone') === $_zone) {
@@ -564,7 +565,9 @@ class YamahaMusiccast extends eqLogic {
 				$eqLogic->createCmd('setClientInfo', 'action', 'other', false, null, $configurationDistribution)->save();
 				$eqLogic->createCmd('startDistribution', 'action', 'other', false, null, $configurationDistribution)->save();
 				$eqLogic->createCmd('stopDistribution', 'action', 'other', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('setGroupName', 'action', 'other', false, null, $configurationDistribution)->save();
+				$displayList['title_placeholder'] = "Nom du nouveau groupe";
+				$displayList['message_disable'] = "1";
+				$eqLogic->createCmd('setGroupName', 'action', 'message', false, null, $configurationDistribution, $displayList)->save();
 
 				if(!empty($getStatusZone->distribution_enable)) {
 					$eqLogic->createCmd('distribution_enable', 'info', 'binary', false, null, $configurationDistribution)->save();
@@ -891,7 +894,7 @@ class YamahaMusiccast extends eqLogic {
 							$eqLogic->createCmd('tuner_dab_preset', 'info', 'numeric', false, null, $configurationTuner)->save();
 							$eqLogic->createCmd('tuner_dab_id', 'info', 'numeric', false, null, $configurationTuner)->save();
 							$eqLogic->createCmd('tuner_dab_status', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_freq', 'info', 'numeric', 'info', 'string', false, null, $configurationTuner)->save();
+							$eqLogic->createCmd('tuner_dab_freq', 'info', 'numeric', false, null, $configurationTuner)->save();
 							$eqLogic->createCmd('tuner_dab_category', 'info', 'string', false, null, $configurationTuner)->save();
 							$eqLogic->createCmd('tuner_dab_audio_mode', 'info', 'string', false, null, $configurationTuner)->save();
 							$eqLogic->createCmd('tuner_dab_bit_rate', 'info', 'numeric', false, null, $configurationTuner)->save();
@@ -996,7 +999,7 @@ class YamahaMusiccast extends eqLogic {
 					$eqLogic->createCmd('netusb_repeat_available', 'info', 'string', false, null, $configurationNetUsb)->save();
 					$eqLogic->createCmd('netusb_shuffle_available', 'info', 'string', false, null, $configurationNetUsb)->save();
 				}
-				if ($zoneName === "main") {
+				if ($zoneName === YamahaMusiccast::main) {
 					$nameEqLogic = $getNetworkStatus->network_name;
 				} else {
 					$nameEqLogic = $getNetworkStatus->network_name . " (" . $zoneName . ")";
@@ -1094,7 +1097,7 @@ class YamahaMusiccast extends eqLogic {
 			$power_state = $eqlogic->getCmd('info', 'power_state');
 			if(is_object($power_state) && $power_state->execCmd() !== 'unreachable') {
 				$zone = $eqlogic->getConfiguration('zone');
-				if ($zone !== "main") {
+				if ($zone !== YamahaMusiccast::main) {
 					continue;
 				}
 				$lastCallAPI = $eqlogic->getStatus('lastCallAPI');
@@ -1314,7 +1317,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callTunerGetPlayInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/tuner/getPlayInfo");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/tuner/getPlayInfo");
 		if (!empty($result->band)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'tuner_band', $result->band);
 		}
@@ -1429,7 +1432,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callTunerGetPresetInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/tuner/getPresetInfo?band=fm"); //TODO change fm to band.
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/tuner/getPresetInfo?band=fm"); //TODO change fm to band.
 		if (!empty($result->tuner_hd_radio)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false/* 'tuner_hd_radio' */, $result, "tuner / getPresetInfo");
 		}
@@ -1442,7 +1445,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callBluetoothInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/system/getBluetoothInfo");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/system/getBluetoothInfo");
 		if (!empty($result->bluetooth_standby)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'bluetooth_standby_state', $result->bluetooth_standby);
 		}
@@ -1455,7 +1458,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callNetusbGetPlayInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/netusb/getPlayInfo");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/netusb/getPlayInfo");
 		if (!empty($result->input)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_input', $result->input);
 		}
@@ -1534,7 +1537,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callGetPresetInfoNetusb($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/netusb/getPresetInfo");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/netusb/getPresetInfo");
 		if (!empty($result->preset_info)) {
 			$netusb_recall_preset_list = "";
 			$int = 0;
@@ -1569,7 +1572,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callGetFuncStatus($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/system/getFuncStatus");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/system/getFuncStatus");
 		if (!empty($result->auto_power_standby)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'auto_power_standby_state', $result->auto_power_standby);
 		}
@@ -1612,7 +1615,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callGetLocationInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/system/getLocationInfo");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/system/getLocationInfo");
 		if (!empty($result->id)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->id, "getLocationInfo id");
 		}
@@ -1627,7 +1630,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callGetNetusbListInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/netusb/getListInfo?list_id=main&input=net_radio&index=0&size=8");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/netusb/getListInfo?list_id=main&input=net_radio&index=0&size=8");
 		if (!empty($result->service_list)) {
 			log::add(__CLASS__, 'info', 'TODO: Gestion de la méthode netusb getListInfo - Warning:net_radio');
 			foreach ($result->service_list as $service) {
@@ -1642,7 +1645,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callGetDistributionInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/dist/getDistributionInfo");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/dist/getDistributionInfo");
 		if (!empty($result->status)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, false, $result->status);
 			// working
@@ -1751,7 +1754,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callGetNetusbAccountStatus($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/netusb/getAccountStatus");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/netusb/getAccountStatus");
 		if (!empty($result->service_list)) {
 			log::add(__CLASS__, 'debug', 'TODO: Gestion de la méthode netusb getAccountStatus');
 			foreach ($result->service_list as $service) {
@@ -1766,7 +1769,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callGetNetusbRecentInfo($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/netusb/getRecentInfo");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/netusb/getRecentInfo");
 		if (!empty($result->recent_info)) {
 			$recent_info_list = "";
 			$int = 0;
@@ -1796,7 +1799,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callSystemNameText($device) {
-		$result = YamahaMusiccast::callAPI("GET", $device['main'], "/YamahaExtendedControl/v1/system/getNameText");
+		$result = YamahaMusiccast::callAPI("GET", $device[YamahaMusiccast::main], "/YamahaExtendedControl/v1/system/getNameText");
 		if (!empty($result->input_list)) {
 			$input_change_string = "";
 			foreach ($result->input_list as $input) {

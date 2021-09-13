@@ -462,7 +462,7 @@ class YamahaMusiccastCmd extends cmd {
 				if(!empty($_options['groupId'])) {
 					$groupId = $_options['groupId'];
 				}
-				$zone = "main";
+				$zone = YamahaMusiccast::main;
 				if(!empty($_options['zone'])) {
 					$zone = $_options['zone'];
 				}
@@ -491,7 +491,7 @@ class YamahaMusiccastCmd extends cmd {
 				if(!empty($_options['zoneRemote'])) {
 					$zoneRemoteList = $_options['zoneRemote'];
 				} else {
-					array_push($zoneRemoteList, "main");
+					array_push($zoneRemoteList, YamahaMusiccast::main);
 				}
 				$data = '{
 					"group_id": "'.$groupId.'",
@@ -514,9 +514,9 @@ class YamahaMusiccastCmd extends cmd {
 				YamahaMusiccast::callAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/dist/stopDistribution?num=".$num);
 				break;
 			case "setGroupName":
-				if(!empty($_options['groupName'])) {
-					$data = '{"name":"' . $_options['groupName'] . '"}';
-					YamahaMusiccast::callAPI("GET", $eqLogic, "/YamahaExtendedControl/v1/dist/setGroupName", $data);
+				if(!empty($_options['title'])) {
+					$data = '{"name":"' . $_options['title'] . '"}';
+					YamahaMusiccast::callAPI("POST", $eqLogic, "/YamahaExtendedControl/v1/dist/setGroupName", $data);
 				}
 				break;
 			default :

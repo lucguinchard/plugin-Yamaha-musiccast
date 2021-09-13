@@ -93,8 +93,8 @@ try {
 					foreach ($linkedRemove as $ipClient) {
 						if(!empty($ipClient)){
 							log::add("YamahaMusiccast", 'info', 'Remove de:"' . $ipClient . '"');
-							$zoneRemoteList = array("main"); //TODO changer avec la vrai valeur
-							$device = YamahaMusiccast::byIP($ipClient, "main");
+							$zoneRemoteList = array(YamahaMusiccast::main); //TODO changer avec la vrai valeur
+							$device = YamahaMusiccast::byIP($ipClient, YamahaMusiccast::main);
 							//TODO: Gérer les multi-clients.
 							$cmd = $device->getCmd('action', 'setClientInfo');
 							$cmd->execCmd(array('groupId' => "", 'zoneRemote' => $zoneRemoteList));
@@ -106,15 +106,15 @@ try {
 				
 			} else {
 				$groupId = YamahaMusiccastCmd::generateGroupId();
-				$zoneRemote = "main";
+				$zoneRemote = YamahaMusiccast::main;
 				$linkedAdd = $ipClientList;
 				$linkedRemove = array();
 			}
 
 			foreach ($linkedAdd as $ipClient) {
 				log::add("YamahaMusiccast", 'info', 'Ajout de:' . $ipClient);
-				$zoneRemoteList = array("main"); //TODO changer avec la vrai valeur
-				$device = YamahaMusiccast::byIP($ipClient, "main");
+				$zoneRemoteList = array(YamahaMusiccast::main); //TODO changer avec la vrai valeur
+				$device = YamahaMusiccast::byIP($ipClient, YamahaMusiccast::main);
 				//TODO: Gérer les multi-clients.
 				$cmd=$device->getCmd('action', 'setClientInfo');
 				$cmd->execCmd(array('groupId' => $groupId, 'zoneRemote' => $zoneRemoteList));
@@ -130,7 +130,6 @@ try {
 				$cmd = $yamahaMusiccast->getCmd('action', 'startDistribution');
 			}
 			$cmd->execCmd();
-			sleep(3);
 			foreach ($eqLogicList = eqLogic::byType(__CLASS__) as $eqLogic) {
 				$eqLogic->checkDistribution();
 			}

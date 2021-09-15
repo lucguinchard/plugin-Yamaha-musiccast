@@ -212,7 +212,7 @@ class YamahaMusiccast extends eqLogic {
 
 	function callZoneGetSignalInfo() {
 		$zone = $this->getConfiguration('zone');
-		$result = YamahaMusiccast::callAPIGET($this, YamahaMusiccast::url_v1 . "$zone/getSignalInfo");
+		$result = $this->callAPIGET(YamahaMusiccast::url_v1 . "$zone/getSignalInfo");
 		if (!empty($result->audio)) {
 			$audio = $result->audio;
 			if (!empty($audio->error)) {

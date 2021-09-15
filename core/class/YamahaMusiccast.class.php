@@ -1666,8 +1666,6 @@ class YamahaMusiccast extends eqLogic {
 					$groupName = $eqLogic->getName();
 				} else {
 					switch ($role) {
-						case "client" :
-							$groupName = str_replace("(Linked)", '<i class="fas fa-link"></i>', $result->group_name);
 						case "server" :
 							if (!empty($result->client_list)) {
 								$client_list = $result->client_list;
@@ -1685,6 +1683,8 @@ class YamahaMusiccast extends eqLogic {
 									}
 								}
 							}
+						case "client" :
+							$groupName = str_replace("(Linked)", '<i class="fas fa-link"></i>', $result->group_name);
 							break;
 						case "none" :
 						default :

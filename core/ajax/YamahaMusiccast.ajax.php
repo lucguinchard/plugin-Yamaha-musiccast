@@ -130,9 +130,7 @@ try {
 				$cmd = $yamahaMusiccast->getCmd('action', 'startDistribution');
 			}
 			$cmd->execCmd();
-			foreach ($eqLogicList = eqLogic::byType(__CLASS__) as $eqLogic) {
-				$eqLogic->checkDistribution();
-			}
+			YamahaMusiccast::checkDistributionAll();
 			ajax::success();
 			break;
 		case 'searchMusiccast':

@@ -45,7 +45,9 @@ function YamahaMusiccast_update() {
 		config::save('socket.name', 'musiccastDom', 'YamahaMusiccast');
 	}
 	foreach (YamahaMusiccast::byType('YamahaMusiccast') as $device) {
-		$device->save();
+		if ($device->getConfiguration('zone') === YamahaMusiccast::main) {
+			YamahaMusiccast::saveDeviceIp($device->getConfiguration('ip'));
+		}
 	}
 }
 

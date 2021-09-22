@@ -514,7 +514,7 @@ class YamahaMusiccastCmd extends cmd {
 			case "setGroupName":
 				if(!empty($_options['title'])) {
 					$data = '{"name":"' . $_options['title'] . '"}';
-					$eqLogic->callAPIPOST(YamahaMusiccast::url_v1_dist . "dist/setGroupName", $data);
+					$eqLogic->callAPIPOST(YamahaMusiccast::url_v1_dist . "setGroupName", $data);
 				}
 				break;
 			default :

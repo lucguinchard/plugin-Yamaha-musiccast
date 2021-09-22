@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-Avant de valider la demande, merci de vérifier qu’il n’y est pas déjà une demande pour cette appareil.
+Avant de valider la demande, merci de vérifier qu’il n’y est pas déjà une demande pour cet appareil.

@@ -56,10 +56,10 @@ function navigateButton(uid_value) {
 		onelinedefile.show();
 		nav_playlist.show();
 		var url = '/plugins/YamahaMusiccast/ressources/input/' + input + '.png';
-		pochette_input.attr('src', url);
-		$.get(url).fail(function() {
-			url = '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png';
+		$.get(url, function(data){
 			pochette_input.attr('src', url);
+		}).fail(function() {
+			pochette_input.attr('src', '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png');
 		});
 		pochette_input.show();
 		divInputPochette.show();

@@ -25,6 +25,18 @@ $("#table_cmd").sortable({
 	forcePlaceholderSize: true
 });
 
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=model_name]').on('change', function () {
+	var url = 'plugins/YamahaMusiccast/core/img/' + $(this).value() + '.jpg';
+	$('#img_device_not_found a').attr('href', 'https://github.com/lucguinchard/plugin-Yamaha-musiccast/issues/new?assignees=&labels=type%3AEnhancement&template=LOGO_DEVICE_EMPTY.md&title=L%E2%80%99image+de+mon+appareil+%60' + $(this).value() + '%60+n%E2%80%99existe+pas.');
+	$.get(url, function(data){
+		$('#img_device').attr('src', url);
+		$('#img_device_not_found').css('display', 'none');
+	}).fail(function() {
+		$('#img_device').attr('src', '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png');
+		$('#img_device_not_found').css('display', 'block');
+	});
+});
+
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin-YamahaMusiccast
  */
@@ -38,10 +50,12 @@ function addCmdToTable(_cmd) {
 	var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
 	tr += '<td>';
 	tr += '<span class="cmdAttr" data-l1key="id" style="display:none;"></span>';
-	tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}">';
+	tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 200px;" placeholder="{{Nom}}">';
 	tr += '</td>';
 	tr += '<td>';
 	tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
+	tr += '</td>';
+	tr += '<td>';
 	tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
 	tr += '</td>';
 	tr += '<td>';

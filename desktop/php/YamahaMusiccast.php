@@ -108,80 +108,93 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 		<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
 			<div role="tabpanel" class="tab-pane active" id="eqlogictab">
 				<br/>
-				<form class="form-horizontal">
-					<fieldset>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="name">{{Nom de l’équipement Musiccast}}</label>
-							<div class="col-sm-3">
-								<input type="text" class="eqLogicAttr form-control" data-l1key="id"
-										style="display : none;"/>
-								<input type="text" class="eqLogicAttr form-control" data-l1key="name" id="name"
-										placeholder="{{Nom de l’équipement Musiccast}}"/>
+				<div class="row">
+					<div class="col-sm-3">
+						<center>
+							<img id="img_device" src="<?= $plugin->getPathImgIcon(); ?>" style="height : 200px;" />
+							<div id="img_device_not_found">
+								<p>{{Pas d’image de votre appareil ?}}</p>
+								<p>{{Proposer une image}} <a href="https://github.com/lucguinchard/plugin-Yamaha-musiccast/issues/new?assignees=&labels=type%3AEnhancement&template=LOGO_DEVICE_EMPTY.md&title=L%E2%80%99image+de+mon+appareil+%60aaa%60+n%E2%80%99existe+pas." target="_blank">{{ici}}</a>.</p>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="sel_object">{{Objet parent}}</label>
-							<div class="col-sm-3">
-								<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
-									<option value="">{{Aucun}}</option>
-									<?php foreach (jeeObject::all() as $object) { ?>
-									<option value="<?= $object->getId() ?>"><?= $object->getName() ?></option>
-									<?php } ?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label"></label>
-							<div class="col-sm-9">
-								<label class="checkbox-inline" for="is-enable">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="isEnable"
-											checked="checked" id="is-enable"/>
-									{{Activer}}
-								</label>
-								<label class="checkbox-inline" for="is-visible">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="isVisible"
-											checked="checked" id="is-visible"/>
-									{{Visible}}
-								</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-model">{{Model}}</label>
-							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-model"
-										data-l1key="configuration" data-l2key="model_name"/>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-ip">{{ip}}</label>
-							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-ip"
-										data-l1key="configuration" data-l2key="ip"/>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-zone">{{zone}}</label>
-							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-zone"
-										data-l1key="configuration" data-l2key="zone"/>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-lastCommunication">{{lastCommunication}}</label>
-							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCommunication"
-										data-l1key="status" data-l2key="lastCommunication"/>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="Musiccast-lastCallAPI">{{lastCallAPI}}</label>
-							<div class="col-sm-3">
-								<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCallAPI"
-										data-l1key="status" data-l2key="lastCallAPI"/>
-							</div>
-						</div>
-					</fieldset>
-				</form>
+						</center>
+					</div>
+					<div class="col-sm-6">
+						<form class="form-horizontal">
+							<fieldset>
+								<div class="form-group">
+									<label class="col-sm-6 control-label" for="name">{{Nom de l’équipement Musiccast}}</label>
+									<div class="col-sm-3">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="id"
+											   style="display : none;"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="name" id="name"
+											   placeholder="{{Nom de l’équipement Musiccast}}"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-6 control-label" for="sel_object">{{Objet parent}}</label>
+									<div class="col-sm-3">
+										<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
+											<option value="">{{Aucun}}</option>
+											<?php foreach (jeeObject::all() as $object) { ?>
+												<option value="<?= $object->getId() ?>"><?= $object->getName() ?></option>
+											<?php } ?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-6 control-label"></label>
+									<div class="col-sm-6">
+										<label class="checkbox-inline" for="is-enable">
+											<input type="checkbox" class="eqLogicAttr" data-l1key="isEnable"
+												   checked="checked" id="is-enable"/>
+											{{Activer}}
+										</label>
+										<label class="checkbox-inline" for="is-visible">
+											<input type="checkbox" class="eqLogicAttr" data-l1key="isVisible"
+												   checked="checked" id="is-visible"/>
+											{{Visible}}
+										</label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-6 control-label" for="Musiccast-model">{{Model}}</label>
+									<div class="col-sm-3">
+										<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-model"
+											   data-l1key="configuration" data-l2key="model_name"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-6 control-label" for="Musiccast-ip">{{ip}}</label>
+									<div class="col-sm-3">
+										<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-ip"
+											   data-l1key="configuration" data-l2key="ip"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-6 control-label" for="Musiccast-zone">{{zone}}</label>
+									<div class="col-sm-3">
+										<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-zone"
+											   data-l1key="configuration" data-l2key="zone"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-6 control-label" for="Musiccast-lastCommunication">{{lastCommunication}}</label>
+									<div class="col-sm-3">
+										<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCommunication"
+											   data-l1key="status" data-l2key="lastCommunication"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-6 control-label" for="Musiccast-lastCallAPI">{{lastCallAPI}}</label>
+									<div class="col-sm-3">
+										<input type="text" disabled="disabled" class="eqLogicAttr form-control" id="Musiccast-lastCallAPI"
+											   data-l1key="status" data-l2key="lastCallAPI"/>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
 			</div>
 			<div id="systemtab" role="tabpanel" class="tab-pane">
 				<legend><i class="fa fa-list-alt"></i>{{Système}}</legend>
@@ -190,6 +203,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 						<tr>
 							<th>{{Nom}}</th>
 							<th>{{Type}}</th>
+							<th></th>
 							<th>{{Action}}</th>
 						</tr>
 					</thead>
@@ -204,6 +218,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 						<tr>
 							<th>{{Nom}}</th>
 							<th>{{Type}}</th>
+							<th></th>
 							<th>{{Action}}</th>
 						</tr>
 					</thead>
@@ -212,12 +227,13 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 				</table>
 			</div>
 			<div id="distributiontab" role="tabpanel" class="tab-pane">
-				<legend><i class="fas fa-ethernet"></i></i>{{Distribution}}</legend>
+				<legend><i class="fab fa-hubspot"></i></i>{{Distribution}}</legend>
 				<table id="table_distribution" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th>{{Nom}}</th>
 							<th>{{Type}}</th>
+							<th></th>
 							<th>{{Action}}</th>
 						</tr>
 					</thead>
@@ -232,6 +248,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 						<tr>
 							<th>{{Nom}}</th>
 							<th>{{Type}}</th>
+							<th></th>
 							<th>{{Action}}</th>
 						</tr>
 					</thead>
@@ -246,6 +263,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 						<tr>
 							<th>{{Nom}}</th>
 							<th>{{Type}}</th>
+							<th></th>
 							<th>{{Action}}</th>
 						</tr>
 					</thead>
@@ -260,6 +278,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 						<tr>
 							<th>{{Nom}}</th>
 							<th>{{Type}}</th>
+							<th></th>
 							<th>{{Action}}</th>
 						</tr>
 					</thead>
@@ -274,6 +293,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 						<tr>
 							<th>{{Nom}}</th>
 							<th>{{Type}}</th>
+							<th></th>
 							<th>{{Action}}</th>
 						</tr>
 					</thead>

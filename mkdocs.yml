@@ -1,0 +1,99 @@
+site_name: Jeedom - plugin-Yamaha-musiccast
+site_url: https://lucguinchard.github.io/plugin-Yamaha-musiccast/
+repo_url: https://github.com/lucguinchard/plugin-Yamaha-musiccast
+site_author: Luc Guinchard
+#edit_uri: docs/
+
+# Copyright
+copyright: Copyright - Luc Guinchard
+
+
+theme:
+  name: material
+  #name: 'readthedocs'
+  language: fr
+  features:
+    - content.code.annotate
+    - content.tabs.link
+    - header.autohide
+    - navigation.expand
+    - navigation.indexes
+    - navigation.instant
+    - navigation.sections
+    #- navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    # - toc.integrate
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Passer en mode sombre
+    - scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/toggle-switch
+        name: Passer en mode clair
+  logo: https://github.com/lucguinchard/plugin-Yamaha-musiccast/blob/master/plugin_info/YamahaMusiccast_icon.png?raw=true
+  favicon: https://github.com/lucguinchard/plugin-Yamaha-musiccast/blob/master/plugin_info/YamahaMusiccast_icon.png?raw=true
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+# Customization
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/lucguinchard
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/luc-guinchard-ba895961/
+    - icon: fontawesome/brands/paypal
+      link: https://paypal.me/lucguinchard
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid-experimental
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+nav:
+  - Présentation: index.md
+  - Change log : changelog.md

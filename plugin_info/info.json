@@ -11,6 +11,6 @@
 	"hasDependency": false,
 	"hasOwnDeamon": true,
 	"maxDependancyInstallTime": 0,
-	"changelog": "https://lucguinchard.github.io/plugin-Yamaha-musiccast/#language#/changelog",
-	"documentation": "https://lucguinchard.github.io/plugin-Yamaha-musiccast/#language#/"
+	"changelog": "https://lucguinchard.github.io/plugin-Yamaha-musiccast/changelog",
+	"documentation": "https://lucguinchard.github.io/plugin-Yamaha-musiccast/"
 }

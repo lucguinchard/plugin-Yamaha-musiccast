@@ -26,8 +26,12 @@
 		"lastCallAPI": "Last call API"
 	},
 	"plugins\/YamahaMusiccast\/plugin_info\/configuration.php": {
-		"comment.socket": "The daemon opens a socket which allows the Yahama Musiccast device to communicate with it",
-		"socket.port": "Socket port: ",
-		"socket.port.default": "999"
+		"Socket": "Socket",
+		"Les appareils Musiccast dialogue avec ce plugin à l’aide d’un socket php ouvert par le démon sur la machine Jeedom.": "Musiccast devices interact with this plugin using a php socket opened by the daemon on the Jeedom machine.",
+		"Numéro de port :": "Port number:",
+		"Nom :": "Name:",
+		"Offrez-un café": "Offer a coffee",
+		"Ce plugin est entièrement gratuit et indépendant, Mais si cela vous enchante j’accepte les": "This plugin is completely free and independent, But if you like it I accept the",
+		"thé/café/bière": "tea/coffee/beer"
 	}
 }

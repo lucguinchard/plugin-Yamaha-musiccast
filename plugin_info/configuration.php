@@ -28,19 +28,31 @@ if (!isConnect()) {
 <form class="form-horizontal">
 	<fieldset>
 		<div class="container">
- 			<span>{{comment.socket}}</span>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-4 control-label">{{socket.port}}</label>
-			<div class="col-lg-2">
-				<input type="number" class="configKey form-control" data-l1key="socket.port" value=""/>
+			<h3><i class="fas fa-exchange-alt"></i> {{Socket}}</h3>
+			<div class="form-group">
+				<div>{{Les appareils Musiccast dialogue avec ce plugin à l’aide d’un socket php ouvert par le démon sur la machine Jeedom.}}</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-4 control-label">{{socket.name}}</label>
-			<div class="col-lg-2">
-				<input type="text" class="configKey form-control" data-l1key="socket.name" value=""/>
+			<div class="form-group">
+				<label class="col-lg-2 control-label">{{Numéro de port :}}</label>
+				<div class="col-lg-4">
+					<input type="number" class="configKey form-control" data-l1key="socket.port" value="" placeholder="9999"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-2 control-label">{{Nom :}}</label>
+				<div class="col-lg-4">
+					<input type="text" class="configKey form-control" data-l1key="socket.name" value="" placeholder="jeedom_musiccast"/>
+				</div>
+			</div>
+			<br/>
+			<h3><i class="fas fa-coffee"></i> {{Offrez-un café}}</h3>
+			<div class="form-group">
+				<div>
+					{{Ce plugin est entièrement gratuit et indépendant, Mais si cela vous enchante j’accepte les}} <a href="https://www.paypal.com/paypalme/lucguinchard" title="{{thé/café/bière}}" target="_blank"><i class="fas fa-coffee"></i></a>.
+				</div>
 			</div>
 		</div>
 	</fieldset>
+	<br/>
+	<br/>
 </form>

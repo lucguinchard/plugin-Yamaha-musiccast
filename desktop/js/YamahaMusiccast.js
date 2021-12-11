@@ -26,7 +26,7 @@ $("#table_cmd").sortable({
 });
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=model_name]').on('change', function () {
-	var url = 'plugins/YamahaMusiccast/core/img/' + $(this).value() + '.jpg';
+	var url = 'plugins/YamahaMusiccast/core/img/' + $(this).value() + '.png';
 	$('#img_device_not_found a').attr('href', 'https://github.com/lucguinchard/plugin-Yamaha-musiccast/issues/new?assignees=&labels=type%3AEnhancement&template=LOGO_DEVICE_EMPTY.md&title=L%E2%80%99image+de+mon+appareil+%60' + $(this).value() + '%60+n%E2%80%99existe+pas.');
 	$.get(url, function(data){
 		$('#img_device').attr('src', url);

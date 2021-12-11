@@ -54,7 +54,7 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard'; ?>
 					<div class="eqLogicDisplayCard cursor <?= $opacity ?>" data-eqLogic_id="<?= $eqLogic->getId() ?>">
 						<div style="height: 100px">
-							<img src="<?= $eqLogic->getImage() ?>" style="max-width: 100px !important;width: auto !important;max-height: 100px !important;"/>
+							<img src="<?= $eqLogic->getImage() ?>" style="max-width: 100px !important;width: auto !important;max-height: 100px !important;min-height: auto !important;"/>
 						</div>
 						<span class="name"><?= $eqLogic->getHumanName(true, true) ?></span>
 					</div>

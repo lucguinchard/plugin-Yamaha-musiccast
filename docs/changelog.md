@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 0.9 : (**10 Décembre 2021**)
+> - Ajout d’images de certains appareils.
+> - Utilisation d’images png en place de JPEG (pour la transparence).
+> - Ajout de la mention « Offrez-un café » dans la partie configuration.
+
 ### Version 0.8 : (**25 Septembre 2021**)
 > - Gestion des images des appareils.
 > - Ajout de méthodes de type tuner.

@@ -307,8 +307,11 @@ class YamahaMusiccastCmd extends cmd {
 				$eqLogic->callAPIGET(YamahaMusiccast::url_v1_tuner . "setFreq?band=" . $tuner_band . "&tuning=tp_down");
 				break;
 			case "tuner_set_frequency_direct":
-				$tuner_band = $eqLogic->getCmd(null, 'tuner_band')->execCmd();
-				$eqLogic->callAPIGET(YamahaMusiccast::url_v1_tuner . "setFreq?band=" . $tuner_band . "&tuning=direct&num=" . $_options['num']);
+				if(!empty($_options['title'])) {
+					$data = $_options['title'];
+					$tuner_band = $eqLogic->getCmd(null, 'tuner_band')->execCmd();
+					$eqLogic->callAPIGET(YamahaMusiccast::url_v1_tuner . "setFreq?band=" . $tuner_band . "&tuning=direct&num=" . $data);
+				}
 				break;
 			case 'tuner_recall_preset':
 				if(!empty($_options['select'])) {

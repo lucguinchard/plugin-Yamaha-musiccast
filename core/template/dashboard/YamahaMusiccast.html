@@ -112,6 +112,9 @@
 				<li class="nav-item">
 					<a class="nav-link active" id="pills-preset-tab-#id#" data-toggle="pill" href="##id#preset" role="tab" aria-controls="pills-preset" aria-selected="false"><i class="fas fa-heart"></i><span>Favoris</span></a>
 				</li>
+				<li class="nav-item tunerpreset">
+					<a class="nav-link" id="pills-tunerpreset-tab-#id#" data-toggle="pill" href="##id#tunerpreset" role="tab" aria-controls="pills-tunerpreset" aria-selected="false"><i class="fas fa-broadcast-tower"></i><span>Tuner</span></a>
+				</li>
 				<li class="nav-item">
 					<a class="nav-link" id="pills-recent-tab-#id#" data-toggle="pill" href="##id#recent" role="tab" aria-controls="pills-recent" aria-selected="false"><i class="far fa-clock"></i><span>Récent</span></a>
 				</li>
@@ -119,12 +122,13 @@
 					<a class="nav-link" id="pills-cogs-tab-#id#" data-toggle="pill" href="##id#cogs" role="tab" aria-controls="pills-cogs" aria-selected="false"><i class="fas fa-cogs"></i><span>Config</span></a>
 				</li>
 			</ul>
-			<div class="tab-content">
+			<div class="tab-content" style="height: 200px !important">
 				<div class="tab-pane cmd" id="#id#input" data-cmd_id="#input_id#"></div>
 				<div class="tab-pane" id="#id#playlist">
 					Cette partie affichera les playlists enregistrées.
 				</div>
 				<div class="tab-pane cmd active" id="#id#preset" data-cmd_id="#netusb_recall_preset_list_id#">#netusb_recall_preset#</div>
+				<div class="tab-pane cmd tunerpreset" id="#id#tunerpreset" data-cmd_id="#tuner_recall_preset_list_id#">#tuner_recall_preset#</div>
 				<div class="tab-pane cmd" id="#id#recent" data-cmd_id="#netusb_recall_recent_list_id#">#netusb_recall_recent#</div>
 				<div class="tab-pane" id="#id#cogs">
 					<h4>Apparence</h4>
@@ -177,6 +181,10 @@
 		var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
 		// Affiche l'onglet favoris à l'affichage du widget.
 		uid.find('#displayoff-menu-#id# li:nth-child(3) a').tab('show');
+
+		if('#is_tuner#' != '1') {
+			$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .tunerpreset').css('display', 'none');
+		}
 
 		function backClic#id#() {
 			$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'block');
@@ -309,6 +317,28 @@
 			}
 		}
 		jeedom.cmd.update['#netusb_recall_preset_list_id#']({display_value:'#netusb_recall_preset_list#'});
+
+		jeedom.cmd.update['#tuner_recall_preset_list_id#'] = function(_options){
+			if('#is_tuner#' == '1') {
+				var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+				if (_options.display_value !== '' && _options.display_value !== undefined) {
+					var inputIconMap = getInputIconMap();
+					var list = _options.display_value.split(";");
+					var bottonList = '<ul>';
+					for(i = 0; i < list.length; i++){
+						var inputArray = list[i].split(/(?:→|\|)+/);
+						bottonList += '<li><a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#tuner_recall_preset_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + inputArray[1] + ' <span>' + inputArray[2] + '</span></a></li>'
+					}
+					bottonList += '</ul>';
+					uid.find('##id#tunerpreset').empty().append(bottonList);
+				} else {
+					uid.find('##id#tunerpreset').empty().append("Votre liste est vide");
+				}
+			} else {
+				
+			}
+		}
+		jeedom.cmd.update['#tuner_recall_preset_list_id#']({display_value:'#tuner_recall_preset_list#'});
 
 
 		jeedom.cmd.update['#distribution_enable_id#'] = function(_options){

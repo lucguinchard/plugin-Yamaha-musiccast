@@ -100,7 +100,7 @@ function getInputIconMap() {
 	*/
 	inputIconMap.set('airplay',		[true,	false,	"play_pause",	true,	'<span class="fa-stack fa-lg"><i class="fas fa-mobile-alt fa-stack-2x"></i><i class="fas fa-music fa-stack-1x" style="font-size:0.5em"></i></span>']);
 	inputIconMap.set('cd',			[true,	false,	"play_pause",	true,	'<i class="fas fa-compact-disc"></i>']);
-	inputIconMap.set('tuner',		[false,	false,	false,			true,	'<i class="fas fa-music"></i>']);
+	inputIconMap.set('tuner',		[false,	false,	false,			true,	'<i class="fas fa-broadcast-tower"></i>']);
 	inputIconMap.set('multi_ch',	[true,	false,	false,			true,	'<i class="fas fa-music"></i>']);
 	inputIconMap.set('phono',		[false,	false,	false,			true,	'<i class="fas fa-record-vinyl"></i>']);
 	inputIconMap.set('hdmi',		[false,	false,	false,			true,	'<i class="fas fa-desktop"></i>']);

@@ -19,9 +19,18 @@
 
 .YamahaMusiccast .panelBox {
 	position: relative;
-	height: inherit;
+	height: 320px;
 	overflow: auto;
 	padding: 5px 10px;
+}
+
+/* Demonstrate a "mostly customized" scrollbar
+ * (won't be visible otherwise if width/height is specified) */
+.YamahaMusiccast div.tab-content::-webkit-scrollbar,
+.YamahaMusiccast .panelBox::-webkit-scrollbar {
+	width: 3px;
+	height: 3px;
+	background-color: #aaa; /* or add it to the track */
 }
 
 .YamahaMusiccast .playlist {
@@ -170,7 +179,7 @@
 
 .YamahaMusiccast .displayoff .go-playlist {
 	float: left;
-	width: 200px;
+	width: calc(100% - 50px);
 	max-height: 45px;
 	height: 45px;
 	border: black solid 1px !important;
@@ -287,7 +296,7 @@
 .YamahaMusiccast .tab-content li a.nav-item.nav-link.cmd.btn {
 	display: block;
 	overflow: hidden;
-	width: 240px !important;
+	width: 95% !important;
 	text-align: left;
 	height: 40px !important;
 	min-height: 40px !important;

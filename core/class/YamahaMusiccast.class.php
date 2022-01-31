@@ -181,6 +181,9 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#netusb_recall_preset_change_list#'] = $netusb_recall_preset->getConfiguration('listValue', '');
 		}
 
+		$tuner_band = $this->getCmd(null, 'tuner_band');
+		$replace['#is_tuner#'] = is_object($tuner_band);
+
 		$netusb_recall_recent = $this->getCmd(null, 'netusb_recall_recent');
 		if (!empty($netusb_recall_recent) && $netusb_recall_recent->getConfiguration('listValue', '') != '') {
 			$replace['#netusb_recall_recent_change_list#'] = $netusb_recall_recent->getConfiguration('listValue', '');

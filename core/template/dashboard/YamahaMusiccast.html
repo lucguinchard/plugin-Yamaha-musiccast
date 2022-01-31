@@ -229,7 +229,7 @@
 					if(inputIconMap.has(inputArray[0])) {
 						icon = inputIconMap.get(inputArray[0])[4];
 					} else {
-						icon = '<img src="/plugins/YamahaMusiccast/ressources/input/' + inputArray[0] + '.png"/>';
+						icon = '<img src="/plugins/YamahaMusiccast/data/input/' + inputArray[0] + '.png"/>';
 					}
 					bottonList += '<a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#input_change_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[1] + '</span></a>'
 				}
@@ -297,7 +297,7 @@
 					if(inputIconMap.has(inputArray[1])) {
 						icon = inputIconMap.get(inputArray[1])[4];
 					} else {
-						var url = '/plugins/YamahaMusiccast/ressources/input/' + inputArray[1] + '.png';
+						var url = '/plugins/YamahaMusiccast/data/input/' + inputArray[1] + '.png';
 						icon = '<img src="' + url + '"/>';
 					}
 					bottonList += '<li><a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#netusb_recall_preset_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + icon + '<span>' + inputArray[2] + '</span></a></li>'

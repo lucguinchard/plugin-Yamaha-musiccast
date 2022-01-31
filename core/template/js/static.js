@@ -55,7 +55,7 @@ function navigateButton(uid_value) {
 	} else {
 		onelinedefile.show();
 		nav_playlist.show();
-		var url = '/plugins/YamahaMusiccast/ressources/input/' + input + '.png';
+		var url = '/plugins/YamahaMusiccast/data/input/' + input + '.png';
 		$.get(url, function(data){
 			pochette_input.attr('src', url);
 		}).fail(function() {

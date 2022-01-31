@@ -104,7 +104,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public function preRemove() {
-		rrmdir(__DIR__ . '/../../../../plugins/' . __CLASS__ . '/ressources/' . $this->getId());
+		rrmdir(__DIR__ . '/../../../../plugins/' . __CLASS__ . '/data/' . $this->getId());
 	}
 
 	// When the directory is not empty:
@@ -191,7 +191,7 @@ class YamahaMusiccast extends eqLogic {
 			$replace['#input_change_list#'] = $input_select->getConfiguration('listValue', '');
 		}
 
-		$img = '/plugins/' . __CLASS__ . '/ressources/input/' . $replace['#input#'] . '.png';
+		$img = '/plugins/' . __CLASS__ . '/data/input/' . $replace['#input#'] . '.png';
 		if (file_exists(__DIR__ . '/../../../..' . $img)) {
 			$replace['#input_icon#'] = $img;
 		} else {
@@ -550,7 +550,7 @@ class YamahaMusiccast extends eqLogic {
 
 				$getStatusZone = $eqLogic->callAPIGET(YamahaMusiccast::url_v1 . "$zoneName/getStatus");
 
-				$deviceDir = __DIR__ . '/../../../../plugins/' . __CLASS__ . '/ressources/' . $eqLogic->getId() . '/';
+				$deviceDir = __DIR__ . '/../../../../plugins/' . __CLASS__ . '/data/' . $eqLogic->getId() . '/';
 				if (!file_exists($deviceDir)) {
 					mkdir($deviceDir, 0700);
 				}
@@ -1535,7 +1535,7 @@ class YamahaMusiccast extends eqLogic {
 		}
 
 		foreach ($device as $eqLogic) {
-			$fileAlbumARTUrl = '/plugins/' . __CLASS__ . '/ressources/' . $eqLogic->getId() . '/AlbumART.jpg';
+			$fileAlbumARTUrl = '/plugins/' . __CLASS__ . '/data/' . $eqLogic->getId() . '/AlbumART.jpg';
 			$fileAlbumART = __DIR__ . '/../../../..' . $fileAlbumARTUrl;
 			if (!empty($result->albumart_url)) {
 				$url = "http://" . $eqLogic->getConfiguration('ip') . $result->albumart_url;

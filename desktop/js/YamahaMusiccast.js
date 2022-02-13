@@ -106,12 +106,6 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 			handleAjaxError(request, status, error);
 		},
 		success: function (data) {
-			if (data.state !== 'ok') {
-				$('#div_alert').showAlert({message: data.result, level: 'danger'});
-				return;
-			} else {
-				$('#div_alert').showAlert({message: data.result, level: 'success'});
-			}
 			modifyWithoutSave = false;
 			var vars = getUrlVars();
 			var url = 'index.php?';
@@ -125,6 +119,12 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 				url += '#' + document.location.toString().split('#')[1];
 			}
 			loadPage(url);
+			if (data.state !== 'ok') {
+				$('#div_alert').showAlert({message: data.result, level: 'danger'});
+				return;
+			} else {
+				$('#div_alert').showAlert({message: data.result, level: 'success'});
+			}
 		}
 	});
 });

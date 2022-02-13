@@ -143,21 +143,7 @@ try {
 				foreach ($return as $device){
 					$deviceList .= $device . ', ';
 				}
-				ajax::error('La recherche a trouvé ' . $nb . ' zone(s) compatible(s) : ' . substr($deviceList, 0, -2) . '.', __FILE__);
-			}
-			break;
-		case 'saveIP':
-			$ip = init('ip');
-			$return = YamahaMusiccast::saveDeviceIp($ip);
-			$nb = count($return);
-			if($nb === 0) {
-				ajax::error(__('La recherche n’a pas trouvé d’appareil compatible pour : ' . $ip, __FILE__));
-			} else {
-				$deviceList = "";
-				foreach ($return as $zone){
-					$deviceList .= $zone['name'] . '-' . $zone['zone'] . ', ';
-				}
-				ajax::error('La recherche a trouvé un appareil compatible avec la(es) zone(s) suivante(s) : ' . substr($deviceList, 0, -2), __FILE__);
+				ajax::success('La recherche a trouvé ' . $nb . ' zone(s) compatible(s) : ' . substr($deviceList, 0, -2) . '.', __FILE__);
 			}
 			break;
 	}

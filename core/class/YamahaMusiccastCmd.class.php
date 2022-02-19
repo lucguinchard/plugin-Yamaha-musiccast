@@ -257,6 +257,9 @@ class YamahaMusiccastCmd extends cmd {
 			//getSignalInfo
 			//prepareInputChange
 			//recallScene
+			case "scene_change":
+				$eqLogic->callAPIGET(YamahaMusiccast::url_v1 . "$zone/recallScene?num=" . $_options['slider']);
+				break;
 			//setContentsDisplay
 			//controlCursor
 			//controlMenu

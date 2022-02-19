@@ -175,6 +175,7 @@ class YamahaMusiccast extends eqLogic {
 		if (empty($replace['#surr_decoder_type_list_html#'])) {$replace['#surr_decoder_type_list_html#'] = "";}
 		if (empty($replace['#system_reboot_html#'])) {$replace['#system_reboot_html#'] = "";}
 		if (empty($replace['#network_reboot_html#'])) {$replace['#network_reboot_html#'] = "";}
+		if (empty($replace['#scene_change_html#'])) {$replace['#scene_change_html#'] = "";}
 
 		$netusb_recall_preset = $this->getCmd(null, 'netusb_recall_preset');
 		if (!empty($netusb_recall_preset) && $netusb_recall_preset->getConfiguration('listValue', '') != '') {
@@ -812,6 +813,14 @@ class YamahaMusiccast extends eqLogic {
 					$eqLogic->createCmd('disable_flags', 'info', 'numeric')->save();
 				}
 				if (in_array("scene", $fonc_list_zone)) {
+					if(!empty($zone->scene_num)) {
+						$max_scene = $zone->scene_num;
+						$config_scene_change['minValue'] = 1;
+						$config_scene_change['maxValue'] = $max_scene;
+						$scene = $eqLogic->createCmd('scene', 'info', 'numeric');
+						$scene->save();
+						$eqLogic->createCmd('scene_change', 'action', 'slider', false, null, $config_scene_change)->setValue($scene->getId())->save();
+					}
 				}
 				if (in_array("contents_display", $fonc_list_zone)) {
 					$eqLogic->createCmd('contents_display', 'info', 'binary')->save();

@@ -868,7 +868,7 @@ class YamahaMusiccast extends eqLogic {
 				}
 				if (!empty($getFeatures->tuner)) {
 					$tuner = $getFeatures->tuner;
-					$eqLogic->createCmd('tuner_band', 'info', 'string', false, null, $configurationTuner)->save();
+					$tuner_band = $eqLogic->createCmd('tuner_band', 'info', 'string', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_auto_scan', 'info', 'binary', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_auto_preset', 'info', 'binary', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_set_band', 'action', 'other', false, null, $configurationTuner)->save();
@@ -949,7 +949,7 @@ class YamahaMusiccast extends eqLogic {
 						if (!empty($band_list)) {
 							$config_band_list['listValue'] = substr($band_list, 0, -1);
 							$tuner_set_band = $eqLogic->createCmd('tuner_set_band', 'action', 'select', false, null, $config_band_list)
-											->setValue($eqLogic->getCmd(null, 'tuner_band')->getId())->save();
+											->setValue($tuner_band->getId())->save();
 							$eqLogic->checkAndUpdateCmd('tuner_band_list', $config_band_list['listValue']);
 						}
 					}

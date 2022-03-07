@@ -871,7 +871,6 @@ class YamahaMusiccast extends eqLogic {
 					$tuner_band = $eqLogic->createCmd('tuner_band', 'info', 'string', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_auto_scan', 'info', 'binary', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_auto_preset', 'info', 'binary', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_set_band', 'action', 'other', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_set_frequency_up', 'action', 'other', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_set_frequency_down', 'action', 'other', false, null, $configurationTuner)->save();
 					$eqLogic->createCmd('tuner_set_frequency_cancel', 'action', 'other', false, null, $configurationTuner)->save();

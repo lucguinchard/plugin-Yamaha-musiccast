@@ -270,7 +270,7 @@ class YamahaMusiccastCmd extends cmd {
 			//					TUNER					*/
 			//*******************************************/
 			case "tuner_set_band":
-				$eqLogic->callAPIGET(YamahaMusiccast::url_v1_tuner . "setBand?band=" . $_options['band']);
+				$eqLogic->callAPIGET(YamahaMusiccast::url_v1_tuner . "setBand?band=" . $_options['select']);
 				break;
 			case "tuner_set_band_am":
 				$eqLogic->callAPIGET(YamahaMusiccast::url_v1_tuner . "setBand?band=am");

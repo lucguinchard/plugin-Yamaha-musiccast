@@ -137,7 +137,7 @@ try {
 			$return = YamahaMusiccast::searchAndSaveDeviceList();
 			$nb = count($return);
 			if($nb === 0) {
-				ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.', __FILE__). ' ' . __('Pour plus d’information consulter la ', __FILE__) . ' <a href="https://lucguinchard.github.io/plugin-Yamaha-musiccast/fr_FR/#tocAnchor-1-5">' . __('FAQ', __FILE__) . '</a>');
+				ajax::error(__('La recherche automatique n’a pas trouvé d’appareil compatible.', __FILE__). ' ' . __('Pour plus d’information consulter la ', __FILE__) . ' <a href="https://lucguinchard.github.io/plugin-Yamaha-musiccast/#faq">' . __('FAQ', __FILE__) . '</a>');
 			} else {
 				$deviceList = "";
 				foreach ($return as $device){
@@ -145,6 +145,69 @@ try {
 				}
 				ajax::success('La recherche a trouvé ' . $nb . ' zone(s) compatible(s) : ' . substr($deviceList, 0, -2) . '.', __FILE__);
 			}
+			break;
+		case 'searchDirlist':
+			$id = init('id');
+			$yamahaMusiccast = YamahaMusiccast::byId($id);
+			$device[YamahaMusiccast::main] = $yamahaMusiccast;
+			$type = init('type');
+			$index = init('index');
+			$input = init('input');
+			$zone = $yamahaMusiccast->getConfiguration('zone');
+			$power_state_cmd = $yamahaMusiccast->getCmd(null, 'power_state');
+			if($power_state_cmd->execCmd() !== 'on') {
+				$yamahaMusiccast->callAPIGET(YamahaMusiccast::url_v1 . "$zone/setPower?power=on");
+				log::add("YamahaMusiccast", 'info', 'Allumer l’appareil');
+				sleep(1);
+			}
+			$inputCmd = $yamahaMusiccast->getCmd('info', 'input');
+			if($inputCmd->execCmd() !== $input) {
+				$yamahaMusiccast->callAPIGET(YamahaMusiccast::url_v1 . "$zone/setInput?input=$input");
+				log::add("YamahaMusiccast", 'info', 'Change Input');
+			}
+			if($type != null) {
+				switch($type) {
+					case 'select':
+						YamahaMusiccast::callListControlSelect($device, $index);
+						break;
+					case 'return':
+						YamahaMusiccast::callListControlReturn($device);
+						break;
+					// ALL
+					case 'main':
+					// Pandora
+					case 'auto_complete':
+					case 'search_artist':
+					case 'search_track':
+						$text = init('text');
+						YamahaMusiccast::callSearchString($device, $type, $text, $index);
+						break;
+				}
+			}
+			$netusbListInfo = YamahaMusiccast::callGetNetusbListInfo($device, $input);
+			ajax::success($netusbListInfo);
+			break;
+		case 'playDirlist':
+			$id = init('id');
+			$yamahaMusiccast = YamahaMusiccast::byId($id);
+			$device[YamahaMusiccast::main] = $yamahaMusiccast;
+			$input = init('input');
+			$index = init('index');
+			if($index != null) {
+				YamahaMusiccast::callListControlPlay($device, $index);
+			}
+			ajax::success("OK");
+			break;
+		case 'searchPlaylist':
+			$id = init('id');
+			$yamahaMusiccast = YamahaMusiccast::byId($id);
+			$device[YamahaMusiccast::main] = $yamahaMusiccast;
+			$input = init('input');
+			if(empty($input)) {
+				$input = "server";
+			}
+			$index = init('index');
+			ajax::success("Cette partie affichera les playlists enregistrées.");
 			break;
 	}
 

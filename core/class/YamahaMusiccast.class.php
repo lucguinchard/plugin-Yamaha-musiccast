@@ -1178,7 +1178,6 @@ class YamahaMusiccast extends eqLogic {
 				log::add(__CLASS__, 'info', 'TODO: $tag_updated - Reserved ' . print_r($tag_updated = $system->tag_updated, true));
 			}
 		}
-		
 		foreach ($device as $eqLogic) {
 			$zone = $eqLogic->getConfiguration('zone');
 			if (!empty($result->$zone)) {
@@ -1527,17 +1526,14 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->total_time)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_total_time', $result->total_time);
 		}
-		if (!empty($result->artist)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_artist', $result->artist);
+		if (!empty($result->artist) || !empty($result->artist) || !empty($result->track)) {
+			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_artist', "");
+			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_album', "");
+			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_track', "");
+			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
 		}
 		if (!empty($result->artist)) {
-			// Lorsque la radio Web est allumé, seul `artist` est renseigné.
-			foreach ($device as $eqLogic) {
-				$eqLogic->checkAndUpdateCmd('netusb_album', "");
-				$eqLogic->checkAndUpdateCmd('netusb_track', "");
-			}
-			//YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_album', "");
-			//YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_track', "");
+			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_artist', $result->artist);
 		}
 		if (!empty($result->album)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_album', $result->album);
@@ -1676,8 +1672,8 @@ class YamahaMusiccast extends eqLogic {
 		}
 	}
 
-	public static function callGetNetusbListInfo($device) {
-		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_netusb . "getListInfo?list_id=main&input=net_radio&index=0&size=8");
+	public static function callGetNetusbListInfo($device, $input = "net_radio") {
+		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_netusb . "getListInfo?list_id=main&input=" . $input . "&index=0&size=8");
 		if (!empty($result->service_list)) {
 			log::add(__CLASS__, 'info', 'TODO: Gestion de la méthode netusb getListInfo - Warning:net_radio');
 			foreach ($result->service_list as $service) {
@@ -1689,6 +1685,41 @@ class YamahaMusiccast extends eqLogic {
 				$trial_time_left = $service->trial_time_left;
 			}
 		}
+		return $result;
+	}
+
+	public static function callListControlReturn($device) {
+		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_netusb . "setListControl?list_id=&type=return");
+		if (!empty($result->service_list)) {
+
+		}
+		return $result;
+	}
+
+	public static function callSearchString($device, $list_id, $string, $index) {
+		$data = '{
+			"list_id": "'.$list_id.'",
+			"string":"'.$string.'",
+			"index":"'.$index.'"
+		}';
+		$result = $device[YamahaMusiccast::main]->callAPIPOST(YamahaMusiccast::url_v1_netusb . "setSearchString", $data);
+		return $result;
+	}
+
+	public static function callListControlSelect($device, $index = 0) {
+		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_netusb . "setListControl?list_id=&type=select&index=" . $index);
+		if (!empty($result->service_list)) {
+
+		}
+		return $result;
+	}
+
+	public static function callListControlPlay($device, $index = 0) {
+		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_netusb . "setListControl?list_id=&type=play&index=" . $index);
+		if (!empty($result->service_list)) {
+
+		}
+		return $result;
 	}
 
 	public static function callDistributionGetInfo($device) {

@@ -6,7 +6,7 @@ function elementShowOrHide(element, show) {
 	}
 }
 
-function navigateButton(uid_value) {
+function navigateButton(uid_value, id) {
 	var play_stop = $("#" + uid_value + "_play_stop").val();
 	var input = $("#" + uid_value + "_input").val();
 	if(input === '') return;
@@ -33,21 +33,21 @@ function navigateButton(uid_value) {
 				uid.find('.action_list').css('display', 'none');
 				if (play_stop === 'play') {
 					uid.find('.play').css('display', 'none');
-					uid.find('.stop').css('display', 'inline-block');
+					uid.find('.stop').css('display', 'table-cell');
 				} else if (play_stop === 'pause' || play_stop === 'stop') {
 					uid.find('.stop').css('display', 'none');
-					uid.find('.play').css('display', 'inline-block');
+					uid.find('.play').css('display', 'table-cell');
 				}
 			break;
 			case 'play_pause':
-				uid.find('.action_list').css('display', 'inline-block');
+				uid.find('.action_list').css('display', 'table-cell');
 				uid.find('.stop').css('display', 'none');
 				if (play_stop === 'play') {
 					uid.find('.play').css('display', 'none');
-					uid.find('.pause').css('display', 'inline-block');
+					uid.find('.pause').css('display', 'table-cell');
 				} else if (play_stop === 'pause' || play_stop === 'stop') {
 					uid.find('.pause').css('display', 'none');
-					uid.find('.play').css('display', 'inline-block');
+					uid.find('.play').css('display', 'table-cell');
 				}
 			break;
 		}
@@ -65,28 +65,31 @@ function navigateButton(uid_value) {
 		divInputPochette.show();
 		divInputIcon.hide();
 		uid.find('.stop').css('display', 'none');
-		uid.find('.action_list').css('display', 'inline-block');
+		uid.find('.action_list').css('display', 'table-cell');
 		if (play_stop === 'play') {
 			uid.find('.play').css('display', 'none');
-			uid.find('.pause').css('display', 'inline-block');
+			uid.find('.pause').css('display', 'table-cell');
 		} else if (play_stop === 'pause' || play_stop === 'stop') {
 			uid.find('.pause').css('display', 'none');
-			uid.find('.play').css('display', 'inline-block');
+			uid.find('.play').css('display', 'table-cell');
 		}
 	}
-/*
-	if (play_stop === 'play') {
-		uid.find('.play').css('display', 'none');
-		uid.find('.pause').css('display', 'inline-block');
-	} else if (play_stop === 'pause' || play_stop === 'stop') {
-		uid.find('.pause').css('display', 'none');
-		uid.find('.stop').css('display', 'none');
-		uid.find('.play').css('display', 'inline-block');
-	} else {
-		uid.find('.pause').css('display', 'none');
-		uid.find('.play').css('display', 'none');
-	}
-*/
+	elementShowOrHide(uid.find('.dir_list'), isInputDirSearch(input));
+	uid.find('.dir_list').attr("onclick", "searchDirlist" + uid_value + "('" + id + "', null, '" + input + "');");
+}
+
+
+function isInputDirSearch(input) {
+	const inputDirSearchMap = [
+		"usb",
+		"server",
+		"net_radio",
+		"qobuz",
+		"deezer",
+		"tidal",
+		"napster"
+	];
+	return inputDirSearchMap.includes(input);
 }
 
 function getInputIconMap() {
@@ -98,7 +101,7 @@ function getInputIconMap() {
 	* ['divInputIcon'] Permet d’afficher l’icone en grand (quand il y a pas de pochette).
 	* ['icon']
 	*/
-	inputIconMap.set('airplay',		[true,	false,	"play_pause",	true,	'<span class="fa-stack fa-lg"><i class="fas fa-mobile-alt fa-stack-2x"></i><i class="fas fa-music fa-stack-1x" style="font-size:0.5em"></i></span>']);
+	inputIconMap.set('airplay',		[true,	false,	"play_pause",	true,	'<span class="fa-stack fa-lg"><i class="fas fa-mobile-alt fa-stack-1x"></i><i class="fas fa-music fa-stack-1x" style="font-size:0.5em"></i></span>']);
 	inputIconMap.set('cd',			[true,	false,	"play_pause",	true,	'<i class="fas fa-compact-disc"></i>']);
 	inputIconMap.set('tuner',		[false,	false,	false,			true,	'<i class="fas fa-broadcast-tower"></i>']);
 	inputIconMap.set('multi_ch',	[true,	false,	false,			true,	'<i class="fas fa-music"></i>']);
@@ -149,7 +152,7 @@ function getInputIconMap() {
 	inputIconMap.set('usb_dac',		[true,	false,	false,			true,	'<i class="icon techno-memory"></i>']);
 	inputIconMap.set('usb',			[true,	false,	"play_pause",	true,	'<i class="icon techno-memory"></i>']);
 	inputIconMap.set('bluetooth',	[true,	false,	"play_pause",	true,	'<i class="fab fa-bluetooth icon_blue"></i>']);
-	inputIconMap.set('server',		[true,	false,	"play_pause",	true,	'<i class="fas fa-hdd"></i>']);
+	inputIconMap.set('server',		[true,	true,	"play_pause",	true,	'<i class="fas fa-hdd"></i>']);
 	inputIconMap.set('net_radio',	[true,	true,	"stop",			false,	'<i class="fas fa-music"></i>']);
 	inputIconMap.set('mc_link',		[true,	false,	false,			false,	'<i class="fas fa-link"></i>']);
 	inputIconMap.set('main_sync',	[false,	false,	false,			true,	'<i class="fas fa-music"></i>']);

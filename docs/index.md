@@ -39,3 +39,10 @@ La `Recherche automatique` permet de céer vos jeeobjects automatiquements.
 ### Mes appareils ne sont pas détectés avec la recherche automatique ?
 
 > Vérifier que vos appareils Musiccast soit dans le même réseau que votre jeedom.
+
+### Dans les logs il y a des messages du type :
+```
+L’appareil 192.168.x.y dialogue sur le port 9999 avec le message : ????????
+```
+
+> En effet les `Google Home` communiquent entre eux avec le port 9999. Cela ne perturbe pas le bon fonctionnement. Par contre il est possible de changer le port du plugin-Yamaha-musiccast dans la page de configuration pour qu’il n'utilise plus le port déjà utilisé (ici : 9999).

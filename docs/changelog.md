@@ -1,5 +1,13 @@
 # Changelog
 
+### Version 0.10 : (**27 Mars 2022**)
+> - Mise en place des listes de recherche pour les entrées : `serveur` + `net_radio` + `usb` + `qobuz` + `deezer` + `tidal` + `napster`.
+> - Refonte des écrans `HTML` + `CSS` pour plus de lisibitité.
+> - Ajout d’un écran pour le tuner + ajout de commande dédié tuner.
+> - Meilleur gestion des cammandes d’infos concernant la piste.
+> - Gestion des `scenes`.
+> - Ajout d’images de certains appareils.
+
 ### Version 0.9 : (**10 Décembre 2021**)
 > - Ajout d’images de certains appareils.
 > - Utilisation d’images png en place de JPEG (pour la transparence).
@@ -48,8 +56,8 @@
 
 ### Détail des changements
 
-Détail complet des mises à jour sur [Historique Commit]({{ site.github.repository_url }}/commits/master)
+Détail complet des mises à jour sur [Historique Commit](https://github.com/lucguinchard/plugin-Yamaha-musiccast/commits/master)
 
 # Bug et suggestion
 
-En cas de problèmes/demandes avec ce plugin il est possible d’ouvrir un [ticket]({{ site.github.repository_url }}/issues).
+En cas de problèmes/demandes avec ce plugin il est possible d’ouvrir un [ticket](https://github.com/lucguinchard/plugin-Yamaha-musiccast/issues).

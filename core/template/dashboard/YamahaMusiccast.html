@@ -347,7 +347,7 @@
 					var bottonList = '<ul class="div_long_list">';
 					for(i = 0; i < list.length; i++){
 						var inputArray = list[i].split(/(?:→|\|)+/);
-						bottonList += '<li><a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#tuner_recall_preset_id#\', value: {select: \'' + inputArray[0] + '\'}});">' + inputArray[1] + ' <span>' + inputArray[2] + '</span></a></li>'
+						bottonList += '<li><a class="nav-item nav-link cmd cmd-widget btn" data-type="action" onclick="jeedom.cmd.execute({id: \'#tuner_recall_preset_id#\', value: {select: \'' + inputArray[0] + '\'}});"><i class="fas fa-broadcast-tower"></i><span>' + inputArray[1] + ' - ' + inputArray[2] + '</span></a></li>'
 					}
 					bottonList += '</ul>';
 					uid.find('##id#tunerpreset').empty().append(bottonList);

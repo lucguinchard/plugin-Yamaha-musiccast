@@ -327,6 +327,7 @@ class YamahaMusiccastCmd extends cmd {
 					} else {
 						$tuner_band = $eqLogic->getCmd(null, 'tuner_band')->execCmd();
 					}
+					$tuner_band = "common";
 					$eqLogic->callAPIGET(YamahaMusiccast::url_v1_tuner . "recallPreset?zone=" . $zone . "&band=" . $tuner_band . "&num=" . $_options['select']);
 				}
 				break;

@@ -1456,7 +1456,7 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callTunerGetPresetInfo($device) {
-		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_tuner . "getPresetInfo?band=fm");
+		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_tuner . "getPresetInfo?band=common");
 		if (!empty($result->preset_info)) {
 			//log::add(__CLASS__, 'debug', '[BONJOUR] ' . print_r($result->preset_info, true));
 			$preset_list = "";

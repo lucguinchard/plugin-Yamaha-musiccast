@@ -159,7 +159,7 @@ function getInputIconMap() {
 	inputIconMap.set('server',		[true,	true,	"play_pause",	true,	'<i class="fas fa-hdd"></i>']);
 	inputIconMap.set('net_radio',	[true,	true,	"stop",			false,	'<i class="fas fa-music"></i>']);
 	inputIconMap.set('mc_link',		[true,	false,	false,			false,	'<i class="fas fa-link"></i>']);
-	inputIconMap.set('main_sync',	[false,	false,	false,			true,	'<i class="fas fa-music"></i>']);
+	inputIconMap.set('main_sync',	[false,	false,	false,			true,	'<i class="fas fa-link"></i>']);
 	inputIconMap.set('none',		[false,	false,	false,			true,	'<i class="fas fa-music"></i>']);
 	return inputIconMap;
 }

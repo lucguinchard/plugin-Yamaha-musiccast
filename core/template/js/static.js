@@ -14,68 +14,73 @@ function navigateButton(uid_value, id) {
 
 	let uid = $('.YamahaMusiccast[data-eqLogic_uid=' + uid_value +']');
 
-	let onelinedefile = uid.find('.one-line-defile');
-	let divInputPochette = uid.find('.divInputPochette');
-	let nav_playlist = uid.find('.nav_playlist');
-	let divInputIcon = uid.find('.panelMusic .divInputIcon');
-	let pochette_input = uid.find('.panelMusic .pochette_input');
+	let class_play = uid.find('.play');
+	let class_pause = uid.find('.pause');
+	let class_stop = uid.find('.stop');
+	let class_action_list = uid.find('.action_list');
+	let class_dir_list = uid.find('.dir_list');
+	let class_onelinedefile = uid.find('.one-line-defile');
+	let class_divInputPochette = uid.find('.divInputPochette');
+	let class_nav_playlist = uid.find('.nav_playlist');
+	let class_divInputIcon = uid.find('.panelMusic .divInputIcon');
+	let class_pochette_input = uid.find('.panelMusic .pochette_input');
 	let inputIconMap = getInputIconMap();
 
 	if(inputIconMap.has(input)) {
 		let icon = inputIconMap.get(input);
-		elementShowOrHide(onelinedefile, icon[0]);
-		elementShowOrHide(divInputPochette, icon[1]);
-		elementShowOrHide(divInputIcon, !icon[1]);
-		elementShowOrHide(nav_playlist, icon[2] !== false);
+		elementShowOrHide(class_onelinedefile, icon[0]);
+		elementShowOrHide(class_divInputPochette, icon[1]);
+		elementShowOrHide(class_divInputIcon, !icon[1]);
+		elementShowOrHide(class_nav_playlist, icon[2] !== false);
 		switch (icon[2]) {
 			case 'stop':
-				uid.find('.pause').css('display', 'none');
-				uid.find('.action_list').css('display', 'none');
+				class_pause.css('display', 'none');
+				class_action_list.css('display', 'none');
 				if (play_stop === 'play') {
-					uid.find('.play').css('display', 'none');
-					uid.find('.stop').css('display', 'table-cell');
+					class_play.css('display', 'none');
+					class_stop.css('display', 'table-cell');
 				} else if (play_stop === 'pause' || play_stop === 'stop') {
-					uid.find('.stop').css('display', 'none');
-					uid.find('.play').css('display', 'table-cell');
+					class_stop.css('display', 'none');
+					class_play.css('display', 'table-cell');
 				}
 			break;
 			case 'play_pause':
-				uid.find('.action_list').css('display', 'table-cell');
-				uid.find('.stop').css('display', 'none');
+				class_action_list.css('display', 'table-cell');
+				class_stop.css('display', 'none');
 				if (play_stop === 'play') {
-					uid.find('.play').css('display', 'none');
-					uid.find('.pause').css('display', 'table-cell');
+					class_play.css('display', 'none');
+					class_pause.css('display', 'table-cell');
 				} else if (play_stop === 'pause' || play_stop === 'stop') {
-					uid.find('.pause').css('display', 'none');
-					uid.find('.play').css('display', 'table-cell');
+					class_pause.css('display', 'none');
+					class_play.css('display', 'table-cell');
 				}
 			break;
 		}
-		divInputIcon.empty().append(icon[4]).append("<span>" + input + "</span>");
+		class_divInputIcon.empty().append(icon[4]).append("<span>" + input + "</span>");
 	} else {
-		onelinedefile.show();
-		nav_playlist.show();
+		class_onelinedefile.show();
+		class_nav_playlist.show();
 		let url = '/plugins/YamahaMusiccast/data/input/' + input + '.png';
 		$.get(url, function(data){
-			pochette_input.attr('src', url);
+			class_pochette_input.attr('src', url);
 		}).fail(function() {
-			pochette_input.attr('src', '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png');
+			class_pochette_input.attr('src', '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png');
 		});
-		pochette_input.show();
-		divInputPochette.show();
-		divInputIcon.hide();
-		uid.find('.stop').css('display', 'none');
-		uid.find('.action_list').css('display', 'table-cell');
+		class_pochette_input.show();
+		class_divInputPochette.show();
+		class_divInputIcon.hide();
+		class_stop.css('display', 'none');
+		class_action_list.css('display', 'table-cell');
 		if (play_stop === 'play') {
-			uid.find('.play').css('display', 'none');
-			uid.find('.pause').css('display', 'table-cell');
+			class_play.css('display', 'none');
+			class_pause.css('display', 'table-cell');
 		} else if (play_stop === 'pause' || play_stop === 'stop') {
-			uid.find('.pause').css('display', 'none');
-			uid.find('.play').css('display', 'table-cell');
+			class_pause.css('display', 'none');
+			class_play.css('display', 'table-cell');
 		}
 	}
-	elementShowOrHide(uid.find('.dir_list'), isInputDirSearch(input));
-	uid.find('.dir_list').attr("onclick", "searchDirlist" + uid_value + "('" + id + "', null, '" + input + "');");
+	elementShowOrHide(class_dir_list, isInputDirSearch(input));
+	class_dir_list.attr("onclick", "searchDirlist" + uid_value + "('" + id + "', null, '" + input + "');");
 }
 
 function isInputDirSearch(input) {

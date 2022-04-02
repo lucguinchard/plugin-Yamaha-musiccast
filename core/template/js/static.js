@@ -7,22 +7,22 @@ function elementShowOrHide(element, show) {
 }
 
 function navigateButton(uid_value, id) {
-	var play_stop = $("#" + uid_value + "_play_stop").val();
-	var input = $("#" + uid_value + "_input").val();
-	if(input === '') return;
+	let play_stop = $("#" + uid_value + "_play_stop").val();
 	if(play_stop === '') return;
+	let input = $("#" + uid_value + "_input").val();
+	if(input === '') return;
 
-	var uid = $('.YamahaMusiccast[data-eqLogic_uid=' + uid_value +']');
+	let uid = $('.YamahaMusiccast[data-eqLogic_uid=' + uid_value +']');
 
-	var onelinedefile = uid.find('.one-line-defile');
-	var divInputPochette = uid.find('.divInputPochette');
-	var nav_playlist = uid.find('.nav_playlist');
-	var divInputIcon = uid.find('.panelMusic .divInputIcon');
-	var pochette_input = uid.find('.panelMusic .pochette_input');
-	var inputIconMap = getInputIconMap();
+	let onelinedefile = uid.find('.one-line-defile');
+	let divInputPochette = uid.find('.divInputPochette');
+	let nav_playlist = uid.find('.nav_playlist');
+	let divInputIcon = uid.find('.panelMusic .divInputIcon');
+	let pochette_input = uid.find('.panelMusic .pochette_input');
+	let inputIconMap = getInputIconMap();
 
 	if(inputIconMap.has(input)) {
-		var icon = inputIconMap.get(input);
+		let icon = inputIconMap.get(input);
 		elementShowOrHide(onelinedefile, icon[0]);
 		elementShowOrHide(divInputPochette, icon[1]);
 		elementShowOrHide(divInputIcon, !icon[1]);
@@ -55,7 +55,7 @@ function navigateButton(uid_value, id) {
 	} else {
 		onelinedefile.show();
 		nav_playlist.show();
-		var url = '/plugins/YamahaMusiccast/data/input/' + input + '.png';
+		let url = '/plugins/YamahaMusiccast/data/input/' + input + '.png';
 		$.get(url, function(data){
 			pochette_input.attr('src', url);
 		}).fail(function() {
@@ -78,9 +78,8 @@ function navigateButton(uid_value, id) {
 	uid.find('.dir_list').attr("onclick", "searchDirlist" + uid_value + "('" + id + "', null, '" + input + "');");
 }
 
-
 function isInputDirSearch(input) {
-	const inputDirSearchMap = [
+	let inputDirSearchMap = [
 		"usb",
 		"server",
 		"net_radio",
@@ -93,7 +92,7 @@ function isInputDirSearch(input) {
 }
 
 function getInputIconMap() {
-	const inputIconMap = new Map();
+	let inputIconMap = new Map();
 	/**
 	* ['onelinedefile'] : permet d’afficher le titre en cours.
 	* ['divInputPochette'] Permet d’afficher la pochette.
@@ -158,12 +157,4 @@ function getInputIconMap() {
 	inputIconMap.set('main_sync',	[false,	false,	false,			true,	'<i class="fas fa-music"></i>']);
 	inputIconMap.set('none',		[false,	false,	false,			true,	'<i class="fas fa-music"></i>']);
 	return inputIconMap;
-	/**
-			cd / tuner / multi_ch / phono / hdmi1 / hdmi2 / hdmi3 / hdmi4 / hdmi5 / hdmi6 / hdmi7 /
-	hdmi8 / hdmi / av1 / av2 / av3 / av4 / av5 / av6 / av7 / v_aux / aux1 / aux2 / aux / audio1 /
-	audio2 / audio3 / audio4 / audio5 / audio_cd / audio / optical1 / optical2 / optical / coaxial1 /
-	coaxial2 / coaxial / digital1 / digital2 / digital / line1 / line2 / line3 / line_cd / analog / tv /
-	bd_dvd / usb_dac / usb / bluetooth / server / net_radio / napster / pandora / siriusxm /
-	spotify / juke / airplay / radiko / qobuz / tidal / deezer / mc_link / main_sync / none
-	 */
 }

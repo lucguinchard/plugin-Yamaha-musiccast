@@ -903,10 +903,10 @@ class YamahaMusiccast extends eqLogic {
 							$eqLogic->createCmd('tuner_fm_audio_mode', 'info', 'numeric', false, null, $configurationTuner)->save();
 						}
 						if (in_array("rds", $fonc_list_tuner)) {
-							$eqLogic->createCmd('tuner_rds_program_type', 'info', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_rds_program_service', 'info', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_rds_radio_text_a', 'info', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_rds_radio_text_b', 'info', 'other', false, null, $configurationTuner)->save();
+							$eqLogic->createCmd('tuner_rds_program_type', 'info', 'string', false, null, $configurationTuner)->save();
+							$eqLogic->createCmd('tuner_rds_program_service', 'info', 'string', false, null, $configurationTuner)->save();
+							$eqLogic->createCmd('tuner_rds_radio_text_a', 'info', 'string', false, null, $configurationTuner)->save();
+							$eqLogic->createCmd('tuner_rds_radio_text_b', 'info', 'string', false, null, $configurationTuner)->save();
 							$eqLogic->createCmd('tuner_set_frequency_tp_up', 'action', 'other', false, null, $configurationTuner)->save();
 							$eqLogic->createCmd('tuner_set_frequency_tp_down', 'action', 'other', false, null, $configurationTuner)->save();
 						}

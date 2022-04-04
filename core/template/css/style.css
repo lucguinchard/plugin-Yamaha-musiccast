@@ -310,6 +310,10 @@
 	display: table-cell;
 }
 
+.YamahaMusiccast .panelBotton div.cmd-widget .title {
+	display: none;
+}
+
 .YamahaMusiccast .panelBotton div.cmd-widget .slider.noUi-horizontal .noUi-base {
 	width: 150px;
 	margin: 6px;

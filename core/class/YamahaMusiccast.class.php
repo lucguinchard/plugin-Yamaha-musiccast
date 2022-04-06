@@ -1456,7 +1456,10 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	public static function callTunerGetPresetInfo($device) {
-		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_tuner . "getPresetInfo?band=common");
+		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_tuner . "getPresetInfo?band=fm", false);
+		if($result->response_code === 4) {
+			$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_tuner . "getPresetInfo?band=common");
+		}
 		if (!empty($result->preset_info)) {
 			//log::add(__CLASS__, 'debug', '[BONJOUR] ' . print_r($result->preset_info, true));
 			$preset_list = "";
@@ -1915,17 +1918,17 @@ class YamahaMusiccast extends eqLogic {
 		}
 	}
 
-	public function callAPIGET($path, $data = false) {
-		return $this->callAPI("GET", $path, $data);
+	public function callAPIGET($path, $data = false, $logLevel = "error") {
+		return $this->callAPI("GET", $path, $data, $logLevel);
 	}
 
-	public function callAPIPOST($path, $data = false) {
-		return $this->callAPI("POST", $path, $data);
+	public function callAPIPOST($path, $data = false, $logLevel = "error") {
+		return $this->callAPI("POST", $path, $data, $logLevel);
 	}
 
-	public function callAPI($method, $path, $data = false) {
+	public function callAPI($method, $path, $data = false, $logLevel = "error") {
 		$ip = $this->getConfiguration('ip');
-		$result = self::callAPIIP($method, $ip, $path, $data);
+		$result = self::callAPIIP($method, $ip, $path, $data, $logLevel);
 		if(!$result) {
 			$power_state = $this->getCmd('info', 'power_state');
 			if(is_object($power_state)) {
@@ -1942,15 +1945,15 @@ class YamahaMusiccast extends eqLogic {
 		return $result;
 	}
 
-	public static function callAPIGETIP($ip, $path, $data = false) {
-		return self::callAPIIP("GET",$ip,  $path, $data);
+	public static function callAPIGETIP($ip, $path, $data = false, $logLevel = "error") {
+		return self::callAPIIP("GET",$ip,  $path, $data, $logLevel);
 	}
 
-	public static function callAPIPOSTIP($ip, $path, $data = false) {
-		return self::callAPIIP("POST",$ip,  $path, $data);
+	public static function callAPIPOSTIP($ip, $path, $data = false, $logLevel = "error") {
+		return self::callAPIIP("POST",$ip,  $path, $data, $logLevel);
 	}
 
-	public static function callAPIIP($method, $ip, $path, $data = false) {
+	public static function callAPIIP($method, $ip, $path, $data = false, $logLevel = "error") {
 		$port = config::byKey('socket.port', __CLASS__);
 		$name = config::byKey('socket.name', __CLASS__);
 		$curl = curl_init();
@@ -1990,7 +1993,6 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->response_code)) {
 			$response_code = $result->response_code;
 			$message = "KO";
-			$logLevel = "error";
 			switch ($response_code) {
 				case 0:
 					$message = "Successful request";

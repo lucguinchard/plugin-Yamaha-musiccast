@@ -27,12 +27,20 @@
 		<div class="panelBox playlist">
 			<div class="tab-content">
 				<div class="tab-pane panelMusic active" id="#id#pp1">
-					<div class="one-line-defile"><strong class="cmd netusb_track" data-cmd_id="#netusb_track_id#"></strong></div>
-					<div class="one-line-defile artiste-album"><strong class="cmd netusb_artist" data-cmd_id="#netusb_artist_id#"></strong><strong class="cmd netusb_album" data-cmd_id="#netusb_album_id#"></strong></div>
+					<div class="one-line-defile">
+						<strong class="cmd netusb_track" data-cmd_id="#netusb_track_id#"></strong>
+						<strong class="cmd tuner_rds_radio_text_a tunerpreset" data-cmd_id="#tuner_rds_radio_text_a_id#"></strong>
+						<strong class="cmd tuner_rds_radio_text_b tunerpreset" data-cmd_id="#tuner_rds_radio_text_b_id#"></strong>
+					</div>
+					<div class="one-line-defile artiste-album">
+						<strong class="cmd netusb_artist" data-cmd_id="#netusb_artist_id#"></strong>
+						<strong class="cmd netusb_album" data-cmd_id="#netusb_album_id#"></strong>
+						<strong class="cmd tuner_rds_radio_text_b tunerpreset" data-cmd_id="#tuner_rds_radio_text_b_id#"></strong>
+					</div>
 					<div class="visual">
 						<div class="divInputPochette">
 							<span class="cmd" data-cmd_id="#netusb_albumart_url_id#"><img class="pochette"/></span>
-							<img class="pochette_input" data-cmd_id="#input_id#"/>
+							<div class ="icon_input"></div>
 						</div>
 						<div class="divInputIcon">
 						</div>
@@ -144,7 +152,7 @@
 					#system_reboot_html#
 					#network_reboot_html#
 				</div>
-				<div class="tab-pane cmd" id="#id#link" data-cmd_id="#linked_list_id#">
+				<div class="tab-pane cmd" id="#id#link" data-cmd_id="#linked_list_id#" style="text-align: left;">
 					<h4>Sélectionner les pièces à regrouper.</h4>
 					#linked_list_html#
 				</div>
@@ -153,12 +161,19 @@
 				<div class="go-playlist btn" onclick="$('.YamahaMusiccast[data-eqLogic_uid=#uid#] .displayoff').css('display', 'none'); $('.YamahaMusiccast[data-eqLogic_uid=#uid#] .playlist').css('display', 'block');">
 					<div class="divInputPochette">
 						<span class="cmd" data-cmd_id="#netusb_albumart_url_id#"><img class="pochette"/></span>
-						<img class="pochette_input" data-cmd_id="#input_id#"/>
+						<div class ="icon_input"></div>
 					</div>
 					<div class="divInputIcon">
 					</div>
-					<div class="one-line-defile"><strong class="cmd netusb_track" data-cmd_id="#netusb_track_id#"></strong></div>
-					<div class="one-line-defile artiste-album"><strong class="cmd netusb_artist" data-cmd_id="#netusb_artist_id#"></strong><strong class="cmd netusb_album" data-cmd_id="#netusb_album_id#"></strong></div>
+					<div class="one-line-defile">
+						<strong class="cmd netusb_track" data-cmd_id="#netusb_track_id#"></strong>
+						<strong class="cmd tuner_rds_radio_text_a tunerpreset" data-cmd_id="#tuner_rds_radio_text_a_id#"></strong>
+					</div>
+					<div class="one-line-defile artiste-album">
+						<strong class="cmd netusb_artist" data-cmd_id="#netusb_artist_id#"></strong>
+						<strong class="cmd netusb_album" data-cmd_id="#netusb_album_id#"></strong>
+						<strong class="cmd tuner_rds_radio_text_b tunerpreset" data-cmd_id="#tuner_rds_radio_text_b_id#"></strong>
+					</div>
 				</div>
 				<nav class="nav nav_playlist">
 					<a class="nav-item nav-link btn cmd stop" data-type="action" data-cmd_id="#netusb_playback_stop_id#"
@@ -458,6 +473,17 @@
 			}
 			
 		}
+		jeedom.cmd.update['#tuner_rds_radio_text_a_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.tuner_rds_radio_text_a').empty().append(_options.display_value);
+		}
+		jeedom.cmd.update['#tuner_rds_radio_text_a_id#']({display_value:'#tuner_rds_radio_text_a#'});
+		jeedom.cmd.update['#tuner_rds_radio_text_b_id#'] = function(_options){
+			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
+			uid.find('.tuner_rds_radio_text_b').empty().append(_options.display_value);
+		}
+		jeedom.cmd.update['#tuner_rds_radio_text_b_id#']({display_value:'#tuner_rds_radio_text_b#'});
+		
 		jeedom.cmd.update['#netusb_album_id#']({display_value:'#netusb_album#'});
 		jeedom.cmd.update['#group_name_id#'] = function(_options){
 			var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');

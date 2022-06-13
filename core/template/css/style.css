@@ -51,15 +51,18 @@
 	/*border-radius: 10%;*/
 }
 
-.YamahaMusiccast .playlist .pochette_input,
+.YamahaMusiccast .playlist .icon_input img,
+.YamahaMusiccast .playlist .icon_input i,
 .YamahaMusiccast .audio_format_box {
 	position: absolute;
 	top: 90%;
 
 }
-.YamahaMusiccast .playlist .pochette_input {
+.YamahaMusiccast .playlist .icon_input img,
+.YamahaMusiccast .playlist .icon_input i{
 	left: 78%;
 	height: 20px;
+	font-size: medium;
 	max-width: 35px;
 }
 
@@ -294,10 +297,12 @@
 	margin: 0 3px 0 0;
 }
 
-.YamahaMusiccast .displayoff .panelMusic img.pochette_input {
+.YamahaMusiccast .displayoff .panelMusic .icon_input img,
+.YamahaMusiccast .displayoff .panelMusic .icon_input i{
 	float: left;
 	display: block;
 	height: 10px;
+	font-size: medium;
 	margin: 29px 0px 0px -10px;
 	max-width: 22px;
 }

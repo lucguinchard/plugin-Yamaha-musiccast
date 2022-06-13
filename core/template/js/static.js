@@ -23,7 +23,8 @@ function navigateButton(uid_value, id) {
 	let class_divInputPochette = uid.find('.divInputPochette');
 	let class_nav_playlist = uid.find('.nav_playlist');
 	let class_divInputIcon = uid.find('.panelMusic .divInputIcon');
-	let class_pochette_input = uid.find('.panelMusic .pochette_input');
+	let class_icon_input = uid.find('.panelMusic .icon_input');
+	class_icon_input.empty();
 	let inputIconMap = getInputIconMap();
 
 	if(inputIconMap.has(input)) {
@@ -56,17 +57,17 @@ function navigateButton(uid_value, id) {
 				}
 			break;
 		}
+		class_icon_input.append(icon[4]);
 		class_divInputIcon.empty().append(icon[4]).append("<span>" + input + "</span>");
 	} else {
 		class_onelinedefile.show();
 		class_nav_playlist.show();
 		let url = '/plugins/YamahaMusiccast/data/input/' + input + '.png';
 		$.get(url, function(data){
-			class_pochette_input.attr('src', url);
+			class_icon_input.append('<img src="' + url + '"/>');
 		}).fail(function() {
-			class_pochette_input.attr('src', '/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png');
+			class_icon_input.append('<img src="/plugins/YamahaMusiccast/plugin_info/YamahaMusiccast_icon.png"/>');
 		});
-		class_pochette_input.show();
 		class_divInputPochette.show();
 		class_divInputIcon.hide();
 		class_stop.css('display', 'none');
@@ -158,8 +159,8 @@ function getInputIconMap() {
 	inputIconMap.set('bluetooth',	[true,	false,	"play_pause",	true,	'<i class="fab fa-bluetooth icon_blue"></i>']);
 	inputIconMap.set('server',		[true,	true,	"play_pause",	true,	'<i class="fas fa-hdd"></i>']);
 	inputIconMap.set('net_radio',	[true,	true,	"stop",			false,	'<i class="fas fa-music"></i>']);
-	inputIconMap.set('mc_link',		[true,	false,	false,			false,	'<i class="fas fa-link"></i>']);
-	inputIconMap.set('main_sync',	[false,	false,	false,			true,	'<i class="fas fa-link"></i>']);
+	inputIconMap.set('mc_link',		[true,	false,	false,			true,	'<i class="fas fa-link"></i>']);
+	inputIconMap.set('main_sync',	[true,	false,	false,			true,	'<i class="fas fa-link"></i>']);
 	inputIconMap.set('none',		[false,	false,	false,			true,	'<i class="fas fa-music"></i>']);
 	return inputIconMap;
 }

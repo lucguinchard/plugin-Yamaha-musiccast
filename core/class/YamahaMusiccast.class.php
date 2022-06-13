@@ -1510,6 +1510,7 @@ class YamahaMusiccast extends eqLogic {
 		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_netusb . "getPlayInfo");
 		if (!empty($result->input)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_input', $result->input);
+			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
 		}
 		if (!empty($result->play_queue_type)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_play_queue_type', $result->play_queue_type);
@@ -1529,21 +1530,9 @@ class YamahaMusiccast extends eqLogic {
 		if (!empty($result->total_time)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_total_time', $result->total_time);
 		}
-		if (!empty($result->artist) || !empty($result->artist) || !empty($result->track)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_artist', "");
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_album', "");
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_track', "");
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
-		}
-		if (!empty($result->artist)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_artist', $result->artist);
-		}
-		if (!empty($result->album)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_album', $result->album);
-		}
-		if (!empty($result->track)) {
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_track', $result->track);
-		}
+		YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_artist', $result->artist);
+		YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_album', $result->album);
+		YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_track', $result->track);
 
 		foreach ($device as $eqLogic) {
 			$fileAlbumARTUrl = '/plugins/' . __CLASS__ . '/data/' . $eqLogic->getId() . '/AlbumART.jpg';
@@ -1553,8 +1542,7 @@ class YamahaMusiccast extends eqLogic {
 				$netusb_albumart_url = null;
 				if (file_put_contents($fileAlbumART, file_get_contents($url))) {
 					$netusb_albumart_url = $fileAlbumARTUrl . '?' . $result->albumart_id;
-				} else {
-					$netusb_albumart_url = '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png';
+					$eqLogic->checkAndUpdateCmd('netusb_albumart_url', $netusb_albumart_url);
 				}
 				$eqLogic->checkAndUpdateCmd('netusb_albumart_url', $netusb_albumart_url);
 			}

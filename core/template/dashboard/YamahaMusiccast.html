@@ -554,7 +554,9 @@
 							texts = item['text'];
 							switch (item['attribute']) {
 								case 2:
+								case 1048594:
 								case 125829122:
+								case 130056214:
 									icon = '<i class="fas fa-folder"></i>';
 									action = 'onclick="searchDirlist#uid#(' + id + ', ' + i + ', \'' + input + '\', \'select\', null)"';
 									break;
@@ -569,14 +571,27 @@
 									break;
 								case 82:
 								case 84:
+								case 148:
 								case 1044:
+								case 125829398:
+								case 125829268:
 									icon = '<img src="' + item['thumbnail'] + '"/>'; //.replace('http://','https://')
 									action = 'onclick="playDirlist#uid#(' + id + ', ' + i + ', \'' + input + '\')"';
+									texts += "<br/>" + item['logo'];
+									if(item['subtexts'].length != 0) {
+										texts += item['subtexts'][0];
+
+									  if(item['subtexts'].length != 1) {
+										  texts += " - " +  item['subtexts'][1];
+									  }
+									}
 									break;
 								default:
 									icon = '<i class="icon divers-vlc1" title="Veuillez mettre une icon pour l’attribute : ' + item['attribute'] + '"></i>';
 									action = '';
-									break;
+							}
+							if(item['thumbnail'] !== undefined && item['thumbnail'] !== "") {
+								icon = '<img src="' + item['thumbnail'] + '" style="min-width: 32px; max-height: 32px;background-color:white;"/>';
 							}
 							text += '<li><a class="nav-item nav-link cmd cmd-widget btn" ' + action + '>' + icon + '<span>' + texts + '</span></a></li>';
 						}

@@ -422,7 +422,7 @@ class YamahaMusiccast extends eqLogic {
 	 *
 	 * @param Debug (par défault désactivé)
 	 */
-	public static function deamon_stop($_debug = false)) {
+	public static function deamon_stop($_debug = false) {
 		$cron = cron::byClassAndFunction(__CLASS__, 'socket_start');
 		if (!is_object($cron)) {
 			throw new Exception(__('Tache cron introuvable', __FILE__));
@@ -1476,7 +1476,9 @@ class YamahaMusiccast extends eqLogic {
 		$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_netusb . "getPlayInfo");
 		if (!empty($result->input)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_input', $result->input);
-			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
+			if (empty($result->albumart_url)) {
+				//YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_albumart_url', '/plugins/' . __CLASS__ . '/plugin_info/' . __CLASS__ . '_icon.png');
+			}
 		}
 		if (!empty($result->play_queue_type)) {
 			YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_play_queue_type', $result->play_queue_type);
@@ -1499,16 +1501,14 @@ class YamahaMusiccast extends eqLogic {
 		YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_artist', $result->artist);
 		YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_album', $result->album);
 		YamahaMusiccast::checkAndUpdateDeviceCmd($device, 'netusb_track', $result->track);
-
-		foreach ($device as $eqLogic) {
-			$fileAlbumARTUrl = '/plugins/' . __CLASS__ . '/data/' . $eqLogic->getId() . '/AlbumART.jpg';
-			$fileAlbumART = __DIR__ . '/../../../..' . $fileAlbumARTUrl;
-			if (!empty($result->albumart_url)) {
+		if (!empty($result->albumart_url)) {
+			foreach ($device as $eqLogic) {
+				$fileAlbumARTUrl = '/plugins/' . __CLASS__ . '/data/' . $eqLogic->getId() . '/AlbumART.jpg';
+				$fileAlbumART = __DIR__ . '/../../../..' . $fileAlbumARTUrl;
 				$url = "http://" . $eqLogic->getConfiguration('ip') . $result->albumart_url;
 				$netusb_albumart_url = null;
 				if (file_put_contents($fileAlbumART, file_get_contents($url))) {
 					$netusb_albumart_url = $fileAlbumARTUrl . '?' . $result->albumart_id;
-					$eqLogic->checkAndUpdateCmd('netusb_albumart_url', $netusb_albumart_url);
 				}
 				$eqLogic->checkAndUpdateCmd('netusb_albumart_url', $netusb_albumart_url);
 			}

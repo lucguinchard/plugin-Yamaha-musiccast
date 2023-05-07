@@ -39,25 +39,6 @@ class YamahaMusiccast extends eqLogic {
 		YamahaMusiccast::callYamahaMusiccast();
 	}
 
-	/**
-	public static function cron5() {
-	}
-	 */
-
-	/*
-	 * Fonction exécutée automatiquement toutes les heures par Jeedom
-	  public static function cronHourly() {
-
-	  }
-	 */
-
-	/*
-	 * Fonction exécutée automatiquement tous les jours par Jeedom
-	  public static function cronDaily() {
-
-	  }
-	 */
-
 
 	/*	 * *********************Méthodes d'instance************************* */
 
@@ -379,18 +360,6 @@ class YamahaMusiccast extends eqLogic {
 		}
 	}
 
-	/*
-	 * Non obligatoire mais ca permet de déclencher une action après modification de variable de configuration
-	  public static function postConfig_<Variable>() {
-	  }
-	 */
-
-	/*
-	 * Non obligatoire mais ca permet de déclencher une action avant modification de variable de configuration
-	  public static function preConfig_<Variable>() {
-	  }
-	 */
-
 	/**
 	 * Non obligatoire
 	 * Obtenir l'état du daemon
@@ -449,11 +418,11 @@ class YamahaMusiccast extends eqLogic {
 	}
 
 	/**
-	 * Démarre le daemon
+	 * Stop le daemon
 	 *
 	 * @param Debug (par défault désactivé)
 	 */
-	public static function deamon_stop() {
+	public static function deamon_stop($_debug = false)) {
 		$cron = cron::byClassAndFunction(__CLASS__, 'socket_start');
 		if (!is_object($cron)) {
 			throw new Exception(__('Tache cron introuvable', __FILE__));
@@ -526,8 +495,6 @@ class YamahaMusiccast extends eqLogic {
 		if (isset($getFeatures) && isset($getLocationInfo)) {
 			$musiccastId = $getLocationInfo->id;
 			$musiccastName = $getLocationInfo->name;
-			//YamahaMusiccast::setConfiguration('musiccastId', $musiccastId);
-			//YamahaMusiccast::setConfiguration('musiccastName', $musiccastName);
 			$musiccastZoneList = $getLocationInfo->zone_list;
 			$fonc_list_features = $getFeatures->system->func_list;
 			foreach ($getFeatures->zone as $zone) {
@@ -1461,7 +1428,6 @@ class YamahaMusiccast extends eqLogic {
 			$result = $device[YamahaMusiccast::main]->callAPIGET(YamahaMusiccast::url_v1_tuner . "getPresetInfo?band=common");
 		}
 		if (!empty($result->preset_info)) {
-			//log::add(__CLASS__, 'debug', '[BONJOUR] ' . print_r($result->preset_info, true));
 			$preset_list = "";
 			$int = 0;
 			foreach ($result->preset_info as $preset_info) {

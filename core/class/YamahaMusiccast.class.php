@@ -379,7 +379,7 @@ class YamahaMusiccast extends eqLogic {
 		$return['state'] = 'nok';
 		$port = config::byKey('socket.port', __CLASS__);
 		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add(__CLASS__, 'error', 'Création du deamon_info refusée');
-		if (!socket_connect($sock, "127.0.0.1", $port)) {
+		if (!socket_connect($sock, "127.0.0.1", intval($port))) {
 			log::add(__CLASS__, 'error', 'Connexion impossible pour deamon_info');
 			$return['state'] = 'ko';
 			$return['log'] = "Connexion impossible pour deamon_info";
@@ -442,7 +442,7 @@ class YamahaMusiccast extends eqLogic {
 	public static function socket_stop() {
 		$port = config::byKey('socket.port', __CLASS__);
 		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP) or log::add(__CLASS__, 'error', 'Création du socket_stop refusée');
-		socket_connect($sock, "127.0.0.1", $port) or log::add(__CLASS__, 'error', 'Connexion impossible pour socket_stop');
+		socket_connect($sock, "127.0.0.1", intval($port)) or log::add(__CLASS__, 'error', 'Connexion impossible pour socket_stop');
 		socket_write($sock, "stop");
 		//socket_close($sock);
 	}

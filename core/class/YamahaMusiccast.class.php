@@ -451,7 +451,10 @@ class YamahaMusiccast extends eqLogic {
 		$return = array();
 		$ipList = YamahaMusiccast::searchDeviceIpList();
 		foreach ($ipList as $ip) {
-			$return = array_merge($return, YamahaMusiccast::saveDeviceIp($ip));
+			$deviceIp = YamahaMusiccast::saveDeviceIp($ip);
+			if($deviceIp !== null) {
+				$return = array_merge($return, $deviceIp);
+			}
 		}
 		return $return;
 	}
@@ -487,531 +490,533 @@ class YamahaMusiccast extends eqLogic {
 		$device = array();
 		$getNetworkStatus = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system . "getNetworkStatus");
 		if ($getNetworkStatus === false) {
-			throw new Exception(__('L’appareil avec ip ' . $this->getLogicalId() . ' n’est pas joignable !'), __FILE__);
-		}
-		$getDeviceInfo = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system . "getDeviceInfo");
-		$getFeatures = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system . "getFeatures");
-		$getLocationInfo = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system ."getLocationInfo");
-		if (isset($getFeatures) && isset($getLocationInfo)) {
-			$musiccastId = $getLocationInfo->id;
-			$musiccastName = $getLocationInfo->name;
-			$musiccastZoneList = $getLocationInfo->zone_list;
-			$fonc_list_features = $getFeatures->system->func_list;
-			foreach ($getFeatures->zone as $zone) {
-				$zoneName = $zone->id;
-				$logicalId = $ip . ':' . $zoneName;
-				$eqLogic = YamahaMusiccast::byLogicalId($logicalId, __CLASS__);
-				if (!is_object($eqLogic)) {
-					$eqLogic = new YamahaMusiccast();
-					$eqLogic->setEqType_name(__CLASS__);
-				}
-				$eqLogic->setName($logicalId);
-				$eqLogic->setLogicalId($logicalId);
-				$eqLogic->setCategory('multimedia', 1);
-				if (!empty($musiccastZoneList->$zoneName)) {
-					$eqLogic->setIsVisible(1);
-					$eqLogic->setIsEnable(1);
-				} else {
-					$eqLogic->setIsVisible(0);
-					$eqLogic->setIsEnable(0);
-				}
-				$eqLogic->setConfiguration('zone', $zoneName);
-				$eqLogic->setConfiguration('ip', $ip);
-				$eqLogic->save();
-
-				$getStatusZone = $eqLogic->callAPIGET(YamahaMusiccast::url_v1 . "$zoneName/getStatus");
-
-				$deviceDir = __DIR__ . '/../../../../plugins/' . __CLASS__ . '/data/' . $eqLogic->getId() . '/';
-				if (!file_exists($deviceDir)) {
-					mkdir($deviceDir, 0700);
-				}
-
-				$configurationBluetooth['type'] = 'bluetooth';
-				$configurationNetUsb['type'] = 'netusb';
-				$configurationTuner['type'] = 'tuner';
-				$configurationDistribution['type'] = 'distribution';
-
-				$eqLogic->createCmd('linked_list', 'info', 'string', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('client_list', 'info', 'string', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('group_id', 'info', 'string', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('group_name', 'info', 'string', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('role', 'info', 'string', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('server_zone', 'info', 'string', false, null, $configurationDistribution)->save();
-
-				$eqLogic->createCmd('setServerInfo', 'action', 'other', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('setClientInfo', 'action', 'other', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('startDistribution', 'action', 'other', false, null, $configurationDistribution)->save();
-				$eqLogic->createCmd('stopDistribution', 'action', 'other', false, null, $configurationDistribution)->save();
-				$displayList['title_placeholder'] = "Nom du nouveau groupe";
-				$displayList['message_disable'] = "1";
-				$eqLogic->createCmd('setGroupName', 'action', 'message', false, null, $configurationDistribution, $displayList)->save();
-
-				if(!empty($getStatusZone->distribution_enable)) {
-					$eqLogic->createCmd('distribution_enable', 'info', 'binary', false, null, $configurationDistribution)->save();
-				}
-
-				if (in_array("wired_lan", $fonc_list_features)) {
-					$eqLogic->createCmd('set_wired_lan', 'action', 'other')->save();
-				}
-				if (in_array("wireless_lan", $fonc_list_features)) {
-					$eqLogic->createCmd('set_wirless_lan', 'action', 'other')->save();
-				}
-				if (in_array("wireless_direct", $fonc_list_features)) {
-					$eqLogic->createCmd('set_wirless_direct', 'action', 'other')->save();
-				}
-				if (in_array("extend_1_band", $fonc_list_features)) {
-					
-				}
-				if (in_array("dfs_option", $fonc_list_features)) {
-					
-				}
-				if (in_array("network_standby_auto", $fonc_list_features)) {
-					
-				}
-				if (in_array("network_standby", $fonc_list_features)) {
-					
-				}
-				if (in_array("bluetooth_standby", $fonc_list_features)) {
-					$eqLogic->createCmd('bluetooth_standby_state', 'info', 'string', false, null, $configurationBluetooth)->save();
-					$eqLogic->createCmd('disconnect_bluetooth_device', 'action', 'other', false, null, $configurationBluetooth)->save();
-					$eqLogic->createCmd('connect_bluetooth_device', 'action', 'other', false, null, $configurationBluetooth)->save();
-					$eqLogic->createCmd('update_bluetooth_device_list', 'action', 'other', false, null, $configurationBluetooth)->save();
-				}
-				if (in_array("bluetooth_tx_setting", $fonc_list_features)) {
-					$eqLogic->createCmd('bluetooth_tx_setting_state', 'info', 'string', false, null, $configurationBluetooth)->save();
-					$eqLogic->createCmd('set_bluetooth_tx_setting', 'action', 'other', false, null, $configurationBluetooth)->save();
-				}
-				if (in_array("auto_power_standby", $fonc_list_features)) {
-					$eqLogic->createCmd('auto_power_standby_state')->save();
-					$eqLogic->createCmd('auto_power_standby_on', 'action', 'other')->save();
-					$eqLogic->createCmd('auto_power_standby_off', 'action', 'other')->save();
-				}
-				if (in_array("ir_sensor", $fonc_list_features)) {
-					$eqLogic->createCmd('ir_sensor_state')->save();
-					$eqLogic->createCmd('ir_sensor_on', 'action', 'other')->save();
-					$eqLogic->createCmd('ir_sensor_off', 'action', 'other')->save();
-				}
-				if (in_array("speaker_a", $fonc_list_features)) {
-					$eqLogic->createCmd('speaker_a_state')->save();
-					$eqLogic->createCmd('speaker_a_on', 'action', 'other')->save();
-					$eqLogic->createCmd('speaker_a_off', 'action', 'other')->save();
-				}
-				if (in_array("dimmer", $fonc_list_features)) {
-					$eqLogic->createCmd('dimmer_state')->save();
-					$eqLogic->createCmd('dimmer', 'action', 'other')->save();
-				}
-				if (in_array("speaker_b", $fonc_list_features)) {
-					$eqLogic->createCmd('speaker_b_state')->save();
-					$eqLogic->createCmd('speaker_b_on', 'action', 'other')->save();
-					$eqLogic->createCmd('speaker_b_off', 'action', 'other')->save();
-				}
-				if (in_array("zone_b_volume_sync", $fonc_list_features)) {
-					$eqLogic->createCmd('zone_b_volume_sync_state')->save();
-					$eqLogic->createCmd('zone_b_volume_sync_on', 'action', 'other')->save();
-					$eqLogic->createCmd('zone_b_volume_sync_off', 'action', 'other')->save();
-				}
-				if (in_array("headphone", $fonc_list_features)) {
-					$eqLogic->createCmd('headphone_state')->save();
-				}
-				if (in_array("hdmi_out_1", $fonc_list_features)) {
-					$eqLogic->createCmd('hdmi_out_1_state')->save();
-					$eqLogic->createCmd('hdmi_out_1_on', 'action', 'other')->save();
-					$eqLogic->createCmd('hdmi_out_1_off', 'action', 'other')->save();
-				}
-				if (in_array("hdmi_out_2", $fonc_list_features)) {
-					$eqLogic->createCmd('hdmi_out_2_state')->save();
-					$eqLogic->createCmd('hdmi_out_2_on', 'action', 'other')->save();
-					$eqLogic->createCmd('hdmi_out_2_off', 'action', 'other')->save();
-				}
-				if (in_array("hdmi_out_3", $fonc_list_features)) {
-					$eqLogic->createCmd('hdmi_out_3_state')->save();
-					$eqLogic->createCmd('hdmi_out_3_on', 'action', 'other')->save();
-					$eqLogic->createCmd('hdmi_out_3_off', 'action', 'other')->save();
-				}
-				if (in_array("airplay", $fonc_list_features)) {
-					$eqLogic->createCmd('set_air_play_pin', 'action', 'other')->save();
-				}
-				if (in_array("stereo_pair", $fonc_list_features)) {
-					
-				}
-				if (in_array("speaker_settings", $fonc_list_features)) {
-					
-				}
-				if (in_array("disklavier_settings", $fonc_list_features)) {
-					
-				}
-				if (in_array("background_download", $fonc_list_features)) {
-					
-				}
-				if (in_array("getRemoteInfo", $fonc_list_features)) {
-					/**
-					 * TODO: requestNetworkReboot
-					 * For retrieving remote monitor information.
-					 */
-				}
-				if (in_array("network_reboot", $fonc_list_features)) {
-					$eqLogic->createCmd('network_reboot', 'action', 'other')->save();
-				}
-				if (in_array("system_reboot", $fonc_list_features)) {
-					$eqLogic->createCmd('system_reboot', 'action', 'other')->save();
-				}
-				if (in_array("auto_play", $fonc_list_features)) {
-					$eqLogic->createCmd('auto_play_state')->save();
-					$eqLogic->createCmd('auto_play_on', 'action', 'other')->save();
-					$eqLogic->createCmd('auto_play_off', 'action', 'other')->save();
-				}
-				if (in_array("speaker_pattern", $fonc_list_features)) {
-					$eqLogic->createCmd('speaker_pattern_state_state')->save();
-				}
-				if (in_array("party_mode", $fonc_list_features)) {
-					/**
-					 * TODO: setPartyMode
-					 * For setting Party Mode.
-					 */
-					$eqLogic->createCmd('party_mode_on', 'action', 'other')->save();
-					$eqLogic->createCmd('party_mode_off', 'action', 'other')->save();
-					$eqLogic->createCmd('party_mode_state', 'info', 'binary')->save();
-				}
-				$fonc_list_zone = $zone->func_list;
-				if (in_array("power", $fonc_list_zone)) {
-					$eqLogic->createCmd('power_state')->save();
-					$eqLogic->createCmd('power_on', 'action', 'other', false, 'ENERGY_ON')->save();
-					$eqLogic->createCmd('power_off', 'action', 'other', false, 'ENERGY_OFF')->save();
-				}
-				if (in_array("sleep", $fonc_list_zone)) {
-					$eqLogic->createCmd('sleep', 'info', 'numeric')->save();
-				}
-				if (in_array("volume", $fonc_list_zone)) {
-					$config_volume_change['minValue'] = 0;
-					if (!empty($getStatusZone->max_volume)) {
-						$config_volume_change['maxValue'] = $getStatusZone->max_volume;
+			log::add(__CLASS__, 'debug', 'L’appareil avec ip ' . $ip . ' n’est pas joignable ! ou n’est pas un appareil Musiccast.');
+			return null;
+		} else {
+			$getDeviceInfo = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system . "getDeviceInfo");
+			$getFeatures = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system . "getFeatures");
+			$getLocationInfo = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system ."getLocationInfo");
+			if (isset($getFeatures) && isset($getLocationInfo)) {
+				$musiccastId = $getLocationInfo->id;
+				$musiccastName = $getLocationInfo->name;
+				$musiccastZoneList = $getLocationInfo->zone_list;
+				$fonc_list_features = $getFeatures->system->func_list;
+				foreach ($getFeatures->zone as $zone) {
+					$zoneName = $zone->id;
+					$logicalId = $ip . ':' . $zoneName;
+					$eqLogic = YamahaMusiccast::byLogicalId($logicalId, __CLASS__);
+					if (!is_object($eqLogic)) {
+						$eqLogic = new YamahaMusiccast();
+						$eqLogic->setEqType_name(__CLASS__);
 					}
-					$volume_state = $eqLogic->createCmd('volume_state');
-					$volume_state->save();
-					$volume = $eqLogic->createCmd('volume_change', 'action', 'slider', false, 'SET_VOLUME', $config_volume_change)->setValue($volume_state->getId())->save();
-					$eqLogic->createCmd('max_volume', 'info', 'numeric')->save();
-				}
-				if (in_array("mute", $fonc_list_zone)) {
-					$eqLogic->createCmd('mute_on', 'action', 'other')->save();
-					$eqLogic->createCmd('mute_off', 'action', 'other')->save();
-					$eqLogic->createCmd('mute_state', 'info', 'binary')->save();
-				}
-				if (in_array("sound_program", $fonc_list_zone)) {
-					$sound_program_state = $eqLogic->createCmd('sound_program_state');
-					$sound_program_state->save();
-					$sound_program_change = $eqLogic->createCmd('sound_program_change', 'action', 'select')->setValue($sound_program_state->getId())->save();
-				}
-				if (in_array("surround_3d", $fonc_list_zone)) {
-					$eqLogic->createCmd('surround_3d', 'info', 'binary')->save();
-				}
-				if (in_array("direct", $fonc_list_zone)) {
-					$eqLogic->createCmd('direct', 'info', 'binary')->save();
-				}
-				if (in_array("pure_direct", $fonc_list_zone)) {
-					$eqLogic->createCmd('pure_direct', 'info', 'binary')->save();
-				}
-				if (in_array("enhancer", $fonc_list_zone)) {
-					$eqLogic->createCmd('enhancer', 'info', 'binary')->save();
-				}
-				if (in_array("tone_control", $fonc_list_zone)) {
-					$eqLogic->createCmd('tone_control_mode')->save();
-					$eqLogic->createCmd('tone_control_base', 'info', 'numeric')->save();
-					$eqLogic->createCmd('tone_control_treble', 'info', 'numeric')->save();
-				}
-				if (in_array("equalizer", $fonc_list_zone)) {
-					$eqLogic->createCmd('equalizer_mode')->save();
-					$config_volume_change['minValue'] = -10;
-					$config_volume_change['maxValue'] = 10;
-					$equalizer_low = $eqLogic->createCmd('equalizer_low', 'info', 'numeric');
-					$equalizer_low->save();
-					$eqLogic->createCmd('equalizer_low_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_low->getId())->save();
-					$equalizer_mid = $eqLogic->createCmd('equalizer_mid', 'info', 'numeric');
-					$equalizer_mid->save();
-					$eqLogic->createCmd('equalizer_mid_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_mid->getId())->save();
-					$equalizer_high = $eqLogic->createCmd('equalizer_high', 'info', 'numeric');
-					$equalizer_high->save();
-					$eqLogic->createCmd('equalizer_high_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_high->getId())->save();
-				}
-				if (in_array("balance", $fonc_list_zone)) {
-					$config_volume_change['minValue'] = -10;
-					$config_volume_change['maxValue'] = 10;
-					$balance = $eqLogic->createCmd('balance', 'info', 'numeric');
-					$balance->save();
-					$eqLogic->createCmd('balance_change', 'action', 'slider', false, null, $config_volume_change)->setValue($balance->getId())->save();
-				}
-				if (in_array("dialogue_level", $fonc_list_zone)) {
-					$eqLogic->createCmd('dialogue_level', 'info', 'numeric')->save();
-				}
-				if (in_array("dialogue_lift", $fonc_list_zone)) {
-					$eqLogic->createCmd('dialogue_lift', 'info', 'numeric')->save();
-				}
-				if (in_array("bass_extension", $fonc_list_zone)) {
-					$eqLogic->createCmd('bass_extension', 'info', 'binary')->save();
-				}
-				if (in_array("clear_voice", $fonc_list_zone)) {
-					$eqLogic->createCmd('clear_voice', 'info', 'binary')->save();
-				}
-				if (in_array("signal_info", $fonc_list_zone)) {
-					
-				}
-				if (in_array("subwoofer_volume", $fonc_list_zone)) {
-					$eqLogic->createCmd('subwoofer_volume', 'info', 'numeric')->save();
-				}
-				if (in_array("prepare_input_change", $fonc_list_zone)) {
-					/**
-					 * TODO: prepareInputChange
-					 * Let a Device do necessary process before changing input in a specific zone. This is valid only
-					 *	when “prepare_input_change” exists in “func_list” found in /system/getFuncStatus.
-					 *	MusicCast CONTROLLER executes this API when an input icon is selected in a Room, right
-					 *	before sending various APIs (of retrieving list information etc.) regarding selecting input
-					 */
-					
-				}
-				if(!empty($zone->link_control_list)) {
-					YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_control", $zone->link_control_list);
-				}
-				if(!empty($zone->link_audio_delay_list)) {
-					YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_audio_delay", $zone->link_audio_delay_list);
-				}
-				if(!empty($zone->link_audio_quality_list)) {
-					YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_audio_quality", $zone->link_audio_quality_list);
-				}
-				if (in_array("disable_flags", $fonc_list_zone)) {
-					$eqLogic->createCmd('disable_flags', 'info', 'numeric')->save();
-				}
-				if (in_array("scene", $fonc_list_zone)) {
-					if(!empty($zone->scene_num)) {
-						$max_scene = $zone->scene_num;
-						$config_scene_change['minValue'] = 1;
-						$config_scene_change['maxValue'] = $max_scene;
-						$scene = $eqLogic->createCmd('scene', 'info', 'numeric');
-						$scene->save();
-						$eqLogic->createCmd('scene_change', 'action', 'slider', false, null, $config_scene_change)->setValue($scene->getId())->save();
+					$eqLogic->setName($logicalId);
+					$eqLogic->setLogicalId($logicalId);
+					$eqLogic->setCategory('multimedia', 1);
+					if (!empty($musiccastZoneList->$zoneName)) {
+						$eqLogic->setIsVisible(1);
+						$eqLogic->setIsEnable(1);
+					} else {
+						$eqLogic->setIsVisible(0);
+						$eqLogic->setIsEnable(0);
 					}
-				}
-				if (in_array("contents_display", $fonc_list_zone)) {
-					$eqLogic->createCmd('contents_display', 'info', 'binary')->save();
-				}
-				if (in_array("cursor", $fonc_list_zone)) {
-					/**
-					 * TODO: controlCursor
-					 * Operate the cursor keys on the remote control.
-					 */
-				}
-				if (in_array("menu", $fonc_list_zone)) {
-					/**
-					 * TODO: controlMenu
-					 * Operate the cursor keys on the remote control.
-					 */
-				}
-				if (in_array("actual_volume", $fonc_list_zone)) {
-					$eqLogic->createCmd('actual_volume_mode', 'info', 'string')->save();
-					$eqLogic->createCmd('actual_volume_value', 'info', 'numeric')->save();
-					$eqLogic->createCmd('actual_volume_unit', 'info', 'string')->save();
-					/**
-					 * TODO: setActualVolume
-					 * Set the volume of each Zone with the value to display.
-					 */
-				}
-				if (in_array("audio_select", $fonc_list_zone)) {
-					$eqLogic->createCmd('audio_select', 'info', 'string')->save();
-					/**
-					 * TODO: setAudioSelect
-					 * Set the audio input selection.
-					 * In the value of audio_select_list obtained by /system/getFeatures, it is possible to specify
-					 * something other than unavailable. If current audio_select (gotten with getStatus) is unavailable,
-					 * it can not be set.
-					 */
-				}
-				
-				if (!empty($zone->surr_decoder_type_list)) {
-					YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "surr_decoder_type", $zone->surr_decoder_type_list);
-				}
-				if (in_array("surr_decoder_type", $fonc_list_zone)) {
-					/**
-					 * TODO: setSurroundDecoderType
-					 * Set the Sound Program : Decoder Type to be used with Surround Decoder.
-					 */
-				}
-				if (!empty($getFeatures->tuner)) {
-					$tuner = $getFeatures->tuner;
-					$tuner_band = $eqLogic->createCmd('tuner_band', 'info', 'string', false, null, $configurationTuner);
-					$tuner_band->save();
-					$eqLogic->createCmd('tuner_auto_scan', 'info', 'binary', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_auto_preset', 'info', 'binary', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_set_frequency_up', 'action', 'other', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_set_frequency_down', 'action', 'other', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_set_frequency_cancel', 'action', 'other', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_set_frequency_auto_up', 'action', 'other', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_set_frequency_auto_down', 'action', 'other', false, null, $configurationTuner)->save();
-					$tuner_set_frequency_direct_displayList['title_placeholder'] = "Fréquence (unité en kHz)";
-					$tuner_set_frequency_direct_displayList['message_disable'] = "1";
-					$eqLogic->createCmd('tuner_set_frequency_direct', 'action', 'message', false, null, $configurationTuner, $tuner_set_frequency_direct_displayList)->save();
-					$eqLogic->createCmd('tuner_recall_preset', 'action', 'select', false, null, $configurationTuner)->save();
-					$eqLogic->createCmd('tuner_recall_preset_list', 'info', 'string', false, null, $configurationTuner)->save();
+					$eqLogic->setConfiguration('zone', $zoneName);
+					$eqLogic->setConfiguration('ip', $ip);
+					$eqLogic->save();
 
-					if (!empty($tuner->func_list)) {
-						$fonc_list_tuner = $tuner->func_list;
-						$band_list = "";
-						$eqLogic->checkAndUpdateCmd('netusb_recall_recent_list', $config_surr_decoder_type['listValue']);
-						if (in_array("am", $fonc_list_tuner)) {
-							$band_list .= "am|am;";
-							$eqLogic->createCmd('tuner_set_band_am', 'action', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_am_preset', 'info', 'binary', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_am_freq', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_am_tuned', 'info', 'numeric', false, null, $configurationTuner)->save();
-						}
-						if (in_array("fm", $fonc_list_tuner)) {
-							$band_list .= "fm|fm;";
-							$eqLogic->createCmd('tuner_set_band_fm', 'action', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_fm_preset', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_fm_freq', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_fm_tuned', 'info', 'binary', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_fm_audio_mode', 'info', 'numeric', false, null, $configurationTuner)->save();
-						}
-						if (in_array("rds", $fonc_list_tuner)) {
-							$eqLogic->createCmd('tuner_rds_program_type', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_rds_program_service', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_rds_radio_text_a', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_rds_radio_text_b', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_set_frequency_tp_up', 'action', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_set_frequency_tp_down', 'action', 'other', false, null, $configurationTuner)->save();
-						}
-						if (in_array("dab", $fonc_list_tuner)) {
-							$band_list .= "dab|dab;";
-							$eqLogic->createCmd('tuner_set_band_dab', 'action', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_preset', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_id', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_status', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_freq', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_category', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_audio_mode', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_bit_rate', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_quality', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_tune_aid', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_off_air', 'info', 'binary', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_dab_plus', 'info', 'binary', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_program_type', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_ch_label', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_service_label', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_dls', 'info', 'string', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_ensemble_label', 'info', 'string', false, null, $configurationTuner)->save();
-						}
-						if (in_array("hd_radio", $fonc_list_tuner)) {
-							//$eqLogic->createCmd('tuner_hd_radio')->save();
-						}
-						if (in_array("fm_auto_preset", $fonc_list_tuner)) {
-							$eqLogic->createCmd('fm_auto_preset_start', 'action', 'other', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('fm_auto_preset_stop', 'action', 'other', false, null, $configurationTuner)->save();
-						}
-						if (in_array("dab_initial_scan", $fonc_list_tuner)) {
-							$eqLogic->createCmd('tuner_dab_initial_scan_progress', 'info', 'numeric', false, null, $configurationTuner)->save();
-							$eqLogic->createCmd('tuner_dab_total_station_num', 'info', 'numeric', false, null, $configurationTuner)->save();
-						}
-						if (in_array("dab_tune_aid", $fonc_list_tuner)) {
-							$eqLogic->createCmd('tuner_dab_tune_aid_set', 'action', 'other', false, null, $configurationTuner)->save();
-						}
+					$getStatusZone = $eqLogic->callAPIGET(YamahaMusiccast::url_v1 . "$zoneName/getStatus");
 
-						$eqLogic->createCmd('tuner_band_list', 'info', 'string', false, null, $configurationTuner)->save();
-						if (!empty($band_list)) {
-							$config_band_list['listValue'] = substr($band_list, 0, -1);
-							$tuner_set_band = $eqLogic->createCmd('tuner_set_band', 'action', 'select', false, null, $config_band_list)
-											->setValue($tuner_band->getId())->save();
-							$eqLogic->checkAndUpdateCmd('tuner_band_list', $config_band_list['listValue']);
+					$deviceDir = __DIR__ . '/../../../../plugins/' . __CLASS__ . '/data/' . $eqLogic->getId() . '/';
+					if (!file_exists($deviceDir)) {
+						mkdir($deviceDir, 0700);
+					}
+
+					$configurationBluetooth['type'] = 'bluetooth';
+					$configurationNetUsb['type'] = 'netusb';
+					$configurationTuner['type'] = 'tuner';
+					$configurationDistribution['type'] = 'distribution';
+
+					$eqLogic->createCmd('linked_list', 'info', 'string', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('client_list', 'info', 'string', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('group_id', 'info', 'string', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('group_name', 'info', 'string', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('role', 'info', 'string', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('server_zone', 'info', 'string', false, null, $configurationDistribution)->save();
+
+					$eqLogic->createCmd('setServerInfo', 'action', 'other', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('setClientInfo', 'action', 'other', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('startDistribution', 'action', 'other', false, null, $configurationDistribution)->save();
+					$eqLogic->createCmd('stopDistribution', 'action', 'other', false, null, $configurationDistribution)->save();
+					$displayList['title_placeholder'] = "Nom du nouveau groupe";
+					$displayList['message_disable'] = "1";
+					$eqLogic->createCmd('setGroupName', 'action', 'message', false, null, $configurationDistribution, $displayList)->save();
+
+					if(!empty($getStatusZone->distribution_enable)) {
+						$eqLogic->createCmd('distribution_enable', 'info', 'binary', false, null, $configurationDistribution)->save();
+					}
+
+					if (in_array("wired_lan", $fonc_list_features)) {
+						$eqLogic->createCmd('set_wired_lan', 'action', 'other')->save();
+					}
+					if (in_array("wireless_lan", $fonc_list_features)) {
+						$eqLogic->createCmd('set_wirless_lan', 'action', 'other')->save();
+					}
+					if (in_array("wireless_direct", $fonc_list_features)) {
+						$eqLogic->createCmd('set_wirless_direct', 'action', 'other')->save();
+					}
+					if (in_array("extend_1_band", $fonc_list_features)) {
+
+					}
+					if (in_array("dfs_option", $fonc_list_features)) {
+
+					}
+					if (in_array("network_standby_auto", $fonc_list_features)) {
+
+					}
+					if (in_array("network_standby", $fonc_list_features)) {
+
+					}
+					if (in_array("bluetooth_standby", $fonc_list_features)) {
+						$eqLogic->createCmd('bluetooth_standby_state', 'info', 'string', false, null, $configurationBluetooth)->save();
+						$eqLogic->createCmd('disconnect_bluetooth_device', 'action', 'other', false, null, $configurationBluetooth)->save();
+						$eqLogic->createCmd('connect_bluetooth_device', 'action', 'other', false, null, $configurationBluetooth)->save();
+						$eqLogic->createCmd('update_bluetooth_device_list', 'action', 'other', false, null, $configurationBluetooth)->save();
+					}
+					if (in_array("bluetooth_tx_setting", $fonc_list_features)) {
+						$eqLogic->createCmd('bluetooth_tx_setting_state', 'info', 'string', false, null, $configurationBluetooth)->save();
+						$eqLogic->createCmd('set_bluetooth_tx_setting', 'action', 'other', false, null, $configurationBluetooth)->save();
+					}
+					if (in_array("auto_power_standby", $fonc_list_features)) {
+						$eqLogic->createCmd('auto_power_standby_state')->save();
+						$eqLogic->createCmd('auto_power_standby_on', 'action', 'other')->save();
+						$eqLogic->createCmd('auto_power_standby_off', 'action', 'other')->save();
+					}
+					if (in_array("ir_sensor", $fonc_list_features)) {
+						$eqLogic->createCmd('ir_sensor_state')->save();
+						$eqLogic->createCmd('ir_sensor_on', 'action', 'other')->save();
+						$eqLogic->createCmd('ir_sensor_off', 'action', 'other')->save();
+					}
+					if (in_array("speaker_a", $fonc_list_features)) {
+						$eqLogic->createCmd('speaker_a_state')->save();
+						$eqLogic->createCmd('speaker_a_on', 'action', 'other')->save();
+						$eqLogic->createCmd('speaker_a_off', 'action', 'other')->save();
+					}
+					if (in_array("dimmer", $fonc_list_features)) {
+						$eqLogic->createCmd('dimmer_state')->save();
+						$eqLogic->createCmd('dimmer', 'action', 'other')->save();
+					}
+					if (in_array("speaker_b", $fonc_list_features)) {
+						$eqLogic->createCmd('speaker_b_state')->save();
+						$eqLogic->createCmd('speaker_b_on', 'action', 'other')->save();
+						$eqLogic->createCmd('speaker_b_off', 'action', 'other')->save();
+					}
+					if (in_array("zone_b_volume_sync", $fonc_list_features)) {
+						$eqLogic->createCmd('zone_b_volume_sync_state')->save();
+						$eqLogic->createCmd('zone_b_volume_sync_on', 'action', 'other')->save();
+						$eqLogic->createCmd('zone_b_volume_sync_off', 'action', 'other')->save();
+					}
+					if (in_array("headphone", $fonc_list_features)) {
+						$eqLogic->createCmd('headphone_state')->save();
+					}
+					if (in_array("hdmi_out_1", $fonc_list_features)) {
+						$eqLogic->createCmd('hdmi_out_1_state')->save();
+						$eqLogic->createCmd('hdmi_out_1_on', 'action', 'other')->save();
+						$eqLogic->createCmd('hdmi_out_1_off', 'action', 'other')->save();
+					}
+					if (in_array("hdmi_out_2", $fonc_list_features)) {
+						$eqLogic->createCmd('hdmi_out_2_state')->save();
+						$eqLogic->createCmd('hdmi_out_2_on', 'action', 'other')->save();
+						$eqLogic->createCmd('hdmi_out_2_off', 'action', 'other')->save();
+					}
+					if (in_array("hdmi_out_3", $fonc_list_features)) {
+						$eqLogic->createCmd('hdmi_out_3_state')->save();
+						$eqLogic->createCmd('hdmi_out_3_on', 'action', 'other')->save();
+						$eqLogic->createCmd('hdmi_out_3_off', 'action', 'other')->save();
+					}
+					if (in_array("airplay", $fonc_list_features)) {
+						$eqLogic->createCmd('set_air_play_pin', 'action', 'other')->save();
+					}
+					if (in_array("stereo_pair", $fonc_list_features)) {
+
+					}
+					if (in_array("speaker_settings", $fonc_list_features)) {
+
+					}
+					if (in_array("disklavier_settings", $fonc_list_features)) {
+
+					}
+					if (in_array("background_download", $fonc_list_features)) {
+
+					}
+					if (in_array("getRemoteInfo", $fonc_list_features)) {
+						/**
+						 * TODO: requestNetworkReboot
+						 * For retrieving remote monitor information.
+						 */
+					}
+					if (in_array("network_reboot", $fonc_list_features)) {
+						$eqLogic->createCmd('network_reboot', 'action', 'other')->save();
+					}
+					if (in_array("system_reboot", $fonc_list_features)) {
+						$eqLogic->createCmd('system_reboot', 'action', 'other')->save();
+					}
+					if (in_array("auto_play", $fonc_list_features)) {
+						$eqLogic->createCmd('auto_play_state')->save();
+						$eqLogic->createCmd('auto_play_on', 'action', 'other')->save();
+						$eqLogic->createCmd('auto_play_off', 'action', 'other')->save();
+					}
+					if (in_array("speaker_pattern", $fonc_list_features)) {
+						$eqLogic->createCmd('speaker_pattern_state_state')->save();
+					}
+					if (in_array("party_mode", $fonc_list_features)) {
+						/**
+						 * TODO: setPartyMode
+						 * For setting Party Mode.
+						 */
+						$eqLogic->createCmd('party_mode_on', 'action', 'other')->save();
+						$eqLogic->createCmd('party_mode_off', 'action', 'other')->save();
+						$eqLogic->createCmd('party_mode_state', 'info', 'binary')->save();
+					}
+					$fonc_list_zone = $zone->func_list;
+					if (in_array("power", $fonc_list_zone)) {
+						$eqLogic->createCmd('power_state')->save();
+						$eqLogic->createCmd('power_on', 'action', 'other', false, 'ENERGY_ON')->save();
+						$eqLogic->createCmd('power_off', 'action', 'other', false, 'ENERGY_OFF')->save();
+					}
+					if (in_array("sleep", $fonc_list_zone)) {
+						$eqLogic->createCmd('sleep', 'info', 'numeric')->save();
+					}
+					if (in_array("volume", $fonc_list_zone)) {
+						$config_volume_change['minValue'] = 0;
+						if (!empty($getStatusZone->max_volume)) {
+							$config_volume_change['maxValue'] = $getStatusZone->max_volume;
+						}
+						$volume_state = $eqLogic->createCmd('volume_state');
+						$volume_state->save();
+						$volume = $eqLogic->createCmd('volume_change', 'action', 'slider', false, 'SET_VOLUME', $config_volume_change)->setValue($volume_state->getId())->save();
+						$eqLogic->createCmd('max_volume', 'info', 'numeric')->save();
+					}
+					if (in_array("mute", $fonc_list_zone)) {
+						$eqLogic->createCmd('mute_on', 'action', 'other')->save();
+						$eqLogic->createCmd('mute_off', 'action', 'other')->save();
+						$eqLogic->createCmd('mute_state', 'info', 'binary')->save();
+					}
+					if (in_array("sound_program", $fonc_list_zone)) {
+						$sound_program_state = $eqLogic->createCmd('sound_program_state');
+						$sound_program_state->save();
+						$sound_program_change = $eqLogic->createCmd('sound_program_change', 'action', 'select')->setValue($sound_program_state->getId())->save();
+					}
+					if (in_array("surround_3d", $fonc_list_zone)) {
+						$eqLogic->createCmd('surround_3d', 'info', 'binary')->save();
+					}
+					if (in_array("direct", $fonc_list_zone)) {
+						$eqLogic->createCmd('direct', 'info', 'binary')->save();
+					}
+					if (in_array("pure_direct", $fonc_list_zone)) {
+						$eqLogic->createCmd('pure_direct', 'info', 'binary')->save();
+					}
+					if (in_array("enhancer", $fonc_list_zone)) {
+						$eqLogic->createCmd('enhancer', 'info', 'binary')->save();
+					}
+					if (in_array("tone_control", $fonc_list_zone)) {
+						$eqLogic->createCmd('tone_control_mode')->save();
+						$eqLogic->createCmd('tone_control_base', 'info', 'numeric')->save();
+						$eqLogic->createCmd('tone_control_treble', 'info', 'numeric')->save();
+					}
+					if (in_array("equalizer", $fonc_list_zone)) {
+						$eqLogic->createCmd('equalizer_mode')->save();
+						$config_volume_change['minValue'] = -10;
+						$config_volume_change['maxValue'] = 10;
+						$equalizer_low = $eqLogic->createCmd('equalizer_low', 'info', 'numeric');
+						$equalizer_low->save();
+						$eqLogic->createCmd('equalizer_low_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_low->getId())->save();
+						$equalizer_mid = $eqLogic->createCmd('equalizer_mid', 'info', 'numeric');
+						$equalizer_mid->save();
+						$eqLogic->createCmd('equalizer_mid_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_mid->getId())->save();
+						$equalizer_high = $eqLogic->createCmd('equalizer_high', 'info', 'numeric');
+						$equalizer_high->save();
+						$eqLogic->createCmd('equalizer_high_change', 'action', 'slider', false, null, $config_volume_change)->setValue($equalizer_high->getId())->save();
+					}
+					if (in_array("balance", $fonc_list_zone)) {
+						$config_volume_change['minValue'] = -10;
+						$config_volume_change['maxValue'] = 10;
+						$balance = $eqLogic->createCmd('balance', 'info', 'numeric');
+						$balance->save();
+						$eqLogic->createCmd('balance_change', 'action', 'slider', false, null, $config_volume_change)->setValue($balance->getId())->save();
+					}
+					if (in_array("dialogue_level", $fonc_list_zone)) {
+						$eqLogic->createCmd('dialogue_level', 'info', 'numeric')->save();
+					}
+					if (in_array("dialogue_lift", $fonc_list_zone)) {
+						$eqLogic->createCmd('dialogue_lift', 'info', 'numeric')->save();
+					}
+					if (in_array("bass_extension", $fonc_list_zone)) {
+						$eqLogic->createCmd('bass_extension', 'info', 'binary')->save();
+					}
+					if (in_array("clear_voice", $fonc_list_zone)) {
+						$eqLogic->createCmd('clear_voice', 'info', 'binary')->save();
+					}
+					if (in_array("signal_info", $fonc_list_zone)) {
+
+					}
+					if (in_array("subwoofer_volume", $fonc_list_zone)) {
+						$eqLogic->createCmd('subwoofer_volume', 'info', 'numeric')->save();
+					}
+					if (in_array("prepare_input_change", $fonc_list_zone)) {
+						/**
+						 * TODO: prepareInputChange
+						 * Let a Device do necessary process before changing input in a specific zone. This is valid only
+						 *	when “prepare_input_change” exists in “func_list” found in /system/getFuncStatus.
+						 *	MusicCast CONTROLLER executes this API when an input icon is selected in a Room, right
+						 *	before sending various APIs (of retrieving list information etc.) regarding selecting input
+						 */
+
+					}
+					if(!empty($zone->link_control_list)) {
+						YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_control", $zone->link_control_list);
+					}
+					if(!empty($zone->link_audio_delay_list)) {
+						YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_audio_delay", $zone->link_audio_delay_list);
+					}
+					if(!empty($zone->link_audio_quality_list)) {
+						YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "link_audio_quality", $zone->link_audio_quality_list);
+					}
+					if (in_array("disable_flags", $fonc_list_zone)) {
+						$eqLogic->createCmd('disable_flags', 'info', 'numeric')->save();
+					}
+					if (in_array("scene", $fonc_list_zone)) {
+						if(!empty($zone->scene_num)) {
+							$max_scene = $zone->scene_num;
+							$config_scene_change['minValue'] = 1;
+							$config_scene_change['maxValue'] = $max_scene;
+							$scene = $eqLogic->createCmd('scene', 'info', 'numeric');
+							$scene->save();
+							$eqLogic->createCmd('scene_change', 'action', 'slider', false, null, $config_scene_change)->setValue($scene->getId())->save();
 						}
 					}
-				}
-				if (!empty($getFeatures->netusb)) {
-					$netusb = $getFeatures->netusb;
-					if (!empty($netusb->func_list)) {
-						$fonc_list_netusb = $netusb->func_list;
-						if (in_array("recent_info", $fonc_list_netusb)) {
-							
-						}
-						if (in_array("play_queue", $fonc_list_netusb)) {
-							
-						}
-						if (in_array("mc_playlist", $fonc_list_netusb)) {
-							
-						}
-						if (in_array("streaming_service_use", $fonc_list_netusb)) {
-							
+					if (in_array("contents_display", $fonc_list_zone)) {
+						$eqLogic->createCmd('contents_display', 'info', 'binary')->save();
+					}
+					if (in_array("cursor", $fonc_list_zone)) {
+						/**
+						 * TODO: controlCursor
+						 * Operate the cursor keys on the remote control.
+						 */
+					}
+					if (in_array("menu", $fonc_list_zone)) {
+						/**
+						 * TODO: controlMenu
+						 * Operate the cursor keys on the remote control.
+						 */
+					}
+					if (in_array("actual_volume", $fonc_list_zone)) {
+						$eqLogic->createCmd('actual_volume_mode', 'info', 'string')->save();
+						$eqLogic->createCmd('actual_volume_value', 'info', 'numeric')->save();
+						$eqLogic->createCmd('actual_volume_unit', 'info', 'string')->save();
+						/**
+						 * TODO: setActualVolume
+						 * Set the volume of each Zone with the value to display.
+						 */
+					}
+					if (in_array("audio_select", $fonc_list_zone)) {
+						$eqLogic->createCmd('audio_select', 'info', 'string')->save();
+						/**
+						 * TODO: setAudioSelect
+						 * Set the audio input selection.
+						 * In the value of audio_select_list obtained by /system/getFeatures, it is possible to specify
+						 * something other than unavailable. If current audio_select (gotten with getStatus) is unavailable,
+						 * it can not be set.
+						 */
+					}
+
+					if (!empty($zone->surr_decoder_type_list)) {
+						YamahaMusiccast::createValueAndActionList($eqLogic, $fonc_list_zone, "surr_decoder_type", $zone->surr_decoder_type_list);
+					}
+					if (in_array("surr_decoder_type", $fonc_list_zone)) {
+						/**
+						 * TODO: setSurroundDecoderType
+						 * Set the Sound Program : Decoder Type to be used with Surround Decoder.
+						 */
+					}
+					if (!empty($getFeatures->tuner)) {
+						$tuner = $getFeatures->tuner;
+						$tuner_band = $eqLogic->createCmd('tuner_band', 'info', 'string', false, null, $configurationTuner);
+						$tuner_band->save();
+						$eqLogic->createCmd('tuner_auto_scan', 'info', 'binary', false, null, $configurationTuner)->save();
+						$eqLogic->createCmd('tuner_auto_preset', 'info', 'binary', false, null, $configurationTuner)->save();
+						$eqLogic->createCmd('tuner_set_frequency_up', 'action', 'other', false, null, $configurationTuner)->save();
+						$eqLogic->createCmd('tuner_set_frequency_down', 'action', 'other', false, null, $configurationTuner)->save();
+						$eqLogic->createCmd('tuner_set_frequency_cancel', 'action', 'other', false, null, $configurationTuner)->save();
+						$eqLogic->createCmd('tuner_set_frequency_auto_up', 'action', 'other', false, null, $configurationTuner)->save();
+						$eqLogic->createCmd('tuner_set_frequency_auto_down', 'action', 'other', false, null, $configurationTuner)->save();
+						$tuner_set_frequency_direct_displayList['title_placeholder'] = "Fréquence (unité en kHz)";
+						$tuner_set_frequency_direct_displayList['message_disable'] = "1";
+						$eqLogic->createCmd('tuner_set_frequency_direct', 'action', 'message', false, null, $configurationTuner, $tuner_set_frequency_direct_displayList)->save();
+						$eqLogic->createCmd('tuner_recall_preset', 'action', 'select', false, null, $configurationTuner)->save();
+						$eqLogic->createCmd('tuner_recall_preset_list', 'info', 'string', false, null, $configurationTuner)->save();
+
+						if (!empty($tuner->func_list)) {
+							$fonc_list_tuner = $tuner->func_list;
+							$band_list = "";
+							$eqLogic->checkAndUpdateCmd('netusb_recall_recent_list', $config_surr_decoder_type['listValue']);
+							if (in_array("am", $fonc_list_tuner)) {
+								$band_list .= "am|am;";
+								$eqLogic->createCmd('tuner_set_band_am', 'action', 'other', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_am_preset', 'info', 'binary', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_am_freq', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_am_tuned', 'info', 'numeric', false, null, $configurationTuner)->save();
+							}
+							if (in_array("fm", $fonc_list_tuner)) {
+								$band_list .= "fm|fm;";
+								$eqLogic->createCmd('tuner_set_band_fm', 'action', 'other', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_fm_preset', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_fm_freq', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_fm_tuned', 'info', 'binary', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_fm_audio_mode', 'info', 'numeric', false, null, $configurationTuner)->save();
+							}
+							if (in_array("rds", $fonc_list_tuner)) {
+								$eqLogic->createCmd('tuner_rds_program_type', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_rds_program_service', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_rds_radio_text_a', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_rds_radio_text_b', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_set_frequency_tp_up', 'action', 'other', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_set_frequency_tp_down', 'action', 'other', false, null, $configurationTuner)->save();
+							}
+							if (in_array("dab", $fonc_list_tuner)) {
+								$band_list .= "dab|dab;";
+								$eqLogic->createCmd('tuner_set_band_dab', 'action', 'other', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_preset', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_id', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_status', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_freq', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_category', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_audio_mode', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_bit_rate', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_quality', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_tune_aid', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_off_air', 'info', 'binary', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_dab_plus', 'info', 'binary', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_program_type', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_ch_label', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_service_label', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_dls', 'info', 'string', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_ensemble_label', 'info', 'string', false, null, $configurationTuner)->save();
+							}
+							if (in_array("hd_radio", $fonc_list_tuner)) {
+								//$eqLogic->createCmd('tuner_hd_radio')->save();
+							}
+							if (in_array("fm_auto_preset", $fonc_list_tuner)) {
+								$eqLogic->createCmd('fm_auto_preset_start', 'action', 'other', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('fm_auto_preset_stop', 'action', 'other', false, null, $configurationTuner)->save();
+							}
+							if (in_array("dab_initial_scan", $fonc_list_tuner)) {
+								$eqLogic->createCmd('tuner_dab_initial_scan_progress', 'info', 'numeric', false, null, $configurationTuner)->save();
+								$eqLogic->createCmd('tuner_dab_total_station_num', 'info', 'numeric', false, null, $configurationTuner)->save();
+							}
+							if (in_array("dab_tune_aid", $fonc_list_tuner)) {
+								$eqLogic->createCmd('tuner_dab_tune_aid_set', 'action', 'other', false, null, $configurationTuner)->save();
+							}
+
+							$eqLogic->createCmd('tuner_band_list', 'info', 'string', false, null, $configurationTuner)->save();
+							if (!empty($band_list)) {
+								$config_band_list['listValue'] = substr($band_list, 0, -1);
+								$tuner_set_band = $eqLogic->createCmd('tuner_set_band', 'action', 'select', false, null, $config_band_list)
+												->setValue($tuner_band->getId())->save();
+								$eqLogic->checkAndUpdateCmd('tuner_band_list', $config_band_list['listValue']);
+							}
 						}
 					}
-					$cmdInput = $eqLogic->createCmd('input');
-					$cmdInput->save();
-					$input_change_string = "";
-					$eqLogic->createCmd('input_change', 'action', 'select', false, null)->setValue($cmdInput->getId())->save();
+					if (!empty($getFeatures->netusb)) {
+						$netusb = $getFeatures->netusb;
+						if (!empty($netusb->func_list)) {
+							$fonc_list_netusb = $netusb->func_list;
+							if (in_array("recent_info", $fonc_list_netusb)) {
 
-					$eqLogic->createCmd('audio_error', 'info', 'numeric')->save();
-					$eqLogic->createCmd('audio_format')->save();
-					$eqLogic->createCmd('audio_fs')->save();
+							}
+							if (in_array("play_queue", $fonc_list_netusb)) {
 
-					$eqLogic->createCmd('netusb_recall_recent_list', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_recall_preset_list', 'info', 'string', false, null, $configurationNetUsb)->save();
+							}
+							if (in_array("mc_playlist", $fonc_list_netusb)) {
+
+							}
+							if (in_array("streaming_service_use", $fonc_list_netusb)) {
+
+							}
+						}
+						$cmdInput = $eqLogic->createCmd('input');
+						$cmdInput->save();
+						$input_change_string = "";
+						$eqLogic->createCmd('input_change', 'action', 'select', false, null)->setValue($cmdInput->getId())->save();
+
+						$eqLogic->createCmd('audio_error', 'info', 'numeric')->save();
+						$eqLogic->createCmd('audio_format')->save();
+						$eqLogic->createCmd('audio_fs')->save();
+
+						$eqLogic->createCmd('netusb_recall_recent_list', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_recall_preset_list', 'info', 'string', false, null, $configurationNetUsb)->save();
 
 
-					$eqLogic->createCmd('netusb_playback_play', 'action', 'other', '<i class="fas fa-play"></i>', 'MEDIA_RESUME', $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_stop', 'action', 'other', '<i class="fas fa-stop"></i>', 'MEDIA_STOP', $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_pause', 'action', 'other', '<i class="fas fa-pause"></i>', 'MEDIA_PAUSE', $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_play_pause', 'action', 'other', '<i class="fas fa-play"></i><i class="fas fa-pause"></i>', null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_previous', 'action', 'other', '<i class="fas fa-step-backward"></i>', 'MEDIA_PREVIOUS', $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_next', 'action', 'other', '<i class="fas fa-step-forward"></i>', 'MEDIA_NEXT', $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_fast_reverse_start', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_fast_reverse_end', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_fast_forward_start', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback_fast_forward_end', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_play', 'action', 'other', '<i class="fas fa-play"></i>', 'MEDIA_RESUME', $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_stop', 'action', 'other', '<i class="fas fa-stop"></i>', 'MEDIA_STOP', $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_pause', 'action', 'other', '<i class="fas fa-pause"></i>', 'MEDIA_PAUSE', $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_play_pause', 'action', 'other', '<i class="fas fa-play"></i><i class="fas fa-pause"></i>', null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_previous', 'action', 'other', '<i class="fas fa-step-backward"></i>', 'MEDIA_PREVIOUS', $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_next', 'action', 'other', '<i class="fas fa-step-forward"></i>', 'MEDIA_NEXT', $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_fast_reverse_start', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_fast_reverse_end', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_fast_forward_start', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback_fast_forward_end', 'action', 'other', false, null, $configurationNetUsb)->save();
 
-					$eqLogic->createCmd('netusb_shuffle_off', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_shuffle_on', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_shuffle_songs', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_shuffle_albums', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_repeat_off', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_repeat_one', 'action', 'other', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_repeat_all', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_shuffle_off', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_shuffle_on', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_shuffle_songs', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_shuffle_albums', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_repeat_off', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_repeat_one', 'action', 'other', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_repeat_all', 'action', 'other', false, null, $configurationNetUsb)->save();
 
-					$eqLogic->createCmd('netusb_input', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_play_queue_type', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_playback', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_repeat', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_shuffle', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_play_time', 'info', 'numeric', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_total_time', 'info', 'numeric', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_artist', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_album', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_track', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_albumart_url', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_albumart_id', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_usb_devicetype', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_usb_auto_stopped', 'info', 'binary', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_attribute', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_repeat_available', 'info', 'string', false, null, $configurationNetUsb)->save();
-					$eqLogic->createCmd('netusb_shuffle_available', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_input', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_play_queue_type', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_playback', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_repeat', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_shuffle', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_play_time', 'info', 'numeric', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_total_time', 'info', 'numeric', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_artist', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_album', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_track', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_albumart_url', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_albumart_id', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_usb_devicetype', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_usb_auto_stopped', 'info', 'binary', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_attribute', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_repeat_available', 'info', 'string', false, null, $configurationNetUsb)->save();
+						$eqLogic->createCmd('netusb_shuffle_available', 'info', 'string', false, null, $configurationNetUsb)->save();
+					}
+					if ($zoneName === YamahaMusiccast::main) {
+						$nameEqLogic = $getNetworkStatus->network_name;
+					} else {
+						$nameEqLogic = $getNetworkStatus->network_name . " (" . $zoneName . ")";
+					}
+					$eqLogic->setName($nameEqLogic);
+					$eqLogic->checkAndUpdateZoneCmd('group_name', $nameEqLogic);
+					array_push($deviceZoneList, $eqLogic->getName());
+					$eqLogic->setConfiguration('model_name', $getDeviceInfo->model_name);
+					$eqLogic->callZoneGetStatus();
+					$eqLogic->save();
+					$device[$zoneName] = $eqLogic;
 				}
-				if ($zoneName === YamahaMusiccast::main) {
-					$nameEqLogic = $getNetworkStatus->network_name;
-				} else {
-					$nameEqLogic = $getNetworkStatus->network_name . " (" . $zoneName . ")";
-				}
-				$eqLogic->setName($nameEqLogic);
-				$eqLogic->checkAndUpdateZoneCmd('group_name', $nameEqLogic);
-				array_push($deviceZoneList, $eqLogic->getName());
-				$eqLogic->setConfiguration('model_name', $getDeviceInfo->model_name);
-				$eqLogic->callZoneGetStatus();
-				$eqLogic->save();
-				$device[$zoneName] = $eqLogic;
 			}
+			YamahaMusiccast::callDistributionGetInfo($device);
+			YamahaMusiccast::callNetusbGetPresetInfo($device);
+			YamahaMusiccast::callNetusbGetRecentInfo($device);
+			YamahaMusiccast::callSystemNameText($device);
+			$cmd_tuner_band = $device[YamahaMusiccast::main]->getCmd(null, "tuner_band");
+			if (is_object($cmd_tuner_band)) {
+				YamahaMusiccast::callTunerGetPresetInfo($device);
+				YamahaMusiccast::callTunerGetPlayInfo($device);
+			}
+			return $deviceZoneList;
 		}
-		YamahaMusiccast::callDistributionGetInfo($device);
-		YamahaMusiccast::callNetusbGetPresetInfo($device);
-		YamahaMusiccast::callNetusbGetRecentInfo($device);
-		YamahaMusiccast::callSystemNameText($device);
-		$cmd_tuner_band = $device[YamahaMusiccast::main]->getCmd(null, "tuner_band");
-		if (is_object($cmd_tuner_band)) {
-			YamahaMusiccast::callTunerGetPresetInfo($device);
-			YamahaMusiccast::callTunerGetPlayInfo($device);
-		}
-		return $deviceZoneList;
 	}
 
 	public static function searchDeviceIpList() {

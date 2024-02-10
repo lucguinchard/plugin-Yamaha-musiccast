@@ -488,8 +488,10 @@ class YamahaMusiccast extends eqLogic {
 	public static function saveDeviceIp($ip) {
 		$deviceZoneList = array();
 		$device = array();
+		log::add(__CLASS__, 'debug', 'Test de l’appareil avec ip ' . $ip . '.');
 		$getNetworkStatus = YamahaMusiccast::callAPIGETIP($ip, YamahaMusiccast::url_v1_system . "getNetworkStatus");
-		if ($getNetworkStatus === false) {
+		log::add(__CLASS__, 'debug', 'Resultat ' . print_r($getNetworkStatus, true) . '.');
+		if ($getNetworkStatus === false || !empty($getNetworkStatus->response_code) || $getNetworkStatus->response_code !== 0) {
 			log::add(__CLASS__, 'debug', 'L’appareil avec ip ' . $ip . ' n’est pas joignable ! ou n’est pas un appareil Musiccast.');
 			return null;
 		} else {

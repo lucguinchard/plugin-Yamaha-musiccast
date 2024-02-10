@@ -118,7 +118,7 @@ $('.eqLogicAction[data-action=searchMusiccast]').on('click', function () {
 			if (document.location.toString().match('#')) {
 				url += '#' + document.location.toString().split('#')[1];
 			}
-			loadPage(url);
+			jeedomUtils.loadPage(url);
 			if (data.state !== 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;

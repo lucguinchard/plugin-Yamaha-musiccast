@@ -16,8 +16,8 @@ class YamahaMusiccastSocket {
 	function run() {
 		$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		if (socket_bind($this->socket, $this->adress, $this->port)) {
-			//socket_listen($this->socket);
-			while (true) {
+			$whileTrue = true;
+			while ($whileTrue) {
 				if ((socket_set_block($this->socket)) !== false) {
 					//On tente d'obtenir l'IP du client.
 					$message = null;
@@ -26,6 +26,7 @@ class YamahaMusiccastSocket {
 					$bytes_received = socket_recvfrom($this->socket, $message, 65536, 0, $host, $port);
 					if ($message === 'stop') {
 						log::add('YamahaMusiccast', 'debug', 'Arrêt du socket');
+						$whileTrue = false;
 						$this->close();
 					} else if ($message === 'test') {
 						log::add('YamahaMusiccast', 'debug', 'Test du Socket');

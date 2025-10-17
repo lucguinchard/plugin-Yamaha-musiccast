@@ -1,5 +1,0 @@
-Order allow,deny
-<Files ~ "\.(css|png)$">
-   Allow from all
-</Files>
-Deny from all

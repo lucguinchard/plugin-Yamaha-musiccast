@@ -1,0 +1,51 @@
+<div class="eqLogic-widget eqLogic YamahaMusiccast" data-category="multimedia"
+	 style="border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#;"
+	 data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="mobile" >
+	<link rel="stylesheet" href="plugins/YamahaMusiccast/core/template/module/css/style.css"/>
+        <center>
+            <span class="widget-name">
+                    <span class="warning" >
+                            <i></i>
+                    </span>
+                    <span>#name_display#</span>
+                    <span class="object_name">#object_name#</span>
+            </span>
+            <div>
+                <nav class="nav nav_playlist" style ="display: initial;">
+                    <!--a class="btn cmd cmd-widget action_playlist" data-type="action" data-cmd_id="#netusb_shuffle_id#" onclick="jeedom.cmd.execute({id: #netusb_shuffle_id#});" title="Aléatoire" style="float: right;">
+                            <i class="fa fa-random shuffle"></i>
+                    </a>
+                    <a class="btn cmd cmd-widget action_playlist" data-type="action" data-cmd_id="#netusb_repeat_id#" onclick="jeedom.cmd.execute({id: #netusb_repeat_id#});" title="Répéter">
+                            <i class="fa fa-sync repeat"></i>
+                    </a-->
+                    <a class="iconCmd" data-type="action" data-cmd_id="#netusb_playback_previous_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_previous_id#});" title="Précédent" style="float: none;">
+                            #netusb_playback_previous_icon#
+                    </a>
+                    <a class="iconCmd" data-type="action" data-cmd_id="#netusb_playback_stop_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_stop_id#});"
+                            title="Stop" style="float: none; display:none;">
+                            #netusb_playback_stop_icon#
+                    </a>
+                    <a class="iconCmd cmd-widget play play_pause" data-type="action" data-cmd_id="#netusb_playback_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
+                            title="Lecture" style="float: none; display:none;">
+                            #netusb_playback_play_icon#
+                    </a>
+                    <a class="iconCmd" data-type="action" data-cmd_id="#netusb_playback_id#" onclick="jeedom.cmd.execute({id: #netusb_playback_play_pause_id#});"
+                            title="Pause" style="float: none;">
+                            #netusb_playback_pause_icon#
+                    </a>
+                    <a class="iconCmd cmd-widget action_list" data-type="action" data-cmd_id="#netusb_playback_next_id#" onClick="jeedom.cmd.execute({id: #netusb_playback_next_id#});" title="Suivant" style="float: none;">
+                            #netusb_playback_next_icon#
+                    </a>
+<!--                    <a class="iconCmd cmd-widget action_list" data-type="action" data-cmd_id="#power_off_id#" onClick="jeedom.cmd.execute({id: #power_off_id#});" title="Arrêt" style="float: none;">
+                            #power_off_icon#
+                    </a>
+                    <a class="iconCmd cmd-widget action_list" data-type="action" data-cmd_id="#power_on_id#" onClick="jeedom.cmd.execute({id: #power_on_id#});" title="Allumer" style="float: none;">
+                            #power_on_icon#
+                    </a>-->
+                </nav>
+            </div>
+        </center>
+	<script src="plugins/YamahaMusiccast/core/template/js/static.js"></script>
+	<script>
+	</script>
+</div>

@@ -103,7 +103,7 @@ try {
 					$cmd = $yamahaMusiccast->getCmd('action', 'setServerInfo');
 					$cmd->execCmd(array('ipClientList' => $linkedRemove, 'groupId' => $groupId, 'zone' => $yamahaMusiccastZone, 'action' => 'remove'));
 				}
-				
+
 			} else {
 				$groupId = YamahaMusiccastCmd::generateGroupId();
 				$zoneRemote = YamahaMusiccast::main;
@@ -209,6 +209,38 @@ try {
 			$index = init('index');
 			ajax::success("Cette partie affichera les playlists enregistrées.");
 			break;
+		case 'getYamahaMusiccast':
+			if (init('object_id') == '') {
+				$object = jeeObject::byId($_SESSION['user']->getOptions('defaultDashboardObject'));
+			} else {
+				$object = jeeObject::byId(init('object_id'));
+			}
+			if (!is_object($object)) {
+				$object = jeeObject::rootObject();
+			}
+			$return = array();
+			$return['eqLogics'] = array();
+			if (init('object_id') == '') {
+				foreach (jeeObject::all() as $object) {
+					foreach ($object->getEqLogic(true, false, 'YamahaMusiccast') as $YamahaMusiccast) {
+						$return['eqLogics'][] = $YamahaMusiccast->toHtml(init('version'));
+					}
+				}
+			} else {
+				foreach ($object->getEqLogic(true, false, 'YamahaMusiccast') as $YamahaMusiccast) {
+					$return['eqLogics'][] = $YamahaMusiccast->toHtml(init('version'));
+				}
+				foreach (jeeObject::buildTree($object) as $child) {
+					$YamahaMusiccastList = $child->getEqLogic(true, false, 'YamahaMusiccast');
+					if (count($YamahaMusiccastList) > 0) {
+						foreach ($YamahaMusiccastList as $YamahaMusiccast) {
+							$return['eqLogics'][] = $YamahaMusiccast->toHtml(init('version'));
+						}
+					}
+				}
+			}
+			ajax::success($return);
+		    break;
 	}
 
 	// Lève une exception si la requête n'a pas été traitée avec succès (Appel de la fonction ajax::success());

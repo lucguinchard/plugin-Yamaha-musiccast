@@ -195,8 +195,9 @@
 			</div>
 		</div>
 	</div>
-	<script src="plugins/YamahaMusiccast/core/template/js/static.js"></script>
 	<script>
+        $.include(["plugins/YamahaMusiccast/core/template/js/static.js"], function() {})
+
 		var uid = $('.YamahaMusiccast[data-eqLogic_uid=#uid#]');
 		// Affiche l'onglet favoris à l'affichage du widget.
 		uid.find('#displayoff-menu-#id# li:nth-child(3) a').tab('show');

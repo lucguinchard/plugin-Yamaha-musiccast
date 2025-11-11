@@ -205,10 +205,12 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<table id="table_system" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th style="width: 200px;">{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th></th>
-								<th style="width: 150px;">{{Action}}</th>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="width:450px;">{{Nom}}</th>
+								<th style="width:250px;">{{Type}}</th>
+								<th style="width:300px;">{{Options}}</th>
+								<th>{{Valeur}}</th>
+								<th style="min-width:80px;width:100px;">{{Actions}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -221,10 +223,12 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<table id="table_netusb" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th style="width: 200px;">{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th></th>
-								<th style="width: 150px;">{{Action}}</th>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="width:450px;">{{Nom}}</th>
+								<th style="width:250px;">{{Type}}</th>
+								<th style="width:300px;">{{Options}}</th>
+								<th>{{Valeur}}</th>
+								<th style="min-width:80px;width:100px;">{{Actions}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -237,10 +241,12 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<table id="table_distribution" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th style="width: 200px;">{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th></th>
-								<th style="width: 150px;">{{Action}}</th>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="width:450px;">{{Nom}}</th>
+								<th style="width:250px;">{{Type}}</th>
+								<th style="width:300px;">{{Options}}</th>
+								<th>{{Valeur}}</th>
+								<th style="min-width:80px;width:100px;">{{Actions}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -253,10 +259,12 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<table id="table_tuner" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th style="width: 200px;">{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th></th>
-								<th style="width: 150px;">{{Action}}</th>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="width:450px;">{{Nom}}</th>
+								<th style="width:250px;">{{Type}}</th>
+								<th style="width:300px;">{{Options}}</th>
+								<th>{{Valeur}}</th>
+								<th style="min-width:80px;width:100px;">{{Actions}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -269,10 +277,12 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<table id="table_cd" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th style="width: 200px;">{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th></th>
-								<th style="width: 150px;">{{Action}}</th>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="width:450px;">{{Nom}}</th>
+								<th style="width:250px;">{{Type}}</th>
+								<th style="width:300px;">{{Options}}</th>
+								<th>{{Valeur}}</th>
+								<th style="min-width:80px;width:100px;">{{Actions}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -285,10 +295,12 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<table id="table_bluetooth" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th style="width: 200px;">{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th></th>
-								<th style="width: 150px;">{{Action}}</th>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="width:450px;">{{Nom}}</th>
+								<th style="width:250px;">{{Type}}</th>
+								<th style="width:300px;">{{Options}}</th>
+								<th>{{Valeur}}</th>
+								<th style="min-width:80px;width:100px;">{{Actions}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -301,10 +313,12 @@ $eqLogicList = eqLogic::byType($plugin->getId());
 					<table id="table_clock" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th style="width: 200px;">{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th></th>
-								<th style="width: 150px;">{{Action}}</th>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="width:450px;">{{Nom}}</th>
+								<th style="width:250px;">{{Type}}</th>
+								<th style="width:300px;">{{Options}}</th>
+								<th>{{Valeur}}</th>
+								<th style="min-width:80px;width:100px;">{{Actions}}</th>
 							</tr>
 						</thead>
 						<tbody>
